@@ -21,7 +21,6 @@ class Departamentos(models.Model):
         item = model_to_dict(self)
         return item
 
-
     class Meta:
         verbose_name_plural = "Departamentos"
         ordering = ['id_departamento']
@@ -49,7 +48,7 @@ class Usuarios(models.Model):
     segundo_nombre = models.CharField('Segundo Nombre',max_length=35,blank=True) # verificar si no es obligatorio sino agregar, null=True
     primer_apellido = models.CharField('Primer Apellido',max_length=35)
     segundo_apellido = models.CharField('Segundo Apellido',max_length=35, blank=True)
-    Fch_ingreso_labores = models.CharField(max_length=25, blank=True)
+    Fch_ingreso_labores = models.DateField()
     usuario = models.CharField('Usuario',max_length=20, unique=True)#help_text="Ejemplo: nombre.apellido"
     correo = models.EmailField('Email')
     telefono = models.IntegerField('Teléfono')

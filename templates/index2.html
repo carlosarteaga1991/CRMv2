@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+    {% block link %}
+        <a href=" {% url 'crm:vista1' %} "> Volver a vista 1 </a>
+    {% endblock  %}
+
+{% block contenido %}
+
+    <p>otra vista y otro párrafo</p>
+
+
+
+
+    <ul>
+    {% for a in objeto_cliente %}
+        <li>{{a.id_cliente}} / {{a.nombre}}</li>
+    {% endfor %}
+    </ul>
+
+{% endblock  %}

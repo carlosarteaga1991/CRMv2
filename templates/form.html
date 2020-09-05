@@ -1,0 +1,57 @@
+{% extends "home.html" %}
+
+{% block contenido %}
+    <form method="POST" action=".">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-plus"></i>
+                    {{ titulo_lista }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+
+                <!-- verificaciones de errores antes de guardar -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                            
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                        </ul>
+                        </div>
+                    {% endif %}
+                    
+                <!-- /. verificaciones de errores antes de guardar -->
+
+                {% for campo in form.visible_fields %}
+                    <div class="form-group">
+                        <label for="email">{{ campo.label }}</label>
+                        {{ campo }}
+                    </div>
+                {% endfor %}
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" >
+                
+                <button type="submit" class = "btn btn-primary float-right eventoAjax" >
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                
+                <a href="{{ btn_cancelar }}" class = "btn btn-danger" style="position: absolute; right: 125px;">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+{% endblock  %}

@@ -1,0 +1,26 @@
+{% extends "list.html" %}
+
+{% block columnas %}
+                    <tr>
+                        <th scope="col" style="width: 10%;">Id</th>
+                        <th scope="col" style="width: 75%;">Nombre</th>
+                        <th scope="col" style="width: 10%;">Opciones</th>
+                    </tr>
+{% endblock  %}
+
+
+{% block filas %}
+
+                        {% for x in object_list %}
+                            <tr>
+                                <td>{{ x.id_departamento }}</td>
+                                <td>{{ x.nombre }}</td>
+                                <td>
+                                    <a href="{% url 'crm:actualizar_departamento' x.id_departamento %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a> <!-- para hacer más pequeño el botón usar dentro de la clase  btn-xs -->
+                                    <button type="button" class="btn btn-danger" title="Borrar"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+{% endblock  %}
+

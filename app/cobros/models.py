@@ -17,10 +17,9 @@ class Departamentos(models.Model):
     def __str__(self):
         return self.nombre
     
-    def toJSON(self): #función para crear diccionarios
-        item = model_to_dict(self)
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
         return item
-
 
     class Meta:
         verbose_name_plural = "Departamentos"
@@ -49,7 +48,7 @@ class Usuarios(models.Model):
     segundo_nombre = models.CharField('Segundo Nombre',max_length=35,blank=True) # verificar si no es obligatorio sino agregar, null=True
     primer_apellido = models.CharField('Primer Apellido',max_length=35)
     segundo_apellido = models.CharField('Segundo Apellido',max_length=35, blank=True)
-    Fch_ingreso_labores = models.CharField(max_length=25, blank=True)
+    Fch_ingreso_labores = models.DateField()
     usuario = models.CharField('Usuario',max_length=20, unique=True)#help_text="Ejemplo: nombre.apellido"
     correo = models.EmailField('Email')
     telefono = models.IntegerField('Teléfono')

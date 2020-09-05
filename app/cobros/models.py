@@ -17,8 +17,8 @@ class Departamentos(models.Model):
     def __str__(self):
         return self.nombre
     
-    def toJSON(self): #función para crear diccionarios
-        item = model_to_dict(self)
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
         return item
 
     class Meta:

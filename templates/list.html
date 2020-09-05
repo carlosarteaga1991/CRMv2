@@ -1,0 +1,116 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block head %}
+
+    <!-- DataTables Librerías -->
+    <link rel="stylesheet" href="{% static 'lib/DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+{% endblock  %}
+
+{% block contenido %}
+    <div class="card card-default">
+                <!-- Botón para crear nuevo -->
+                <div class = "card-footer" >
+                    <a href="{{ create_url }}" class = "btn btn-primary float-right eventoAjax" >
+                        <i class="fas fa-plus"></i> Nuevo Resgistro
+                    </a>
+                </div>
+              <div class="card-header">
+
+                
+
+                <h3 class="card-title">
+                  <i class="fas fa-search"></i>
+                  {{ titulo_lista }}
+                </h3>
+              </div>
+
+              <!-- /.tipos de alertas-->
+              <div class="card-body">
+
+                <table class="table table-hover" id="diseniotabla">
+                    <thead>
+                   
+                        {% block columnas %}
+                        
+                        {% endblock  %}
+                    
+                    </thead>
+                    <tbody>
+                    {% block filas %}
+                    
+                    {% endblock  %}
+                    </tbody>
+                </table>
+
+                <!--<div class="alert alert-danger alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-ban"></i> Alerta Error!</h5>
+                  Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my
+                  entire
+                  soul, like these sweet mornings of spring which I enjoy with my whole heart.
+                </div>
+                <div class="alert alert-info alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-info"></i> Alerta Previa!</h5>
+                  Info alert preview. This alert is dismissable.
+                </div>
+                <div class="alert alert-warning alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-exclamation-triangle"></i> Alert de Advertencia!</h5>
+                  Warning alert preview. This alert is dismissable.
+                </div>
+                <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-check"></i> Alerta Satisfactoria!</h5>
+                  Success alert preview. This alert is dismissable.
+                </div>-->
+              </div>
+              <!-- /.tipo de alertas -->
+    </div>
+{% endblock  %}
+
+{% block javascript %}
+
+    <!-- para activar DataTables -->
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('#diseniotabla').DataTable({
+                responsive: true, 
+                autoWidth: false,  //para q respete los tamaños de los campos en la tabla // para cambiar de idioma a español hacemos:
+                "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    }
+            });
+
+            $('.eventoAjax').on('click', function () {
+                //$.ajax({}).done(function (data) {}).fail(function (jqXHR, textStatus, errorThrown) {}).always(function (data) {});
+                $.ajax({
+                    url: '{% url 'crm:listar_departamento' %}',
+                    type: 'POST',
+                    data: {id_departamento: 2}, //
+                    dataType: 'json'
+                }).done(function (data) {//singresa si al hacer la petición POST no tiene errores la petición de la vista en views.py
+                    console.log(data);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus+': '+errorThrown);
+                }).always(function (data) {
+
+                });
+            });
+        });
+
+        
+    </script>
+    <!-- /.para activar DataTables -->
+
+
+
+
+{% endblock  %}

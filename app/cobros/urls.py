@@ -1,9 +1,11 @@
 from django.urls import path
-from app.cobros.views import funcion1,funcion2
+from app.cobros.views.Departamento.views import *
 
 app_name = 'crm'
 
 urlpatterns = [
-    path('home/',funcion1, name='home'),
-    path('dos/',funcion2, name='vista2'),
+    path('home/',home, name='home'),
+    path('departamento/',listview_departamento.as_view(), name='listar_departamento'),
+    path('departamento/crear/',createview_departamento.as_view(), name='crear_departamento'),
+    path('departamento/actualizar/<int:pk>/',updateview_departamento.as_view(), name='actualizar_departamento'),
 ]

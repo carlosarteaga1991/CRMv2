@@ -133,5 +133,5 @@ STATIC_URL = '/static/'
 # declaración de variable para usar archivos estáticos
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static_global"),
+    os.path.join(BASE_DIR, "static"), # _global
 ]

@@ -1,4 +1,11 @@
 {% extends "list.html" %}
+{% load static %}
+
+{% block head_list %}
+<script src="{% static 'departamento/js/funciones.js' %}"></script>
+{% endblock  %}
+
+
 
 {% block columnas %}
                     <tr>
@@ -10,17 +17,18 @@
 
 
 {% block filas %}
-
-                        {% for x in object_list %}
+                        <!-- se cometa ya que se usará AJAX para hacer la carga de datos  -->
+                        <!--{% for x in object_list %}
                             <tr>
                                 <td>{{ x.id_departamento }}</td>
                                 <td>{{ x.nombre }}</td>
                                 <td>
-                                    <a href="{% url 'crm:actualizar_departamento' x.id_departamento %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a> <!-- para hacer más pequeño el botón usar dentro de la clase  btn-xs -->
-                                    <button type="button" class="btn btn-danger" title="Borrar"><i class="fas fa-trash-alt"></i></button>
+                                    <a href="{% url 'crm:actualizar_departamento' x.id_departamento %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_departamento' x.id_departamento %}"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                    onClick="fun_borrar({{x.id_departamento}},'{{x.nombre}}')" 
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {% endfor %}-->
 
 {% endblock  %}
 

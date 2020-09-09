@@ -1,0 +1,87 @@
+{% extends "home.html" %}
+
+{% block contenido %}
+    <form method="post" action=".">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+             
+                    {{ titulo_lista }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="{{ action }}">
+
+                <div class="alert alert-warning alert-dismissible">
+
+                  <h5><i class="icon fas fa-exclamation-triangle"></i> ¿Seguro que desea borrar el registro:  <strong>{{ object.nombre }}</strong> ?</h5>
+                  ¡Esta acción no se puede revertir!
+                </div>
+                <!-- verificaciones de errores antes de guardar -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                            
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                        </ul>
+                        </div>
+                    {% endif %}
+
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" >
+                
+                <button type="submit" class = "btn btn-primary float-right btn-borrar" >
+                    <i class="fas fa-trash"></i> ¡Sí, borrar!
+                </button>
+                
+                <a href="{{ btn_cancelar }}" class = "btn btn-danger">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+
+        <script>
+        
+        $('form').on('submit', function (e) {
+        //$('.btn-borrar').on('click', function () {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            }).done(function (data) {
+                console.log(data);
+                if (!data.hasOwnProperty('error')) {
+                    /*Swal.fire(
+                            '¡Borrado!',
+                            'El registro ha sido eliminado satisfactoreamente.',
+                            'success'
+                          )*/
+                    location.href = '{{ list_url }}';
+                    return false;
+                }
+                message_error(data.error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + ': ' + errorThrown);
+            }).always(function (data) {
+
+            });
+        });
+    </script>
+
+{% endblock  %}

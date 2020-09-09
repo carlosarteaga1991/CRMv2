@@ -1,6 +1,8 @@
 {% extends "home.html" %}
 {% load static %}
 
+
+
 {% block head %}
 
     <!-- DataTables Librerías -->
@@ -12,6 +14,9 @@
     <script src="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
 
 {% endblock  %}
+
+<!--<div class="modal fade" id="eliminacion" role="dialog">
+</div>-->
 
 {% block contenido %}
     <div class="card card-default">
@@ -34,7 +39,7 @@
               <!-- /.tipos de alertas-->
               <div class="card-body">
 
-                <table class="table table-hover" id="diseniotabla">
+                <table class="table table-hover" id="data">
                     <thead>
                    
                         {% block columnas %}
@@ -76,6 +81,7 @@
     </div>
 {% endblock  %}
 
+
 {% block javascript %}
 
     <!-- para activar DataTables -->
@@ -104,7 +110,72 @@
 
                 });
             });
+
+            
+
         });
+
+        // inicio evento sweetAlert
+        /*$('.btn-borrar').on('click', function () {
+                var fila= $(this).closest("tr");  
+                var id = parseInt(fila.find('td:eq(0)').text()) 
+                var nombre = fila.find('td:eq(1)').text()
+                
+                Swal.fire({
+                  title: '¿Seguro que desea borrar el registro: '+ nombre +'?',
+                  text: "¡Esta acción no se puede revertir!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: '¡Sí, borrarlo!'
+                }).then((result) => { 
+                  if (result.value == true) {
+                    try {
+                      //var fila= $(this).closxsest("tr"); 
+
+                      // inicio ajax
+                      //var parameters = $(this).serializeArray();
+                      
+                      $.ajax({
+                      data: {
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+                      },
+                      url: '/cobros/departamento/borrar/'+id+'/',
+                      type: 'post',
+                      success: function (response) {
+                          Swal.fire(
+                            '¡Borrado!',
+                            'El registro ha sido eliminado satisfactoreamente.',
+                            'success'
+                          )
+                      },
+                      error: function (error) {
+                        Swal.fire(
+                        'Eoor!',
+                        'ha ocurrido un error.',
+                        'error'
+                        )
+                      }  
+                      
+
+                      });
+                      //fin ajax
+                     
+                      
+                    } catch( err ) {
+                      Swal.fire(
+                      'Eoor!',
+                      'ha ocurrido un error.'+ err +'',
+                      'error'
+                      )
+                    } 
+                
+                  }
+                })       
+
+        });*/
+        // final evento sweetAlert
 
         
     </script>

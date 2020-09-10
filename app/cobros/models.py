@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.forms import model_to_dict
 
@@ -13,6 +14,7 @@ class Departamentos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.nombre
@@ -34,6 +36,7 @@ class Puestos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.nombre
@@ -61,6 +64,7 @@ class Usuarios(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField('Estado',max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.primer_nombre + " " + self.segundo_nombre + " " + self.primer_apellido + " " + self.segundo_apellido
@@ -86,6 +90,7 @@ class Empresas(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.nombre_empresa 
@@ -110,6 +115,7 @@ class Clientes(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.nombre 
@@ -136,6 +142,7 @@ class Contactos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return 'El cliente %s tiene un(a) %s , y su descripción es: %s' % (self.id_cliente,self.tipo_contacto,self.descripcion)
@@ -158,6 +165,7 @@ class Productos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return 'El cliente %s , Con número de producto: %s tiene un saldo total de %s lempiras' % (self.id_cliente,self.numero_producto,self.saldo_total)
@@ -177,6 +185,7 @@ class Recordatorios(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return 'El cliente %s Recordatorio para el %s a las %s' % (self.id_cliente, self.fch_recordatorio,self.hora_recordatorio)
@@ -193,6 +202,7 @@ class Codigos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.descripción
@@ -210,6 +220,7 @@ class Motivos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return self.descripción
@@ -231,6 +242,7 @@ class Gestiones(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
     
     def __str__(self):
         return 'El cliente %s tiene una gestión el: %s' % (self.id_cliente ,self.fch_gestion)
@@ -257,6 +269,7 @@ class Promesas(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return 'El cliente %s tiene una promesa para el: %s por un valor de %s lempiras' % (self.id_cliente,self.fecha,self.valor)
@@ -279,6 +292,7 @@ class Pagos(models.Model):
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
         return 'Cliente Número: %s, fecha pago: %s, por el valor de: %s Lempiras.' % (self.id_cliente,self.fecha,self.valor)
@@ -306,9 +320,3 @@ class LogCobros(models.Model):
         verbose_name_plural = 'Bitácora App Cobros'
         ordering = ['fecha']
     
-
-
-
-
-
-

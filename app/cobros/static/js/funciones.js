@@ -1,4 +1,4 @@
-
+/*
 $(function () {
   $('#data').DataTable({
       responsive: true,
@@ -30,9 +30,15 @@ $(function () {
               }
           },
       ],
+      
       initComplete: function (settings, json) {
 
       }
+      
+      
   });
+  
 });
+*/
+
 

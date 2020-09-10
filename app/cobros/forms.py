@@ -13,7 +13,7 @@ class form_departamento(ModelForm):
         model = Departamentos
         fields = '__all__'
         # si deseo excluir ciertos campos coloco
-        exclude = ['fch_modificacion','usuario_modificacion']
+        exclude = ['fch_modificacion','usuario_modificacion','borrado']
 
         widgets = {
             'nombre': TextInput(

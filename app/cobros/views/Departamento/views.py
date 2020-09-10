@@ -39,7 +39,7 @@ class listview_departamento(ListView):
 
     #esto para filtrar todos los q estén activos
     def get_queryset(self):
-        return self.model.objects.filter(estado=1)
+        return self.model.objects.filter(borrado=0)
 
     # sobre escribiendo el método POST
     @method_decorator(csrf_exempt)
@@ -55,7 +55,7 @@ class listview_departamento(ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Departamentos.objects.filter(estado=1): # si deseamos todos colocamos .all()
+                for i in Departamentos.objects.filter(borrado=0): # si deseamos todos colocamos .all()
                     data.append(i.toJSON())
             else:
                 data['error']='Ha ocurrido un error al cargar con AJAX'
@@ -138,7 +138,7 @@ class deleteview_departamento(DeleteView):
         try:
             #self.object.delete()
             registro = self.get_object()
-            registro.estado = 2
+            registro.borrado = 1
             registro.save()
         except Exception as e:
             data['error'] = str(e)

@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from app.homepage.views import indexview
+from app.login.views import login
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',indexview.as_view(), name='principal'),
+    path('login/',login.as_view(), name='inicio_sesion'),
     path('cobros/',include('app.cobros.urls')), # incluimos el app y el llamado a sus urls
-    path('',indexview.as_view()),
 ]

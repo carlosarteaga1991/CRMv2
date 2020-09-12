@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Libs
+    'widget_tweaks',
     # Aplicaciones
     'app.cobros',
     'app.homepage',
+    'app.login',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +140,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), # _global
 ]
+
+# para el login hay q indicarle a que URL nos dirigirá si es exitoso
+LOGIN_REDIRECT_URL = '/cobros/departamento/'

@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from app.homepage.views import indexview
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cobros/',include('app.cobros.urls')), # incluimos el app y el llamado a sus urls
+    path('',indexview.as_view()),
 ]

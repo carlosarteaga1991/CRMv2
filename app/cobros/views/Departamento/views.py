@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from app.cobros.models import Departamentos,Clientes
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from app.cobros.forms import form_departamento
@@ -78,8 +78,6 @@ class listview_departamento(ListView):
         context['titulo_lista'] = 'Departamentos existentes'
         context['create_url'] = reverse_lazy('crm:crear_departamento')
         return context
-
-
     
 class createview_departamento(CreateView):
     model = Departamentos
@@ -153,3 +151,18 @@ class deleteview_departamento(DeleteView):
         context['titulo_lista'] = 'Eliminar departamento'
         return context
 
+"""
+class formview_departamento(FormView):
+    # esto verificará q el formulario sea válido
+    form_class = form_departamento
+    template_name = 'Departamento/crear.html'
+    success_url = reverse_lazy('crm:listar_departamento')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nombre'] = 'carlos arteaga'
+        context['plantilla'] = 'Crear'
+        context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
+        context['titulo_lista'] = 'Form departamento'
+        return context
+"""

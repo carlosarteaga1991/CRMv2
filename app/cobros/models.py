@@ -11,7 +11,7 @@ class Departamentos(models.Model):
     nombre = models.CharField('Nombre',max_length=100, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     #imagen = models.ImageField(upload_to='departamentos/%Y/%m/%d',null=True,blank=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -33,7 +33,7 @@ class Puestos(models.Model):
     id_departamento = models.ForeignKey(Departamentos, on_delete=models.PROTECT) #protege en caso de querer borrar
     nombre = models.CharField(max_length=100)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -41,6 +41,10 @@ class Puestos(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
 
     class Meta:
         verbose_name_plural = "Puestos" #para que no le agrega una ese en el admin panel de django
@@ -87,7 +91,7 @@ class Empresas(models.Model):
     telefono = models.CharField(max_length=50, blank=True)
     nombre_contacto = models.CharField(max_length=80,blank=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -95,6 +99,10 @@ class Empresas(models.Model):
 
     def __str__(self):
         return self.nombre_empresa 
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Empresas'
@@ -112,7 +120,7 @@ class Clientes(models.Model):
     identidad = models.CharField(max_length=30,blank=True)
     fch_nacimiento = models.CharField(max_length=30,blank=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -120,6 +128,10 @@ class Clientes(models.Model):
 
     def __str__(self):
         return self.nombre 
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Clientes'
@@ -139,7 +151,7 @@ class Contactos(models.Model):
     descripcion = models.TextField()
     comentario = models.CharField(max_length=200)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -147,6 +159,10 @@ class Contactos(models.Model):
 
     def __str__(self):
         return 'El cliente %s tiene un(a) %s , y su descripción es: %s' % (self.id_cliente,self.tipo_contacto,self.descripcion)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Contactos Cliente'
@@ -162,7 +178,7 @@ class Productos(models.Model):
     capital = models.IntegerField()
     intereses = models.IntegerField()
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -170,6 +186,10 @@ class Productos(models.Model):
 
     def __str__(self):
         return 'El cliente %s , Con número de producto: %s tiene un saldo total de %s lempiras' % (self.id_cliente,self.numero_producto,self.saldo_total)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Productos Cliente'
@@ -182,7 +202,7 @@ class Recordatorios(models.Model):
     hora_recordatorio = models.TimeField()
     descripción = models.TextField()
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -190,6 +210,10 @@ class Recordatorios(models.Model):
 
     def __str__(self):
         return 'El cliente %s Recordatorio para el %s a las %s' % (self.id_cliente, self.fch_recordatorio,self.hora_recordatorio)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Recordatorios Cliente'
@@ -199,7 +223,7 @@ class Codigos(models.Model):
     id_codigo = models.AutoField(primary_key=True)
     descripción = models.CharField(max_length=100)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -207,6 +231,10 @@ class Codigos(models.Model):
 
     def __str__(self):
         return self.descripción
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Códigos'
@@ -217,7 +245,7 @@ class Motivos(models.Model):
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
     descripción = models.CharField(max_length=100)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -225,6 +253,10 @@ class Motivos(models.Model):
 
     def __str__(self):
         return self.descripción
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Motivos'
@@ -239,7 +271,7 @@ class Gestiones(models.Model):
     fch_gestion = models.DateTimeField(auto_now_add=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField()
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -247,6 +279,10 @@ class Gestiones(models.Model):
     
     def __str__(self):
         return 'El cliente %s tiene una gestión el: %s' % (self.id_cliente ,self.fch_gestion)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Gestiones'
@@ -266,7 +302,7 @@ class Promesas(models.Model):
      ('3','Incumplida')])
     fch_creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField()
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -274,6 +310,10 @@ class Promesas(models.Model):
 
     def __str__(self):
         return 'El cliente %s tiene una promesa para el: %s por un valor de %s lempiras' % (self.id_cliente,self.fecha,self.valor)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
           
     class Meta:
         verbose_name_plural = 'Promesas'
@@ -289,7 +329,7 @@ class Pagos(models.Model):
     descripcion = models.TextField()
     fch_creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField()
-    usuario_creacion = models.IntegerField()
+    usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -297,6 +337,10 @@ class Pagos(models.Model):
 
     def __str__(self):
         return 'Cliente Número: %s, fecha pago: %s, por el valor de: %s Lempiras.' % (self.id_cliente,self.fecha,self.valor)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Pagos'
@@ -316,6 +360,10 @@ class LogCobros(models.Model):
 
     def __str__(self):
         return 'Cliente Número: %s, tabla afectada: %s' %( self.id_cliente,self.nombre_tabla)
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
     
     class Meta:
         verbose_name_plural = 'Bitácora App Cobros'

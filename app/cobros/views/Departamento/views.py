@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from app.cobros.forms import form_departamento
 from django.urls import reverse_lazy
 
+from datetime import datetime
+
 # Create your views here.
 
 
@@ -18,6 +20,7 @@ def home(request):
         'objeto_departamento': Departamentos.objects.all()
     }
     return render(request, 'home.html', diccionario)
+
 
 
 """
@@ -38,6 +41,7 @@ class listview_departamento(ListView):
     model = Departamentos
     template_name = 'Departamento/listar.html'
 
+
     #esto para filtrar todos los q estén activos
     def get_queryset(self):
         return self.model.objects.filter(borrado=0)
@@ -55,6 +59,7 @@ class listview_departamento(ListView):
             # #1: se comenta para hacer la cargada en la taba usandoi AJAX
             # #1 data = Departamentos.objects.get(pk=request.POST['id_departamento']).toJSON() #sino existe error llamará al método tiJSON definido en models.py en departamentos
             action = request.POST['action']
+            
             if action == 'searchdata':
                 data = []
                 for i in Departamentos.objects.filter(borrado=0): # si deseamos todos colocamos .all()
@@ -80,6 +85,7 @@ class listview_departamento(ListView):
         context['titulo_lista'] = 'Departamentos existentes'
         context['create_url'] = reverse_lazy('crm:crear_departamento')
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['tipo'] = ''
         return context
     
 class createview_departamento(CreateView):
@@ -88,19 +94,21 @@ class createview_departamento(CreateView):
     template_name = 'Departamento/crear.html'
     success_url = reverse_lazy('crm:listar_departamento')
 
-    # se comenta ya que en el crear.html la variable {{ form.errors }} contiene lo mismo
-    """
-    def post(self, request, *args, **kwargs):
-        form = form_departamento(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(self.success_url)
-        else:
-            self.object = None
-            context = self.get_context_data(**kwargs)
-            context['form'] = form
-            return render(request, self.template_name, context)   
-    """ 
+    def post(self, request,*args,**kwargs):
+        data = {}
+        form = self.form_class(request.POST)
+        try:
+            if form.is_valid():
+                nuevo = Departamentos(
+                    nombre = form.cleaned_data.get('nombre'),
+                    usuario_creacion = request.user.id,
+                    estado = form.cleaned_data.get('estado')
+                )
+                nuevo.save()
+                return redirect('crm:listar_departamento')
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,6 +116,7 @@ class createview_departamento(CreateView):
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['titulo_lista'] = 'Ingrese datos del nuevo departamentos'
+        context['tipo'] = 'nuevo'
         return context
 
 class updateview_departamento(UpdateView):
@@ -116,12 +125,14 @@ class updateview_departamento(UpdateView):
     template_name = 'Departamento/crear.html'
     success_url = reverse_lazy('crm:listar_departamento')
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['titulo_lista'] = 'Editar departamento'
+        context['tipo'] = 'editar'
         return context
 
 class deleteview_departamento(DeleteView):

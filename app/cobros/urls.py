@@ -1,5 +1,6 @@
 from django.urls import path
 from app.cobros.views.Departamento.views import *
+from app.cobros.views.Puestos.views import *
 from app.cobros.views.dashboard.views import *
 
 
@@ -15,4 +16,10 @@ urlpatterns = [
     
     # URL para dashboard
     path('dashboard/',dashboard_vista.as_view(), name='dashboard'),
+
+    # URL para puestos
+    path('puestos/',listar_puestos.as_view(), name='listar_puestos'),
+    path('puestos/crear/',crear_puesto.as_view(), name='crear_puesto'),
+    path('puestos/borrar/<int:pk>/',borrar_puesto.as_view(), name='borrar_puesto'),
+    path('puestos/actualizar/<int:pk>/',actualizar_puesto.as_view(), name='actualizar_puesto'),
 ]

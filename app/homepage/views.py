@@ -9,5 +9,5 @@ class indexview(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['plantilla'] = 'Login'
-        context['login_url']= reverse_lazy('inicio_sesion')
+        context['login_url']= reverse_lazy('login:iniciar')
         return context

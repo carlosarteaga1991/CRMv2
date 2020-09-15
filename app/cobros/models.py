@@ -10,6 +10,7 @@ class Departamentos(models.Model):
     id_departamento = models.AutoField(primary_key=True)
     nombre = models.CharField('Nombre',max_length=100, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
+    #imagen = models.ImageField(upload_to='departamentos/%Y/%m/%d',null=True,blank=True)
     usuario_creacion = models.IntegerField()
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)

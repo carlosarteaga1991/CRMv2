@@ -142,4 +142,15 @@ STATICFILES_DIRS = [
 ]
 
 # para el login hay q indicarle a que URL nos dirigirá si es exitoso
-LOGIN_REDIRECT_URL = '/cobros/departamento/'
+LOGIN_REDIRECT_URL = '/cobros/dashboard/'
+
+# para q direcciones en caso de darle salir sesión
+LOGOUT_REDIRECT_URL = '/login/'
+
+# en caso de querer ingresar a una URL ya existente y no está loggeado un usuario que me direccione a:
+LOGIN_URL = '/login/'
+
+# Para alojar nuestros archivos media usamos:
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#creamos la URL absoluta para acceder
+MEDIA_URL = '/media/'

@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
+
 {% block contenido %}
-    <form method="POST" action=".">
+    <form method="POST" action="."> <!-- para trabajar con archivos media usamos: enctype="multipart/form-data" -->
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">
@@ -54,6 +55,8 @@
             <!--/. Botón para guardar nuevo -->
         </div>
     </form>
+
+
 {% endblock  %}
 
 

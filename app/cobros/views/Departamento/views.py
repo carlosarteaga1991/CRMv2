@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from app.cobros.models import Departamentos,Clientes
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from app.cobros.forms import form_departamento
 from django.urls import reverse_lazy
@@ -43,6 +44,7 @@ class listview_departamento(ListView):
 
     # sobre escribiendo el método POST
     @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -77,6 +79,7 @@ class listview_departamento(ListView):
         context['titulo'] = 'Departamentos existentes'
         context['titulo_lista'] = 'Departamentos existentes'
         context['create_url'] = reverse_lazy('crm:crear_departamento')
+        context['url_salir'] = reverse_lazy('login:iniciar')
         return context
     
 class createview_departamento(CreateView):
@@ -148,6 +151,7 @@ class deleteview_departamento(DeleteView):
         context['plantilla'] = 'Eliminar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['list_url'] = reverse_lazy('crm:listar_departamento')
+        context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar departamento'
         return context
 

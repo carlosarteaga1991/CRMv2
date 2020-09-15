@@ -18,10 +18,15 @@ from django.urls import path,include
 from app.homepage.views import indexview
 from app.login.views import login
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',indexview.as_view(), name='principal'),
-    path('login/',login.as_view(), name='inicio_sesion'),
+    path('login/',include('app.login.urls'), name='inicio_sesion'),
     path('cobros/',include('app.cobros.urls')), # incluimos el app y el llamado a sus urls
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

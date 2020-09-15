@@ -32,6 +32,8 @@
         <div class="card-body login-card-body">
             <p class="login-box-msg">Ingrese sus credenciales</p>
             <form action="." method="post">
+            <!-- esto para recibir la variable NEXT en caso q no esté loggeado y quiera ingresar a una URL, al iniciar sesión le dirigirá a esa página q deseaba ingresar -->
+                <input type="hidden" name="next" value="{{ next }}"> 
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}

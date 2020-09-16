@@ -86,10 +86,10 @@ class Usuarios(models.Model):
 
 class Empresas(models.Model):
     id_empresa = models.AutoField(primary_key=True)
-    nombre_empresa = models.CharField(max_length=120)
-    descripcion = models.CharField(max_length=450,blank=True)
-    telefono = models.CharField(max_length=50, blank=True)
-    nombre_contacto = models.CharField(max_length=80,blank=True)
+    nombre_empresa = models.CharField("Nombre de la empresa",max_length=120)
+    descripcion = models.CharField("Descripción",max_length=450,blank=True)
+    telefono = models.CharField("Teléfono",max_length=50, blank=True)
+    nombre_contacto = models.CharField("Nombre del contacto",max_length=80,blank=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -110,15 +110,15 @@ class Empresas(models.Model):
 
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
-    id_empresa = models.ForeignKey(Empresas,on_delete=models.PROTECT)
-    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT)
-    nombre = models.CharField(max_length=150)
+    id_empresa = models.ForeignKey(Empresas,on_delete=models.PROTECT,verbose_name="Empresa")
+    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT,verbose_name="Usuario")
+    nombre = models.CharField("Nombre del cliente",max_length=150)
     tipo_id = models.CharField('Tipo de Identificación',max_length=1,default='1',choices= 
     [('1','Cédula de Identidad'),
      ('2','RTN'), 
      ('3','Otro')])
     identidad = models.CharField(max_length=30,blank=True)
-    fch_nacimiento = models.CharField(max_length=30,blank=True)
+    fch_nacimiento = models.CharField("fecha de nacimiento",max_length=30,blank=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)

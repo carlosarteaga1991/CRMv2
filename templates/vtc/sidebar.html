@@ -19,8 +19,8 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header">Mantenimientos</li>
-                <li class="nav-item">
+                <!--<li class="nav-header">Mantenimientos</li>-->
+                <!--<li class="nav-item">
                     <a href="{% url 'crm:listar_departamento' %}" class="nav-link">
                         <i class="nav-icon fas fa-truck-loading"></i>
                         <p>
@@ -35,24 +35,109 @@
                             Puestos
                         </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Clientes
-                        </p>
+                </li>-->
+
+                <!-- Primer Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-truck-loading"></i>
+                    <p>
+                        Administración
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="{% url 'crm:listar_departamento' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Departamentos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'crm:listar_puestos' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Puestos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'crm:listar_empresa' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Empresas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'crm:listar_cliente' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Clientes</p>
+                        </a>
+                    </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="far fa-id-card"></i>
-                        <p>
-                            Contactos de Clientes
-                        </p>
+                <!-- /. Primer Segmento -->
+
+                <!-- Segundo Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Monitoreo
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>uno</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>dos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>tres</p>
+                        </a>
+                    </li>
+                    </ul>
                 </li>
+                <!-- /. Segundo Segmento -->
+                
+                <!-- tercer Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-id-card"></i>
+                    <p>
+                         Reporteria
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>uno</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>dos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>tres</p>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                <!-- /. tercer Segmento -->
             </ul>
         </nav>
+        
     </div>
 </aside>

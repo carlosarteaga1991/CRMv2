@@ -4,6 +4,7 @@ from app.cobros.views.Puestos.views import *
 from app.cobros.views.empresas.views import *
 from app.cobros.views.clientes.views import *
 from app.cobros.views.clientes.contactos.views import *
+from app.cobros.views.clientes.productos.views import *
 from app.cobros.views.dashboard.views import *
 
 
@@ -41,6 +42,12 @@ urlpatterns = [
     # URL para clientes --> CONTACTOS
     path('cliente/contactos/<int:pk>/<name>/',listar_cliente_contactos.as_view(), name='listar_cliente_contactos'),
     path('cliente/contactos/crear/<int:pk>/<name>/',crear_cliente_contactos.as_view(), name='crear_cliente_contactos'),
-    #path('cliente/borrar/<int:pk>/',borrar_cliente.as_view(), name='borrar_cliente'),
-    #path('cliente/actualizar/<int:pk>/',actualizar_cliente.as_view(), name='actualizar_cliente'),
+    path('cliente/contactos/borrar/<int:pk>/<name>/<int:ant>/',borrar_cliente_contactos.as_view(), name='borrar_cliente_contactos'),
+    path('cliente/contactos/actualizar/<int:pk>/<name>/<int:ant>/',actualizar_cliente_contactos.as_view(), name='actualizar_cliente_contactos'),
+
+    # URL para clientes --> PRODUCTOS
+    path('cliente/productos/<int:pk>/<name>/',listar_cliente_productos.as_view(), name='listar_cliente_productos'),
+    path('cliente/productos/crear/<int:pk>/<name>/',crear_cliente_productos.as_view(), name='crear_cliente_productos'),
+    path('cliente/productos/borrar/<int:pk>/<name>/<int:ant>/',borrar_cliente_productos.as_view(), name='borrar_cliente_productos'),
+    path('cliente/productos/actualizar/<int:pk>/<name>/<int:ant>/',actualizar_cliente_productos.as_view(), name='actualizar_cliente_productos'),
 ]

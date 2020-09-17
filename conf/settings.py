@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     # Libs
     'widget_tweaks',
     # Aplicaciones
@@ -125,7 +126,7 @@ TIME_ZONE = 'America/Tegucigalpa'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False # se colocó en False para que use bien la separación ejem. 1,524,000.25
 
 USE_TZ = False
 

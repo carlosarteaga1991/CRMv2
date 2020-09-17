@@ -34,7 +34,7 @@
                                 <td>Carlos Arteaga -enduro-</td>
                                 <td style =" text-align:center;"> 
                                     <a href="/cobros/cliente/contactos/{{x.id_cliente}}/{{x.nombre}}/" class="btn btn-primary" title="Editar"><strong>Contactos</strong></a>
-                                    <a href=""  class="btn btn-primary btn-borrar" title="Borrar" ><strong>Productos</strong></a>
+                                    <a href="/cobros/cliente/productos/{{x.id_cliente}}/{{x.nombre}}/"  class="btn btn-primary btn-borrar" title="Borrar" ><strong>Productos</strong></a>
                                 </td>
                                 <td  style =" text-align:center;"> 
                                     <a href="{% url 'crm:actualizar_cliente' x.id_cliente %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>

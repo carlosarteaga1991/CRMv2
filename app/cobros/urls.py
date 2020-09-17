@@ -5,6 +5,8 @@ from app.cobros.views.empresas.views import *
 from app.cobros.views.clientes.views import *
 from app.cobros.views.clientes.contactos.views import *
 from app.cobros.views.clientes.productos.views import *
+from app.cobros.views.codigos.views import *
+from app.cobros.views.motivos.views import *
 from app.cobros.views.dashboard.views import *
 
 
@@ -50,4 +52,16 @@ urlpatterns = [
     path('cliente/productos/crear/<int:pk>/<name>/',crear_cliente_productos.as_view(), name='crear_cliente_productos'),
     path('cliente/productos/borrar/<int:pk>/<name>/<int:ant>/',borrar_cliente_productos.as_view(), name='borrar_cliente_productos'),
     path('cliente/productos/actualizar/<int:pk>/<name>/<int:ant>/',actualizar_cliente_productos.as_view(), name='actualizar_cliente_productos'),
+
+    # URL para códigos
+    path('codigos/',listar_codigos.as_view(), name='listar_codigos'),
+    path('codigos/crear/',crear_codigos.as_view(), name='crear_codigo'),
+    path('codigos/borrar/<int:pk>/',borrar_codigos.as_view(), name='borrar_codigo'),
+    path('codigos/actualizar/<int:pk>/',actualizar_codigos.as_view(), name='actualizar_codigo'),
+
+    # URL para motivos
+    path('motivos/',listar_motivos.as_view(), name='listar_motivos'),
+    path('motivos/crear/',crear_motivos.as_view(), name='crear_motivo'),
+    path('motivos/borrar/<int:pk>/',borrar_motivos.as_view(), name='borrar_motivo'),
+    path('motivos/actualizar/<int:pk>/',actualizar_motivos.as_view(), name='actualizar_motivo'),
 ]

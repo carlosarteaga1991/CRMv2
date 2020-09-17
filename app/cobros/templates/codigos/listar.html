@@ -1,0 +1,65 @@
+
+{% extends "list.html" %}
+{% load static %}
+
+
+{% block columnas %}
+                    <tr>
+                        <th scope="col" style="width: 5%; text-align:center">Id</th>
+                        <th scope="col" style="width: 30%; text-align:center">Nombre del Código</th>
+                        <th scope="col" style="width: 15%; text-align:center">Estado</th>
+                        <th scope="col" style="width: 15%; text-align:center">Opciones</th>
+                    </tr>
+{% endblock  %}
+
+
+{% block filas %}
+                       
+                        {% for x in object_list %}
+                            <tr>
+                                <td>{{ x.id_codigo }}</td>
+                                <td>{{ x.descripcion }}</td>
+                                <td style="text-align:center">
+                                {% if x.estado == '1' %}
+                                    Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}</td>
+                                <td style="text-align:center"> 
+                                    <a href="{% url 'crm:actualizar_codigo' x.id_codigo %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_codigo' x.id_codigo %}"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+ $(function () {
+  $('#data').DataTable({
+      responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

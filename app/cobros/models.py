@@ -221,7 +221,7 @@ class Recordatorios(models.Model):
 
 class Codigos(models.Model):
     id_codigo = models.AutoField(primary_key=True)
-    descripción = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -230,7 +230,7 @@ class Codigos(models.Model):
     borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
-        return self.descripción
+        return self.descripcion
     
     def toJSON(self): #función para crear diccionarios que se envían en la vista
         item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
@@ -243,7 +243,7 @@ class Codigos(models.Model):
 class Motivos(models.Model):
     id_motivo = models.AutoField(primary_key=True)
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
-    descripción = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -252,7 +252,7 @@ class Motivos(models.Model):
     borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
 
     def __str__(self):
-        return self.descripción
+        return self.descripcion
     
     def toJSON(self): #función para crear diccionarios que se envían en la vista
         item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']

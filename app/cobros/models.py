@@ -269,7 +269,7 @@ class Gestiones(models.Model):
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
     id_motivo = models.ForeignKey(Motivos,on_delete=models.PROTECT)
     fch_gestion = models.DateTimeField(auto_now_add=True)
-    fch_creacion = models.DateTimeField(auto_now_add=True)
+    #fch_creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField()
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -286,7 +286,7 @@ class Gestiones(models.Model):
     
     class Meta:
         verbose_name_plural = 'Gestiones'
-        ordering = ['fch_gestion']
+        ordering = ['-fch_gestion']
 
 class Promesas(models.Model):
     id_promesa = models.AutoField(primary_key=True)

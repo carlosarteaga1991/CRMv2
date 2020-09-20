@@ -7,6 +7,7 @@ from app.cobros.views.clientes.contactos.views import *
 from app.cobros.views.clientes.productos.views import *
 from app.cobros.views.codigos.views import *
 from app.cobros.views.motivos.views import *
+from app.cobros.views.gestiones.views import *
 from app.cobros.views.dashboard.views import *
 
 
@@ -64,4 +65,10 @@ urlpatterns = [
     path('motivos/crear/',crear_motivos.as_view(), name='crear_motivo'),
     path('motivos/borrar/<int:pk>/',borrar_motivos.as_view(), name='borrar_motivo'),
     path('motivos/actualizar/<int:pk>/',actualizar_motivos.as_view(), name='actualizar_motivo'),
+
+    # URL para gestiones --> CLIENTES, CONTACTOS, GESTIONES, PRODUCTOS
+    path('gestion/<int:pk>/',listar_gestiones.as_view(), name='listar_gestiones'),
+    #path('motivos/crear/',crear_motivos.as_view(), name='crear_motivo'),
+    #path('motivos/borrar/<int:pk>/',borrar_motivos.as_view(), name='borrar_motivo'),
+    #path('motivos/actualizar/<int:pk>/',actualizar_motivos.as_view(), name='actualizar_motivo'),
 ]

@@ -1,0 +1,244 @@
+
+{% extends "list.html" %}
+{% load humanize %}
+{% load static %}
+
+
+<!--Archivo static de javascript en app cobros  -->
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% block contenido %}
+    <div style="position: relative;">
+        <!-- DIV para cliente class="div_cliente"-->
+        <div class="card card-primary div_cliente" >
+            <div class="card-header" style="background: #6CA3FC; ">
+                            <h3 class="card-title"><i class="fas fa-user"></i> Datos del Cliente</h3>
+                            <h3 class="card-title float-right" >Usuario seguimiento: <strong>{{ context.usuario_duenio }}</strong></h3>
+            </div>
+            <div  class="card-body" >
+                {% for clte in cliente %} 
+                    <!-- style="display: inline-block;" -->
+                    <h6 style="position: absolute;"><strong>Nombre:</strong> {{ clte.nombre }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                    <h6 style="position: absolute; left: 40%;"><strong>Empresa:</strong> {{ clte.id_empresa }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                    <h6 style="position: absolute; left: 40%; top:55%;"><strong>identidad:</strong> {{ clte.identidad }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+            
+                {% endfor %}
+                <br>
+                <h6 style="position: absolute;  top:55%;"><strong>Días Mora:</strong> {{ context.dias_mora }} </h6>
+                <h6 style="position: absolute; left: 80%; top:35%;"><strong>Saldo Total:</strong> {{ context.saldo_total |intcomma }} </h6>
+                <h6 style="position: absolute; left: 80%; top:55%;"><a href="#" >Ver todos los productos ({{ context.estado }})</a></h6> 
+                <br><br> <br>
+            </div>
+        </div>
+        <!-- /. DIV para cliente class="div_cliente"-->
+
+
+
+            </div>
+            <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
+                <div class="card card-primary div_ingresar_gestion" >
+                    <!--<div class="card-header" style="background: #6CA3FC;">
+                            <h3 class="card-title"><i class="fas fa-plus"></i> Ingresar nueva Gestión</h3>
+                    </div>-->
+                    
+                        <form method="POST" action="."> <!-- para trabajar con archivos media usamos: enctype="multipart/form-data" -->
+                               
+                                    {% csrf_token %}
+
+
+                                        <div class="form-group" style="position: relative; width: 30%; height:121px;">
+                                            <!--<textarea name="" id="" cols="100" rows="5" class="form-control" required placeholder="Ingrese la nueva gestión"></textarea>
+                                            <input type="text"  class="form-control" required placeholder="Ingrese la nueva gestión" style="WIDTH: 228px; HEIGHT: 98px">-->
+                                            {{ context.formGuardar.descripcion }}
+                                            <div style="position:absolute; top:-3%; left: 201%;  width:90%; height: 100%;">
+                                                <!--<label style="font-size: 12px;">Código: </label>{{ context.form.codigoanidado }}
+                                                <label style="font-size: 12px;">Motivo: </label>{{ context.form.motivoanidado }}-->
+                                                <div class="col-md-6">
+                                                    <div class="col-md-6">Código</div>
+                                                    <div class="col-md-6">
+                                                        <select name="codigo" id="id_codigo" class="form-control from-control-sm">
+                                                        <option value="0">-----------</option>
+                                                        {% for xx in codigos %}
+                                                        <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
+                                                        {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="col-md-6">Motivo</div>
+                                                    <div class="col-md-6">
+                                                        <select name="motivo" id="id_motivo" class="form-control from-control-sm">
+                                                        <option value="0">-----------</option>
+                                                        {% for yy in motivos %}
+                                                        <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
+                                                        {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <!--<label for="">Fecha:</label>
+                                            <label for="">Valor</label>
+                                            <label for="">Lugar de visita:</label>-->
+                                            
+
+                                            <!--{% for campo in context.formGuardar.visible_fields %}
+                                                <div class="form-group">
+                                                    <label for="email">{{ campo.label }}</label>
+                                                    {{ campo }}
+                                                </div>
+                                            {% endfor %}-->
+                                        </div>
+                                        <button type="submit" class = "btn btn-success float-right eventoAjax" style="position: absolute; top:60%; left: 88%;">
+                                        <i class="fas fa-save"></i> Guardar Gestión
+                                    </button>
+                                    <a href="{{ context.btn_cancelar }}" class = "btn btn-danger" style="position: absolute; top:15%; left: 88%;">
+                                        <i class="fas fa-times"></i></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </a> 
+
+                            
+                        </form>
+                    
+                </div>
+            <!-- /. DIV para ingresar_gestion class="div_ingresar_gestion"-->
+    
+
+
+
+        <!-- DIV para historico_gestiones class="div_historico_gestiones"-->
+
+            <div class="card card-primary div_historico_gestiones" >
+                <div class="card-header" style="background: #6CA3FC;">
+                                <h3 class="card-title"><i class="fas fa-search"></i> Histórico de Gestiones</h3>
+                </div>
+                <div  class="card-body">
+                    <div class="card-body" style="overflow-x:auto; ">
+ 
+                            
+                            <table class="table table-hover "  id="data_gestiones" >
+                                <thead>
+                            
+                                    <tr>
+                                        <!--<th scope="col" style="width: 5%; text-align:center">Id</th>-->
+                                        <th scope="col" style="width: 15%; text-align:center">Fecha de Gestión</th>
+                                        <th scope="col" style="width: 25%; text-align:center">Descripción</th>
+                                        <th scope="col" style="width: 5%; text-align:center">usuario</th>
+                                        <th scope="col" style="width: 10%; text-align:center">Código</th>
+                                        <th scope="col" style="width: 10%; text-align:center">Motivo</th>
+                                    </tr>
+                                
+                                </thead>
+                                <tbody>
+
+                                        {% for x in gestiones %}
+                                            <tr>
+                                                <td style ="text-align:left;">{{ x.fch_gestion }}</td>
+                                                <td style ="text-align:left;">{{ x.descripcion }}</td>
+                                                <td style ="text-align:left;">{{ x.usuario_creacion }}</td>
+                                                <td style ="text-align:left;">{{ x.id_codigo }}</td>
+                                                <td style ="text-align:left;">{{ x.id_motivo }}</td>
+                                            </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            
+                        </div>
+                </div>
+            </div>
+
+        <!-- /. DIV para historico_gestiones class="div_historico_gestiones"-->
+    </div> 
+{% endblock  %}
+
+
+{% block javascript %}
+
+<script type="application/javascript">
+
+$("#id_motivo").chained("#id_codigo");
+
+ $(function () {
+  $('#data_gestiones').DataTable({
+      responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+
+
+
+
+/*
+
+
+$(function () {
+            //  INICIO SELECT ANIDADO CON select2
+            $('.select2').select2({
+                theme: "bootstrap4",
+                language: 'es'
+            });
+            // FIN SELECT ANIDADO CON select2
+
+
+            // para select anidados con AJAX
+            $('select[name="codigoanidado"]').on('change', function () {
+                var id = $(this).val();
+                var select_motivos = $('select[name="motivoanidado"]');
+                var options = '<option value="">---------</option>';
+                if(id === ''){
+                    select_motivos.html(options);
+                    return false;
+                }
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        'action': 'search_codigo_id',
+                        'id': id
+                    },
+                    dataType: 'json',
+                }).done(function (data) {
+                    console.log(data);
+                    if (!data.hasOwnProperty('error')) {
+                        //select_motivos.select2({
+                            //theme: "bootstrap4",
+                            //language: 'es',
+                            //data: data
+                        //});
+                        $.each(data, function (key, value) {
+                            options+='<option value="'+value.id+'">'+value.descripcion+'</option>';
+                        });
+                        return false;
+                    }
+                    message_error(data.error);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+                    select_motivos.html(options);
+                });
+            });
+            // FIN para select anidados con AJAX
+        });
+
+*/
+
+</script>
+   
+
+
+
+
+{% endblock  %}

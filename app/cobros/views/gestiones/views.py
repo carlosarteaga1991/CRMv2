@@ -67,7 +67,7 @@ class listar_gestiones(TemplateView):
         cliente = Clientes.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         productos = Productos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         contactos = Contactos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
-        gestiones = Gestiones.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        gestiones = Gestiones.objects.filter(borrado=0,id_cliente=self.kwargs['pk']).order_by('-fch_gestion')
         codigos = Codigos.objects.filter(borrado=0,estado=1)
         motivos = Motivos.objects.filter(borrado=0,estado=1)
         mora = 0

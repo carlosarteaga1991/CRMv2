@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'app.cobros',
     'app.homepage',
     'app.login',
+    'app.usuario',
+    
+
 ]
 
 MIDDLEWARE = [
@@ -88,7 +91,7 @@ DATABASES = {
         #'NAME': BASE_DIR / 'db.sqlite3',
 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cobros',
+        'NAME': 'cobros12',
         'USER': 'root',
         'PASSWORD': 'Art3aga_1',
         'HOST': 'localhost',
@@ -116,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -155,3 +159,5 @@ LOGIN_URL = '/login/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #creamos la URL absoluta para acceder
 MEDIA_URL = '/media/'
+
+

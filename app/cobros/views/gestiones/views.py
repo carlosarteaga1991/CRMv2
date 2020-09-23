@@ -10,6 +10,7 @@ from django.shortcuts import render,redirect
 
 from datetime import datetime
 
+
 class listar_gestiones(TemplateView):
     template_name = 'gestiones/listar.html'
     form_class = formualario_guardar_gestion 
@@ -49,8 +50,8 @@ class listar_gestiones(TemplateView):
                 id_codigo_id = int(request.POST['codigo']),
                 id_motivo_id = int(request.POST['motivo']),
                 id_cliente_id = self.kwargs['pk'],
-                id_usuario_id = request.user.id,
-                usuario_creacion = request.user.id,
+                #id_usuario_id = request.user.id,
+                usuario_creacion_id = request.user.id,
                 estado = '1'
             )
             nuevo.save()

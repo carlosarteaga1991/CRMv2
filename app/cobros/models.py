@@ -1,16 +1,13 @@
 
 from django.db import models
 from django.forms import model_to_dict
-
-# Creación de modelos para la versión de prueba número dos
-# fecha: 10 de agosto del 2020
+from app.usuario.models import Usuario
 
 
 class Departamentos(models.Model):
     id_departamento = models.AutoField(primary_key=True)
     nombre = models.CharField('Nombre',max_length=100, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    #imagen = models.ImageField(upload_to='departamentos/%Y/%m/%d',null=True,blank=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
@@ -50,39 +47,6 @@ class Puestos(models.Model):
         verbose_name_plural = "Puestos" #para que no le agrega una ese en el admin panel de django
         ordering = ['id_puesto']
 
-class Usuarios(models.Model):
-    id_usuario = models.AutoField(primary_key=True)
-    primer_nombre = models.CharField('Primer Nombre',max_length=35)
-    segundo_nombre = models.CharField('Segundo Nombre',max_length=35,blank=True) # verificar si no es obligatorio sino agregar, null=True
-    primer_apellido = models.CharField('Primer Apellido',max_length=35)
-    segundo_apellido = models.CharField('Segundo Apellido',max_length=35, blank=True)
-    Fch_ingreso_labores = models.DateField()
-    usuario = models.CharField('Usuario',max_length=20, unique=True)#help_text="Ejemplo: nombre.apellido"
-    correo = models.EmailField('Email')
-    telefono = models.IntegerField('Teléfono')
-    id_departamento = models.ForeignKey(Departamentos, on_delete=models.PROTECT)#,'Departamento Asigando'
-    id_puesto = models.ForeignKey(Puestos, on_delete=models.PROTECT)#,'Puesto a Desempeñar'
-    fch_ultimo_acceso = models.CharField(max_length=35,blank=True)
-    ip_ultimo_acceso = models.CharField(max_length=50, blank=True)
-    fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField(blank=True, null=True)
-    fch_modificacion = models.CharField(max_length=35, blank=True)
-    usuario_modificacion = models.IntegerField(blank=True,null=True)
-    estado = models.CharField('Estado',max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
-    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
-
-    def __str__(self):
-        return self.primer_nombre + " " + self.segundo_nombre + " " + self.primer_apellido + " " + self.segundo_apellido
-
-    def toJSON(self):
-        item = model_to_dict(self)
-        return item
-
-    
-    class Meta:
-        verbose_name_plural = "Usuarios"
-        ordering = ['primer_nombre']
-
 
 class Empresas(models.Model):
     id_empresa = models.AutoField(primary_key=True)
@@ -111,7 +75,7 @@ class Empresas(models.Model):
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     id_empresa = models.ForeignKey(Empresas,on_delete=models.PROTECT,verbose_name="Empresa")
-    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT,verbose_name="Usuario")
+    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")#models.IntegerField()
     nombre = models.CharField("Nombre del cliente",max_length=150)
     tipo_id = models.CharField('Tipo de Identificación',max_length=1,default='1',choices= 
     [('1','Cédula de Identidad'),
@@ -265,13 +229,11 @@ class Motivos(models.Model):
 class Gestiones(models.Model):
     id_gestion = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes, on_delete=models.PROTECT)
-    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT)
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
     id_motivo = models.ForeignKey(Motivos,on_delete=models.PROTECT)
     fch_gestion = models.DateTimeField(auto_now_add=True)
-    #fch_creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField()
-    usuario_creacion = models.IntegerField(blank=True,null=True)
+    usuario_creacion = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -291,7 +253,7 @@ class Gestiones(models.Model):
 class Promesas(models.Model):
     id_promesa = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT)
+    id_usuario = models.IntegerField()#models.ForeignKey(User,on_delete=models.PROTECT)
     fecha = models.DateField()
     hora = models.TimeField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)
@@ -322,7 +284,7 @@ class Promesas(models.Model):
 class Pagos(models.Model):
     id_pago = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    id_usuario = models.ForeignKey(Usuarios,on_delete=models.PROTECT)
+    id_usuario = models.IntegerField()#models.ForeignKey(User,on_delete=models.PROTECT)
     id_promesa = models.ForeignKey(Promesas,on_delete=models.PROTECT, null=True)
     fecha = models.DateField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)

@@ -34,12 +34,9 @@
 
 
 
-            </div>
+            
             <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
                 <div class="card card-primary div_ingresar_gestion" >
-                    <!--<div class="card-header" style="background: #6CA3FC;">
-                            <h3 class="card-title"><i class="fas fa-plus"></i> Ingresar nueva Gestión</h3>
-                    </div>-->
                     
                         <form method="POST" action="."> <!-- para trabajar con archivos media usamos: enctype="multipart/form-data" -->
                                
@@ -56,7 +53,7 @@
                                                 <div class="col-md-6">
                                                     <div class="col-md-6">Código</div>
                                                     <div class="col-md-6">
-                                                        <select name="codigo" id="id_codigo" class="form-control from-control-sm" style="width:500%;">
+                                                        <select name="codigo" id="id_codigo" required class="form-control from-control-sm" style="width:500%;">
                                                         <option value="0">-----------</option>
                                                         {% for xx in codigos %}
                                                         <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
@@ -68,7 +65,7 @@
                                                 <div class="col-md-6">
                                                     <div class="col-md-6">Motivo</div>
                                                     <div class="col-md-6">
-                                                        <select name="motivo" id="id_motivo" class="form-control from-control-sm" style="width:500%;">
+                                                        <select name="motivo" id="id_motivo" required class="form-control from-control-sm" style="width:500%;">
                                                         <option value="0">-----------</option>
                                                         {% for yy in motivos %}
                                                         <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
@@ -110,51 +107,41 @@
         <!-- DIV para historico_gestiones class="div_historico_gestiones"-->
 
             <div class="card card-primary div_historico_gestiones" >
-                <!--<div style="background: #6CA3FC; ">
-                                <h5 class="" style=" text-align:center"><i class="fas fa-search btn-xs"></i> Histórico de Gestiones</h5>
-                </div>
-                <div  class="card-body">-->
-                    <!--<div class="card-body">  style="overflow-x:auto;  overflow:scroll;"-->
- 
-                   
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                            <table class="table table-hover "  id="data_gestiones" style="font-size: 12px; width: 100%;">
-                                <thead style="background: #6CA3FC; ">
+                <div class="row" style="font-size: 12px;">
+                    <div class="col-md-12" >
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                <thead style="background: #6CA3FC;">
                             
-                                    <tr>
-                                        <!--<th scope="col" style="width: 5%; text-align:center">Id</th>-->
-                                        <th scope="col" style="width: 15%; text-align:center; color: white;">Fecha</th>
-                                        <th scope="col" style="width: 35%; text-align:center; color: white;">Descripción</th>
-                                        <!--<th scope="col" style="width: 15%; text-align:center; color: white;">usuario</th>-->
-                                        <th scope="col" style="width: 15%; text-align:center; color: white;">Código</th>
-                                        <th scope="col" style="width: 15%; text-align:center; color: white;">Motivo</th>
+                                    <tr >
+                                        <th  scope="col" style=" text-align:center; color: white;">Fecha</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Descripción</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Código</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Motivo</th>
                                     </tr>
                                 
                                 </thead>
-                                <tbody>
+                                <tbody >
 
                                         {% for x in gestiones %}
-                                            <tr>
-                                                <!--<td style ="width: 15%; text-align:left;">{{ x.id_gestion }}</td>-->
-                                                <td style ="width: 15%; text-align:left;">{{ x.fch_gestion }}</td>
-                                                <td style ="width: 35%; text-align:left;">{{ x.descripcion }}</td>
-                                                <!--<td style ="width: 15%; text-align:left;">{{ x.usuario_creacion }}</td>-->
-                                                <td style ="width: 15%; text-align:left;">{{ x.id_codigo }}</td>
-                                                <td style ="width: 15%; text-align:left;">{{ x.id_motivo }}</td>
+                                            <tr >
+                                                <td style="width:15%; text-align:left;">{{ x.fch_gestion }}</td>
+                                                <td style=" height: auto; text-align:left;"> <div style="width:800px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
+                                                <td style="width:10%; text-align:center;">{{ x.usuario_creacion }}</td>
+                                                <td style="width:10%; text-align:center;">{{ x.id_codigo }}</td>
+                                                <td style="width:10%; text-align:center;">{{ x.id_motivo }}</td>
                                             </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
-                            <div>
                         <div>
-                        <div>
-                         
-                        <!--</div>-->
-                </div>
+                    <div>
+                <div>
             </div>
+        
 
         <!-- /. DIV para historico_gestiones class="div_historico_gestiones"-->
     </div> 
@@ -174,7 +161,7 @@ $("#id_motivo").chained("#id_codigo");
       "language": {
                     url: '{% static 'lib/DataTables/spanish.txt' %}'
                     },
-        columnDefs: [{
+        /*columnDefs: [{
             width: "10px",
             targets: 0
         },
@@ -189,8 +176,12 @@ $("#id_motivo").chained("#id_codigo");
         {
             width: "15px",
             targets: 3
+        },
+        {
+            width: "15px",
+            targets: 4
         }
-        ],
+        ],*/
       destroy: true,
       deferRender: true,
           

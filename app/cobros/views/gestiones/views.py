@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView,TemplateView
-from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos
+from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos,Promesas,Pagos
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -65,8 +65,12 @@ class listar_gestiones(TemplateView):
     def get_context_data(self, **kwargs):
         var = 0
         var2 = 0
+        var3 = 0
+        var4 = 0
         cliente = Clientes.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         productos = Productos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        promesas = Promesas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        pagos = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         contactos = Contactos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         gestiones = Gestiones.objects.filter(borrado=0,id_cliente=self.kwargs['pk']).order_by('-fch_gestion')
         codigos = Codigos.objects.filter(borrado=0,estado=1)
@@ -79,13 +83,21 @@ class listar_gestiones(TemplateView):
             if x.dias_mora >= mora:
                 mora = x.dias_mora
         
+        for x in promesas:
+            var3 += 1
+        
+        for x in pagos:
+            var4 += 1
+        
         for y in cliente:
             usuario_duenio = y.id_usuario
           
 
         context = super().get_context_data(**kwargs)
         context['saldo_total'] = var
-        context['estado'] = var2
+        context['cont_produtos'] = var2
+        context['cont_pagos'] = var4
+        context['cont_promesas'] = var3
         context['usuario_duenio'] = usuario_duenio
         context['plantilla'] = 'Gestiones'
         context['dias_mora'] = mora

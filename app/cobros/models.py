@@ -185,7 +185,7 @@ class Recordatorios(models.Model):
 
 class Codigos(models.Model):
     id_codigo = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=50)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -207,7 +207,7 @@ class Codigos(models.Model):
 class Motivos(models.Model):
     id_motivo = models.AutoField(primary_key=True)
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=50)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)

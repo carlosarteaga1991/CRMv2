@@ -348,8 +348,9 @@ class formualario_guardar_gestion(ModelForm):
                     'placeholder': 'Ingrese la nueva gestión',
                     'rows': '5',
                     'cols': '10',
-                    'style': 'width: 200%;',
-                    
+                    #'style': 'width: 150%;',
+        
+
 
                 }
             ),

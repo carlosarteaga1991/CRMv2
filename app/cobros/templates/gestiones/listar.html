@@ -8,105 +8,112 @@
 <script src="{% static 'js/functions.js' %}"></script>
 
 {% block contenido %}
-    <div style="position: relative;">
-        <!-- DIV para cliente class="div_cliente"-->
-        <div class="card card-primary div_cliente" >
-            <div class="card-header" style="background: #6CA3FC; ">
-                            <h3 class="card-title"><i class="fas fa-user"></i> Datos del Cliente</h3>
-                            <h3 class="card-title float-right" >Usuario seguimiento: <strong>{{ context.usuario_duenio }}</strong></h3>
-            </div>
-            <div  class="card-body" >
-                {% for clte in cliente %} 
-                    <!-- style="display: inline-block;" -->
-                    <h6 style="position: absolute;"><strong>Nombre:</strong> {{ clte.nombre }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                    <h6 style="position: absolute; left: 40%;"><strong>Empresa:</strong> {{ clte.id_empresa }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                    <h6 style="position: absolute; left: 40%; top:55%;"><strong>identidad:</strong> {{ clte.identidad }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-            
+    <div style="color: blue; padding-top: 3%;"><!-- style="background: #6CA3FC; "-->
+        <h3 class="card-title"> <strong>Datos del Cliente</strong></h3>
+        <h3 class="card-title float-right" >Usuario seguimiento: <strong>{{ context.usuario_duenio }}</strong></h3>
+    </div>
+    <div >
+        
+        <br>
+         <!-- DIV para cliente class="div_cliente"-->   
+           <div style=" width: 100%;  overflow: hidden; top: 5%;">
+            {% for clte in cliente %} 
+                <div style="  width: 40%;  float:left; ">
+                    <h6 style="font-size: 13px;"><strong>Nombre:</strong> {{ clte.nombre }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Empresa:</strong> {{ clte.id_empresa }} </h6>
+                    <h6  style="font-size: 13px;"><strong>Identidad:</strong> {{ clte.identidad }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Otro dato1:</strong> ttttttt</h6>
+                    <h6 style="font-size: 13px;"><strong>Otro dato1:</strong> uuuuuuuuu</h6>
+                </div>
+
+                <div style="  width: 30%;  float:left;">
+                    <h6 style="font-size: 13px;"><strong>Saldo Total:</strong> {{ context.saldo_total |intcomma }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Días Mora:</strong> {{ context.dias_mora }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Otro dato3:</strong> aaaaaaaa</h6>
+                    <h6 style="font-size: 13px;"><strong>Otro dato4:</strong> bbbbb</h6>
+                    <h6 style="font-size: 13px;"><strong>Otro dato5:</strong> cccccc</h6>
+                </div>
                 {% endfor %}
-                <br>
-                <h6 style="position: absolute;  top:55%;"><strong>Días Mora:</strong> {{ context.dias_mora }} </h6>
-                <h6 style="position: absolute; left: 80%; top:35%;"><strong>Saldo Total:</strong> {{ context.saldo_total |intcomma }} </h6>
-                <h6 style="position: absolute; left: 80%; top:55%;"><a href="#" >Ver todos los productos ({{ context.estado }})</a></h6> 
-                <br><br> <br>
+
+                <div style="  width: 30%;  float:right;">
+                    <h6 style="font-size: 13px;"><a href="#" >Ver todos los productos (<strong>{{ context.cont_produtos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Pagos (<strong>{{ context.cont_pagos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Promesas (<strong>{{ context.cont_promesas }}</strong>)</a></h6> 
+                    <h6 style="font-size: 13px;" ><a href="#" >Ver / Ingresar Visitas (<strong>{{ context.cont_promesas }})</strong></a></h6> 
+                    <h6 style="font-size: 13px;"><a href="#" >Programar Alerta </a></h6> 
+                </div>
+
             </div>
-        </div>
         <!-- /. DIV para cliente class="div_cliente"-->
 
 
 
             
             <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
-                <div class="card card-primary div_ingresar_gestion" >
-                    
-                        <form method="POST" action="."> <!-- para trabajar con archivos media usamos: enctype="multipart/form-data" -->
-                               
-                                    {% csrf_token %}
+            <div class=" div_ingresar_gestion" style="width: 100%; height:100%;">
+                    <form method="POST" action="." style=" width: 100%;  overflow: hidden; "> 
+                        {% csrf_token %}
 
+                        <!-- BOX BOTONES -->
+                            <div style="width: 15%; float:right; ">
+                            <br>
+                   
+                                <a href="{{ context.btn_cancelar }}" class = "btn btn-danger" style="width:70%; position: relative; left: 10%; "><i class="fas fa-times"></i></i> Cancelar</a>
+                                <br><br>
+                                <button type="submit" class = "btn btn-success t eventoAjax" style="width:70%; position: relative; left: 10%;"><i class="fas fa-save"></i> Guardar</button>
+                            </div>
+                        <!-- /. BOX BOTONES -->
 
-                                        <div class="form-group" style="position: relative; width: 30%; height:121px;">
-                                            <!--<textarea name="" id="" cols="100" rows="5" class="form-control" required placeholder="Ingrese la nueva gestión"></textarea>
-                                            <input type="text"  class="form-control" required placeholder="Ingrese la nueva gestión" style="WIDTH: 228px; HEIGHT: 98px">-->
-                                            {{ context.formGuardar.descripcion }}
-                                            <div style="position:absolute; top:2%; left: 201%;  width:90%; height: 100%;">
-                                                <!--<label style="font-size: 12px;">Código: </label>{{ context.form.codigoanidado }}
-                                                <label style="font-size: 12px;">Motivo: </label>{{ context.form.motivoanidado }}-->
-                                                <div class="col-md-6">
-                                                    <div class="col-md-6">Código</div>
-                                                    <div class="col-md-6">
-                                                        <select name="codigo" id="id_codigo" required class="form-control from-control-sm" style="width:500%;">
-                                                        <option value="0">-----------</option>
-                                                        {% for xx in codigos %}
-                                                        <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
-                                                        {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </div>
+                        <!-- BOX INGRESAR GESTIÓN -->
+                            <div style="  width: 60%;  float:left;">
+                                <div class="form-group" style="">
+                                    {{ context.formGuardar.descripcion }}
+                                </div>
+                            </div>
+                        <!-- /. BOX INGRESAR GESTIÓN -->
+                       
 
-                                                <div class="col-md-6">
-                                                    <div class="col-md-6">Motivo</div>
-                                                    <div class="col-md-6">
-                                                        <select name="motivo" id="id_motivo" required class="form-control from-control-sm" style="width:500%;">
-                                                        <option value="0">-----------</option>
-                                                        {% for yy in motivos %}
-                                                        <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
-                                                        {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            
-                                            <!--<label for="">Fecha:</label>
-                                            <label for="">Valor</label>
-                                            <label for="">Lugar de visita:</label>-->
-                                            
-
-                                            <!--{% for campo in context.formGuardar.visible_fields %}
-                                                <div class="form-group">
-                                                    <label for="email">{{ campo.label }}</label>
-                                                    {{ campo }}
-                                                </div>
-                                            {% endfor %}-->
+                        <!-- BOX ANIDADO -->
+                            <div style="float:right; width: 25%;">
+                                
+                                    <!-- SELECT ANIDADO -->
+                                    <label style="font-size: 13px;">&nbsp;Código</label>
+                                        <div class="col-md-6">
+                                            <select name="codigo" id="id_codigo" required class="fornm-control form-control" style="width: 200%; height: 36px;">>
+                                                <option  value="0" >--------------</option>
+                                                    {% for xx in codigos %}
+                                                <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
+                                                    {% endfor %}
+                                            </select>
                                         </div>
-                                        <button type="submit" class = "btn btn-success float-right eventoAjax" style="position: absolute; top:60%; left: 88%;">
-                                        <i class="fas fa-save"></i> Guardar Gestión
-                                    </button>
-                                    <a href="{{ context.btn_cancelar }}" class = "btn btn-danger" style="position: absolute; top:15%; left: 88%;">
-                                        <i class="fas fa-times"></i></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </a> 
+                                        
+                                        <label style="font-size: 13px;">&nbsp;Motivo:</label>
+                                        
+                                        <div class="col-md-6">
+                                            <select name="motivo" id="id_motivo" required class="fornm-control form-control" style="width: 200%; height: 36px;"><!-- order-radius: 4px; font-family: 'Verdana', sans-serif; background-color: #fff;-->
+                                                <option value="0">-----Seleccione Motivo-----</option>
+                                                    {% for yy in motivos %}
+                                                <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
+                                                    {% endfor %}
+                                                </select>
+                                        </div>
+                                    <!-- /. SELECT ANIDADO -->
 
-                            
-                        </form>
-                    
-                </div>
+                            </div>
+                        <!-- /. BOX ANIDADO -->             
+
+                        
+                        
+                    </form>
+            </div>
             <!-- /. DIV para ingresar_gestion class="div_ingresar_gestion"-->
     
 
 
 
         <!-- DIV para historico_gestiones class="div_historico_gestiones"-->
-
-            <div class="card card-primary div_historico_gestiones" >
+       
+            <div class=" div_historico_gestiones" >
                 <div class="row" style="font-size: 12px;">
                     <div class="col-md-12" >
                         <div class="table-responsive">
@@ -127,11 +134,11 @@
 
                                         {% for x in gestiones %}
                                             <tr >
-                                                <td style="width:15%; text-align:left;">{{ x.fch_gestion }}</td>
-                                                <td style=" height: auto; text-align:left;"> <div style="width:800px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
-                                                <td style="width:10%; text-align:center;">{{ x.usuario_creacion }}</td>
-                                                <td style="width:10%; text-align:center;">{{ x.id_codigo }}</td>
-                                                <td style="width:10%; text-align:center;">{{ x.id_motivo }}</td>
+                                                <td style=" text-align:left;"><div style="width:125px; overflow:hidden;">{{ x.fch_gestion }}</div></td>
+                                                <td style="height: auto; text-align:left;"> <div style="width:550px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
+                                                <td style="height: auto; text-align:center;"> <div style="width:100px; overflow:hidden;">{{ x.usuario_creacion }}</div></td>
+                                                <td style="height: auto; text-align:center;"> <div style=" width:160px; overflow:hidden;">{{ x.id_codigo }}</div></td>
+                                                <td style="height: auto; text-align:center;"> <div style="width:150px; overflow:hidden;">{{ x.id_motivo }}</div></td>
                                             </tr>
                                     {% endfor %}
 

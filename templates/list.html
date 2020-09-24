@@ -19,28 +19,56 @@
 </div>-->
 
 {% block contenido %}
-    <div class="card card-primary">
+    <div class=" card-primary" style="padding-top: 2%">
                 <!-- Botón para crear nuevo -->
                 <div class = "card-footer" >
-                    <a href="{{ create_url }}" class = "btn btn-primary float-right eventoAjax" >
-                        <i class="fas fa-plus"></i> Nuevo Resgistro
+                    <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                        <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
                     </a>
-                </div>
-              <div class="card-header">
 
-                
+                  {% if boton_volver == 'si' %}
+                      <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
+                        <i class="fas fa-backspace"></i> <strong>Volver</strong>
+                    </a>
+                  {% endif %}
+                    
+                </div>
+              <div class="card" style="background: #6CA3FC; color: white; font-size: 11px; height: 22px">
+
+                            
 
                 <h3 class="card-title">
-                  <i class="fas fa-search"></i>
-                  {{ titulo_lista }}
+                  &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
+                  {{ titulo_lista }} <strong>{{ nombre_cliente }}</strong>
                 </h3>
               </div>
 
-              <!-- /.tipos de alertas-->
-              <div class="card-body">
+              <!-- alerta exitosa -->
+              {% if  tipo  == 'nuevo' %}
+                <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true" style="font-size:20px">×</span>
+                </button>    <strong>¡Guardado exitoso!</strong> El registro se ha guardado satisfactoreamente.
+              </div>
+              {% else %}
+                  {% if tipo == 'editar' %}
+                    <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true" style="font-size:20px">×</span>
+                      </button>    <strong>¡Modificación exitosa!</strong> El registro se ha modificado satisfactoreamente.
+                    </div>
+                  {% else %}
 
-                <table class="table table-hover"  id="data" >
-                    <thead>
+                  {% endif %}
+              {% endif %}
+              
+              <!-- /. alerta exitosa -->  
+
+              <!-- /.tipos de alertas-->
+              <div class="card-body" style="font-size: 12px;">
+
+                <table class="table table-hover table-striped"  id="data" >
+                    <thead style="background: #6CA3FC; color: white;">
                    
                         {% block columnas %}
                         
@@ -54,177 +82,12 @@
                     </tbody>
                 </table>
 
-                <!--<div class="alert alert-danger alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon fas fa-ban"></i> Alerta Error!</h5>
-                  Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my
-                  entire
-                  soul, like these sweet mornings of spring which I enjoy with my whole heart.
-                </div>
-                <div class="alert alert-info alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon fas fa-info"></i> Alerta Previa!</h5>
-                  Info alert preview. This alert is dismissable.
-                </div>
-                <div class="alert alert-warning alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon fas fa-exclamation-triangle"></i> Alert de Advertencia!</h5>
-                  Warning alert preview. This alert is dismissable.
-                </div>
-                <div class="alert alert-success alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon fas fa-check"></i> Alerta Satisfactoria!</h5>
-                  Success alert preview. This alert is dismissable.
-                </div>-->
+                
               </div>
               <!-- /.tipo de alertas -->
     </div>
 {% endblock  %}
 
 
-{% block javascript %}
-
-    <!-- para activar DataTables -->
-    <script type="application/javascript">
-
-        $(function () {
-  $('#data').DataTable({
-      responsive: true,
-      autoWidth: false,
-      "language": {
-                    url: '{% static 'lib/DataTables/spanish.txt' %}'
-                    },
-      destroy: true,
-      deferRender: true,
-      ajax: {
-          url: window.location.pathname,
-          type: 'POST',
-          data: {
-              'action': 'searchdata'
-          },
-          dataSrc: ""
-      },
-      columns: [
-          {"data": "id_departamento"},
-          {"data": "nombre"},
-          {"data": "opciones"},
-      ],
-      columnDefs: [
-          {
-              targets: [-1],
-              class: 'text-center',
-              orderable: false,
-              render: function (data, type, row) {
-                  var buttons = '<a href="/cobros/departamento/actualizar/'+ row.id_departamento +'/" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a> ';
-                  buttons += '<a href="/cobros/departamento/borrar/'+ row.id_departamento +'/"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>';
-                  return buttons;
-              }
-          },
-      ],
-      
-      initComplete: function (settings, json) {
-
-      }
-      
-      
-  });
-  
-});
-
-        /*$(document).ready(function() {
-            $('#diseniotabla').DataTable({
-                "language": {
-                    url: '{% static 'lib/DataTables/spanish.txt' %}'
-                    }
-            });*/
-
-            /*$('.eventoAjax').on('click', function () {
-                //$.ajax({}).done(function (data) {}).fail(function (jqXHR, textStatus, errorThrown) {}).always(function (data) {});
-                $.ajax({
-                    url: '{% url 'crm:listar_departamento' %}',
-                    type: 'POST',
-                    data: {id_departamento: 2}, //
-                    dataType: 'json'
-                }).done(function (data) {//singresa si al hacer la petición POST no tiene errores la petición de la vista en views.py
-                    console.log(data);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus+': '+errorThrown);
-                }).always(function (data) {
-
-                });
-            });
-
-            
-
-        });*/
-
-        // inicio evento sweetAlert
-        /*$('.btn-borrar').on('click', function () {
-                var fila= $(this).closest("tr");  
-                var id = parseInt(fila.find('td:eq(0)').text()) 
-                var nombre = fila.find('td:eq(1)').text()
-                
-                Swal.fire({
-                  title: '¿Seguro que desea borrar el registro: '+ nombre +'?',
-                  text: "¡Esta acción no se puede revertir!",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: '¡Sí, borrarlo!'
-                }).then((result) => { 
-                  if (result.value == true) {
-                    try {
-                      //var fila= $(this).closxsest("tr"); 
-
-                      // inicio ajax
-                      //var parameters = $(this).serializeArray();
-                      
-                      $.ajax({
-                      data: {
-                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
-                      },
-                      url: '/cobros/departamento/borrar/'+id+'/',
-                      type: 'post',
-                      success: function (response) {
-                          Swal.fire(
-                            '¡Borrado!',
-                            'El registro ha sido eliminado satisfactoreamente.',
-                            'success'
-                          )
-                      },
-                      error: function (error) {
-                        Swal.fire(
-                        'Eoor!',
-                        'ha ocurrido un error.',
-                        'error'
-                        )
-                      }  
-                      
-
-                      });
-                      //fin ajax
-                     
-                      
-                    } catch( err ) {
-                      Swal.fire(
-                      'Eoor!',
-                      'ha ocurrido un error.'+ err +'',
-                      'error'
-                      )
-                    } 
-                
-                  }
-                })       
-
-        });*/
-        // final evento sweetAlert
-
-        
-    </script>
-    <!-- /.para activar DataTables -->
 
 
-
-
-{% endblock  %}

@@ -1,0 +1,268 @@
+
+{% extends "list.html" %}
+{% load humanize %}
+{% load static %}
+
+
+<!--Archivo static de javascript en app cobros  -->
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% block contenido %}
+    <div style="color: blue; padding-top: 3%;"><!-- style="background: #6CA3FC; "-->
+        <h3 class="card-title"> <strong>Datos del Cliente</strong></h3>
+        <!--<h3 class="card-title float-right" >Usuario seguimiento: <strong>{{ context.usuario_duenio }}</strong></h3>-->
+    </div>
+    <div >
+        
+        <br>
+        <!-- DIV para cliente class="div_cliente"-->   
+           <div style=" width: 100%;  overflow: hidden; top: 5%;">
+            {% for clte in cliente %} 
+                <div style="  width: 40%;  float:left; ">
+                    <h6 style="font-size: 13px;"><strong>Nombre:</strong> {{ clte.nombre }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Empresa:</strong> {{ clte.id_empresa }} </h6>
+                    <h6  style="font-size: 13px;"><strong>Identidad:</strong> {{ clte.identidad }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Estado Civíl:</strong> {{ clte.estado_civil }}</h6>
+                    <h6 style="font-size: 13px;"><strong>Fecha de Nacimiento:</strong> {{ clte.fch_nacimiento }}</h6>
+                    <h6 style="font-size: 13px;"><strong>Usuario Seguimiento:</strong> {{ context.usuario_duenio }}</h6>
+                </div>
+
+                <div style="  width: 30%;  float:left;">
+                    <h6 style="font-size: 13px;"><strong>Saldo Total:</strong> {{ context.saldo_total |intcomma }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Capital:</strong> {{ context.dias_mora }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Intereses:</strong> {{ context.dias_mora }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Días Mora:</strong> {{ context.dias_mora }} </h6>
+                    <h6 style="font-size: 13px;"><strong>Promesas Incumplidas:</strong> {{context.promesas_incumplidas}}</h6>
+                    <h6 style="font-size: 13px;"><strong>Último Pago:</strong> {{context.ultimo_pago}}</h6>
+                </div>
+                {% endfor %}
+
+                <div style="  width: 30%;  float:right; text-align:left;">
+                    <h6 style="font-size: 13px;"><a href="#" >Ver todos los productos &nbsp;(<strong>{{ context.cont_produtos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Pagos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_pagos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Promesas &nbsp;(<strong>{{ context.cont_promesas }}</strong>)</a></h6> 
+                    <h6 style="font-size: 13px;" ><a href="#" >Ver / Ingresar Visitas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_promesas }})</strong></a></h6> 
+                    <h6 style="font-size: 13px;" ><a href="#" >Ver / Ingresar Contactos  (<strong>{{ context.cont_promesas }})</strong></a></h6> 
+                    <h6 style="font-size: 13px; text-align:left;"><a href="#" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><i class="far fa-bell"></i>&nbsp;Programar Alerta </strong></a></h6> 
+                </div>
+
+            </div>
+        <!-- /. DIV para cliente class="div_cliente"-->
+
+
+
+            
+        <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
+            <div class=" div_ingresar_gestion" style="width: 100%; height:100%;">
+                    <form method="POST" action="." style=" width: 100%;  overflow: hidden; "> 
+                        {% csrf_token %}
+
+                        <!-- BOX BOTONES -->
+                            <div style="width: 15%; float:right; ">
+                            <br>
+                   
+                                <a href="{{ context.btn_cancelar }}" class = "btn btn-danger" style="width:70%; position: relative; left: 10%; "><i class="fas fa-times"></i></i> Cancelar</a>
+                                <br><br>
+                                <button type="submit" class = "btn btn-success t eventoAjax" style="width:70%; position: relative; left: 10%;"><i class="fas fa-save"></i> Guardar</button>
+                            </div>
+                        <!-- /. BOX BOTONES -->
+
+                        <!-- BOX INGRESAR GESTIÓN -->
+                            <div style="  width: 60%;  float:left;">
+                                <div class="form-group" style="">
+                                    {{ context.formGuardar.descripcion }}
+                                </div>
+                            </div>
+                        <!-- /. BOX INGRESAR GESTIÓN -->
+                       
+
+                        <!-- BOX ANIDADO -->
+                            <div style="float:right; width: 25%;">
+                                
+                                    <!-- SELECT ANIDADO -->
+                                    <label style="font-size: 13px;">&nbsp;Código</label>
+                                        <div class="col-md-6">
+                                            <select name="codigo" id="id_codigo" required class="fornm-control form-control" style="width: 200%; height: 36px;">>
+                                                <option  value="0" >--------------</option>
+                                                    {% for xx in codigos %}
+                                                <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <label style="font-size: 13px;">&nbsp;Motivo:</label>
+                                        
+                                        <div class="col-md-6">
+                                            <select name="motivo" id="id_motivo" required class="fornm-control form-control" style="width: 200%; height: 36px;"><!-- order-radius: 4px; font-family: 'Verdana', sans-serif; background-color: #fff;-->
+                                                <option value="0">-----Seleccione Motivo-----</option>
+                                                    {% for yy in motivos %}
+                                                <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
+                                                    {% endfor %}
+                                                </select>
+                                        </div>
+                                    <!-- /. SELECT ANIDADO -->
+
+                            </div>
+                        <!-- /. BOX ANIDADO -->             
+
+                        
+                        
+                    </form>
+            </div>
+        <!-- /. DIV para ingresar_gestion class="div_ingresar_gestion"-->
+    
+
+
+
+        <!-- DIV para historico_gestiones class="div_historico_gestiones"-->
+       
+            <div class=" div_historico_gestiones" >
+                <div class="row" style="font-size: 12px;">
+                    <div class="col-md-12" >
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                <thead style="background: #6CA3FC;">
+                            
+                                    <tr >
+                                        <th  scope="col" style=" text-align:center; color: white;">Fecha</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Descripción</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Código</th>
+                                        <th  scope="col" style=" text-align:center; color: white;">Motivo</th>
+                                    </tr>
+                                
+                                </thead>
+                                <tbody >
+
+                                        {% for x in gestiones %}
+                                            <tr >
+                                                <td style=" text-align:left;"><div style="width:130px; overflow:hidden;">{{ x.fch_gestion }}</div></td>
+                                                <td style="height: auto; text-align:left;"> <div style="width:545px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
+                                                <td style="height: auto; text-align:center;"> <div style="width:100px; overflow:hidden;">{{ x.usuario_creacion }}</div></td>
+                                                <td style="height: auto; text-align:center;"> <div style=" width:160px; overflow:hidden;">{{ x.id_codigo }}</div></td>
+                                                <td style="height: auto; text-align:center;"> <div style="width:150px; overflow:hidden;">{{ x.id_motivo }}</div></td>
+                                            </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        <div>
+                    <div>
+                <div>
+            </div>
+        
+
+        <!-- /. DIV para historico_gestiones class="div_historico_gestiones"-->
+    </div> 
+{% endblock  %}
+
+
+{% block javascript %}
+
+<script type="application/javascript">
+
+$("#id_motivo").chained("#id_codigo");
+
+ $(function () {
+  $('#data_gestiones').DataTable({
+      //responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+        /*columnDefs: [{
+            width: "10px",
+            targets: 0
+        },
+        {
+            width: "35px",
+            targets: 1
+        },
+        {
+            width: "15px",
+            targets: 2
+        },
+        {
+            width: "15px",
+            targets: 3
+        },
+        {
+            width: "15px",
+            targets: 4
+        }
+        ],*/
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+
+
+
+
+/*
+
+
+$(function () {
+            //  INICIO SELECT ANIDADO CON select2
+            $('.select2').select2({
+                theme: "bootstrap4",
+                language: 'es'
+            });
+            // FIN SELECT ANIDADO CON select2
+
+
+            // para select anidados con AJAX
+            $('select[name="codigoanidado"]').on('change', function () {
+                var id = $(this).val();
+                var select_motivos = $('select[name="motivoanidado"]');
+                var options = '<option value="">---------</option>';
+                if(id === ''){
+                    select_motivos.html(options);
+                    return false;
+                }
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        'action': 'search_codigo_id',
+                        'id': id
+                    },
+                    dataType: 'json',
+                }).done(function (data) {
+                    console.log(data);
+                    if (!data.hasOwnProperty('error')) {
+                        //select_motivos.select2({
+                            //theme: "bootstrap4",
+                            //language: 'es',
+                            //data: data
+                        //});
+                        $.each(data, function (key, value) {
+                            options+='<option value="'+value.id+'">'+value.descripcion+'</option>';
+                        });
+                        return false;
+                    }
+                    message_error(data.error);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+                    select_motivos.html(options);
+                });
+            });
+            // FIN para select anidados con AJAX
+        });
+
+*/
+
+</script>
+   
+
+
+
+
+{% endblock  %}

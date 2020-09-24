@@ -39,9 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    # Libs
+    'widget_tweaks',
     # Aplicaciones
     'app.cobros',
     'app.homepage',
+    'app.login',
+    'app.usuario',
+    
+
 ]
 
 MIDDLEWARE = [
@@ -84,7 +91,7 @@ DATABASES = {
         #'NAME': BASE_DIR / 'db.sqlite3',
 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cobros',
+        'NAME': 'cobros12',
         'USER': 'root',
         'PASSWORD': 'Art3aga_1',
         'HOST': 'localhost',
@@ -112,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -122,7 +130,7 @@ TIME_ZONE = 'America/Tegucigalpa'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False # se colocó en False para que use bien la separación ejem. 1,524,000.25
 
 USE_TZ = False
 
@@ -137,3 +145,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), # _global
 ]
+
+# para el login hay q indicarle a que URL nos dirigirá si es exitoso
+LOGIN_REDIRECT_URL = '/cobros/dashboard/'
+
+# para q direcciones en caso de darle salir sesión
+LOGOUT_REDIRECT_URL = '/login/'
+
+# en caso de querer ingresar a una URL ya existente y no está loggeado un usuario que me direccione a:
+LOGIN_URL = '/login/'
+
+# Para alojar nuestros archivos media usamos:
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#creamos la URL absoluta para acceder
+MEDIA_URL = '/media/'
+
+

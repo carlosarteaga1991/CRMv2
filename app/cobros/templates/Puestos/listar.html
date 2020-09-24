@@ -1,0 +1,65 @@
+
+{% extends "list.html" %}
+{% load static %}
+
+{% block head_list %}
+<script src="{% static 'departamento/js/funciones.js' %}"></script>
+{% endblock  %}
+
+
+
+{% block columnas %}
+                    <tr>
+                        <th scope="col" style="width: 10%;">Id</th>
+                        <th scope="col" style="width: 40%;">Nombre puesto</th>
+                        <th scope="col" style="width: 35%;">Departamento al que pertenece</th>
+                        <th scope="col" style="width: 15%;">Opciones</th>
+                    </tr>
+{% endblock  %}
+
+
+{% block filas %}
+                       
+                        {% for x in object_list %}
+                            <tr>
+                                <td>{{ x.id_puesto }}</td>
+                                <td>{{ x.nombre }}</td>
+                                <td>{{ x.id_departamento }}</td>
+                                <td> <!-- {% url 'crm:borrar_departamento' x.id_puesto %} -->
+                                    <a href="{% url 'crm:actualizar_puesto' x.id_puesto %}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_puesto' x.id_puesto %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+ $(function () {
+  $('#data').DataTable({
+      responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

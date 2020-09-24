@@ -29,6 +29,7 @@ class listar_empresas(ListView):
         context['titulo'] = 'Empresas existentes'
         context['titulo_lista'] = 'Empresas existentes'
         context['create_url'] = reverse_lazy('crm:crear_empresa')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
         return context
@@ -66,6 +67,7 @@ class crear_empresa(CreateView):
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_empresa')
         context['titulo_lista'] = 'Ingrese datos de la nueva empresa'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
         return context
 
@@ -98,6 +100,7 @@ class borrar_empresa(DeleteView):
         context['plantilla'] = 'Eliminar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_empresa')
         context['list_url'] = reverse_lazy('crm:listar_empresa')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar empresa'
         return context
@@ -143,5 +146,6 @@ class actualizar_empresa(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_empresa')
         context['titulo_lista'] = 'Editar empresa'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
         return context

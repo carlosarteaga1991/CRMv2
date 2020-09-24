@@ -19,26 +19,26 @@
 </div>-->
 
 {% block contenido %}
-    <div class="card card-primary">
+    <div class=" card-primary" style="padding-top: 2%">
                 <!-- Botón para crear nuevo -->
                 <div class = "card-footer" >
-                    <a href="{{ create_url }}" class = "btn btn-primary float-right eventoAjax" >
-                        <i class="fas fa-plus"></i> Nuevo Resgistro
+                    <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                        <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
                     </a>
 
                   {% if boton_volver == 'si' %}
-                      <a href="{{ url_boton_volver }}" class = "btn btn-danger float-left eventoAjax" >
-                        <i class="fas fa-backspace"></i> Volver
+                      <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
+                        <i class="fas fa-backspace"></i> <strong>Volver</strong>
                     </a>
                   {% endif %}
                     
                 </div>
-              <div class="card-header">
+              <div class="card" style="background: #6CA3FC; color: white; font-size: 11px; height: 22px">
 
                             
 
                 <h3 class="card-title">
-                  <i class="fas fa-search"></i>
+                  &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
                   {{ titulo_lista }} <strong>{{ nombre_cliente }}</strong>
                 </h3>
               </div>
@@ -67,8 +67,8 @@
               <!-- /.tipos de alertas-->
               <div class="card-body" style="font-size: 12px;">
 
-                <table class="table table-hover "  id="data" >
-                    <thead>
+                <table class="table table-hover table-striped"  id="data" >
+                    <thead style="background: #6CA3FC; color: white;">
                    
                         {% block columnas %}
                         

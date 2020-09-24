@@ -28,8 +28,8 @@
                                 Inactivo
                                 {% endif %}</td>
                                 <td style="text-align:center"> 
-                                    <a href="{% url 'crm:actualizar_motivo' x.id_motivo%}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
-                                    <a href="{% url 'crm:borrar_motivo' x.id_motivo%}"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                    <a href="{% url 'crm:actualizar_motivo' x.id_motivo%}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_motivo' x.id_motivo%}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}

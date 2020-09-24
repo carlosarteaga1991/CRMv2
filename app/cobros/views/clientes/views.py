@@ -30,6 +30,7 @@ class listar_cliente(ListView):
         context['titulo_lista'] = 'Clientes existentes'
         context['create_url'] = reverse_lazy('crm:crear_cliente')
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['quitar_footer'] = 'si'
         context['tipo'] = ''
         return context
 
@@ -68,6 +69,7 @@ class crear_cliente(CreateView):
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_cliente')
         context['titulo_lista'] = 'Ingrese datos del nuevo cliente'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
         return context
 
@@ -102,6 +104,7 @@ class borrar_cliente(DeleteView):
         context['plantilla'] = 'Eliminar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_cliente')
         context['list_url'] = reverse_lazy('crm:listar_cliente')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar cliente'
         return context
@@ -145,6 +148,7 @@ class actualizar_cliente(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_cliente')
         context['titulo_lista'] = 'Editar cliente'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
         return context
 

@@ -82,6 +82,7 @@ class listview_departamento(ListView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Departamentos'
         context['titulo'] = 'Departamentos existentes'
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Departamentos existentes'
         context['create_url'] = reverse_lazy('crm:crear_departamento')
         context['url_salir'] = reverse_lazy('login:iniciar')
@@ -116,6 +117,7 @@ class createview_departamento(CreateView):
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['titulo_lista'] = 'Ingrese datos del nuevo departamentos'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
         return context
 
@@ -132,6 +134,7 @@ class updateview_departamento(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['titulo_lista'] = 'Editar departamento'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
         return context
 
@@ -163,6 +166,7 @@ class deleteview_departamento(DeleteView):
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
         context['list_url'] = reverse_lazy('crm:listar_departamento')
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar departamento'
         return context
 

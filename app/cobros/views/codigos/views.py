@@ -29,6 +29,7 @@ class listar_codigos(ListView):
         context['titulo'] = 'Códigos existentes'
         context['titulo_lista'] = 'Códigos existentes'
         context['create_url'] = reverse_lazy('crm:crear_codigo')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
         return context
@@ -63,6 +64,7 @@ class crear_codigos(CreateView):
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_codigos')
         context['titulo_lista'] = 'Ingrese datos del nuevo código'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
         return context
 
@@ -98,6 +100,7 @@ class borrar_codigos(DeleteView):
         context['btn_cancelar'] = reverse_lazy('crm:listar_codigos')
         context['list_url'] = reverse_lazy('crm:listar_codigos')
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar código'
         return context
 
@@ -134,6 +137,7 @@ class actualizar_codigos(UpdateView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_codigos')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Editar código'
         context['tipo'] = 'editar'
         return context

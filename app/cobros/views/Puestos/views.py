@@ -27,6 +27,7 @@ class listar_puestos(ListView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Puestos'
         context['titulo'] = 'Puestos existentes'
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Puestos existentes'
         context['create_url'] = reverse_lazy('crm:crear_puesto')
         context['url_salir'] = reverse_lazy('login:iniciar')
@@ -61,6 +62,7 @@ class crear_puesto(CreateView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_puestos')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Ingrese datos del nuevo puesto'
         context['tipo'] = 'nuevo'
         return context
@@ -94,6 +96,7 @@ class borrar_puesto(DeleteView):
         context['plantilla'] = 'Eliminar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_puestos')
         context['list_url'] = reverse_lazy('crm:listar_puestos')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar puesto'
         return context
@@ -134,5 +137,6 @@ class actualizar_puesto(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_puestos')
         context['titulo_lista'] = 'Editar puestos'
+        context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
         return context

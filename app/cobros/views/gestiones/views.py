@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from app.cobros.forms import formulario_motivos,formulario_gestion,formualario_guardar_gestion
 from django.shortcuts import render,redirect
 
-from datetime import datetime
+from datetime import datetime,date
 
 
 class listar_gestiones(TemplateView):
@@ -67,10 +67,14 @@ class listar_gestiones(TemplateView):
         var2 = 0
         var3 = 0
         var4 = 0
+        var5 = 0
+        var6 = 0
         cliente = Clientes.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         productos = Productos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         promesas = Promesas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        promesas_incumplidas = Promesas.objects.filter(borrado=0,estatus_promesa=3,id_cliente=self.kwargs['pk'])
         pagos = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        ultimo_pago = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         contactos = Contactos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         gestiones = Gestiones.objects.filter(borrado=0,id_cliente=self.kwargs['pk']).order_by('-fch_gestion')
         codigos = Codigos.objects.filter(borrado=0,estado=1)
@@ -85,10 +89,19 @@ class listar_gestiones(TemplateView):
         
         for x in promesas:
             var3 += 1
+
+        for x in promesas_incumplidas:
+            var5 += 1
         
         for x in pagos:
             var4 += 1
         
+        for x in ultimo_pago:
+            ultimo_pago = x.fecha
+            var6 += 1
+        if var6 == 0:
+            ultimo_pago='Sin Pagos'
+
         for y in cliente:
             usuario_duenio = y.id_usuario
           
@@ -98,6 +111,8 @@ class listar_gestiones(TemplateView):
         context['cont_produtos'] = var2
         context['cont_pagos'] = var4
         context['cont_promesas'] = var3
+        context['promesas_incumplidas'] = var5
+        context['ultimo_pago'] = ultimo_pago
         context['usuario_duenio'] = usuario_duenio
         context['plantilla'] = 'Gestiones'
         context['dias_mora'] = mora

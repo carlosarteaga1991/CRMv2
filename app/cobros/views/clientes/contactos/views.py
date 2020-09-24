@@ -32,6 +32,7 @@ class listar_cliente_contactos(ListView):
         context['create_url'] = '/cobros/cliente/contactos/crear/'+ str(self.kwargs['pk']) + '/' + str(self.kwargs['name']) + '/'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['boton_volver'] = 'si'
+        context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
         return context
 
@@ -72,6 +73,7 @@ class crear_cliente_contactos(CreateView):
         context['nombre_cliente'] = self.kwargs['name']
         context['success_url'] = '/cobros/cliente/contactos/' + str(self.kwargs['pk']) +'/' + str(self.kwargs['name']) + '/'
         context['boton_volver'] = 'si'
+        context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
         return context
 
@@ -110,6 +112,7 @@ class borrar_cliente_contactos(DeleteView):
         context['nombre_cliente'] = 'del cliente ' + self.kwargs['name']
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar contacto'
+        context['quitar_footer'] = 'si'
         context['success_url'] = '/cobros/cliente/contactos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         return context
 
@@ -149,6 +152,7 @@ class actualizar_cliente_contactos(UpdateView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Editar'
         context['nombre_cliente'] = self.kwargs['name']
+        context['quitar_footer'] = 'si'
         context['btn_cancelar'] = '/cobros/cliente/contactos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         context['titulo_lista'] = 'Editar contacto de cliente'
         context['success_url'] = '/cobros/cliente/contactos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'

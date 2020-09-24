@@ -32,6 +32,7 @@ class listar_cliente_productos(ListView):
         context['create_url'] = '/cobros/cliente/productos/crear/'+ str(self.kwargs['pk']) + '/' + str(self.kwargs['name']) + '/'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['boton_volver'] = 'si'
+        context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
         return context
 
@@ -75,6 +76,7 @@ class crear_cliente_productos(CreateView):
         context['nombre_cliente'] = self.kwargs['name']
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['pk']) +'/' + str(self.kwargs['name']) + '/'
         context['boton_volver'] = 'si'
+        context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
         return context
 
@@ -110,8 +112,9 @@ class borrar_cliente_productos(DeleteView):
         context['btn_cancelar'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         context['list_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         context['de'] = 'de'
-        context['nombre_cliente'] = 'del cliente ' + self.kwargs['name']
+        context['nombre_cliente'] =  self.kwargs['name']
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar producto'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         return context
@@ -156,6 +159,7 @@ class actualizar_cliente_productos(UpdateView):
         context['nombre_cliente'] = self.kwargs['name']
         context['btn_cancelar'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         context['titulo_lista'] = 'Editar contacto de cliente'
+        context['quitar_footer'] = 'si'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
         return context
 

@@ -30,6 +30,7 @@ class listar_motivos(ListView):
         context['titulo_lista'] = 'Motivos existentes'
         context['create_url'] = reverse_lazy('crm:crear_motivo')
         context['url_salir'] = reverse_lazy('login:iniciar')
+        context['quitar_footer'] = 'si'
         context['tipo'] = ''
         return context
 
@@ -63,6 +64,7 @@ class crear_motivos(CreateView):
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
+        context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Ingrese datos del nuevo motivo'
         context['tipo'] = 'nuevo'
         return context
@@ -98,6 +100,7 @@ class borrar_motivos(DeleteView):
         context['plantilla'] = 'Eliminar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
         context['list_url'] = reverse_lazy('crm:listar_motivos')
+        context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar motivo'
         return context
@@ -135,6 +138,7 @@ class actualizar_motivos(UpdateView):
         context = super().get_context_data(**kwargs)
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Editar'
+        context['quitar_footer'] = 'si'
         context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
         context['titulo_lista'] = 'Editar motivo'
         context['tipo'] = 'editar'

@@ -1,9 +1,11 @@
 {% extends "list.html" %}
 {% load static %}
 
+<!--
 {% block head_list %}
 <script src="{% static 'departamento/js/funciones.js' %}"></script>
 {% endblock  %}
+-->
 
 
 
@@ -69,7 +71,7 @@
                   var buttons = '<a href="/cobros/departamento/actualizar/'+ row.id_departamento +'/" class="btn btn-warning btn-xs" title="Editar"><i class="fas fa-edit"></i></a> ';
                   buttons += '<a href="/cobros/departamento/borrar/'+ row.id_departamento +'/"  class="btn btn-danger btn-borrar btn-xs" title="Borrar" ><i class="fas fa-trash-alt"></i></a>';
                   return buttons;
-              }
+              } 
           },
       ],
       

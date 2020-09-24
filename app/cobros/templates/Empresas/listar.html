@@ -29,8 +29,8 @@
                                 <td>{{ x.descripcion }}</td>
                                 <td>{{ x.telefono }}</td>
                                 <td> <!--  -->
-                                    <a href="{% url 'crm:actualizar_empresa' x.id_empresa%}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
-                                    <a href="{% url 'crm:borrar_empresa' x.id_empresa %}"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                    <a href="{% url 'crm:actualizar_empresa' x.id_empresa%}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_empresa' x.id_empresa %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}

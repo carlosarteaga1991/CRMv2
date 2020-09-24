@@ -82,7 +82,8 @@ class Clientes(models.Model):
      ('2','RTN'), 
      ('3','Otro')])
     identidad = models.CharField(max_length=30,blank=True)
-    fch_nacimiento = models.CharField("fecha de nacimiento",max_length=30,blank=True)
+    fch_nacimiento = models.CharField("Fecha de nacimiento",max_length=30,blank=True)
+    estado_civil = models.CharField(max_length=12, default='Soltero',choices=[('Soltero','Soltero'),('Casado','Casado'),('Unión Libre','Unión Libre')])
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -285,7 +286,6 @@ class Pagos(models.Model):
     id_pago = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     id_usuario = models.IntegerField()#models.ForeignKey(User,on_delete=models.PROTECT)
-    id_promesa = models.ForeignKey(Promesas,on_delete=models.PROTECT, null=True)
     fecha = models.DateField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)
     descripcion = models.TextField()
@@ -306,7 +306,7 @@ class Pagos(models.Model):
     
     class Meta:
         verbose_name_plural = 'Pagos'
-        ordering = ['id_cliente']
+        ordering = ['fecha']
 
 class LogCobros(models.Model):
     id_log = models.AutoField(primary_key=True)

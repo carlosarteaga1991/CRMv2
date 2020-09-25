@@ -1,12 +1,13 @@
 from django.forms import *
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
-from app.cobros.models import Departamentos,Clientes,Puestos,Empresas,Contactos,Productos,Codigos,Motivos,Gestiones
+from app.cobros.models import Departamentos,Clientes,Puestos,Empresas,Contactos,Productos,Codigos,Motivos,Gestiones,Recordatorios
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.urls import reverse_lazy
+from django.contrib.admin import widgets
 
 
 
@@ -355,3 +356,27 @@ class formualario_guardar_gestion(ModelForm):
                 }
             ),
         }
+
+class formulario_alertas(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['descripcion'].widget.attrs['autofocus'] = True
+        #self.fields['fch_recordatorio'].widget = widgets.AdminSplitDateTime()
+        
+        #self.fields['usuario_creacion'].widget.attrs['value'] = ''
+
+    class Meta():
+        model = Recordatorios
+        fields = '__all__'
+        exclude = ['id_cliente','fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado']
+
+        widgets = {
+            'descripcion': TextInput(attrs={'placeholder': 'Ingrese una breve descripción', }),
+     
+        }
+
+    

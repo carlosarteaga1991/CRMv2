@@ -1,6 +1,7 @@
 
 {% extends "list.html" %}
 {% load humanize %}
+{% load widget_tweaks %}
 {% load static %}
 
 
@@ -38,19 +39,19 @@
                 {% endfor %}
 
                 <div style="  width: 30%;  float:right; text-align:left;">
-                    <h6 style="font-size: 13px;"><a href="#" >Ver todos los productos &nbsp;(<strong>{{ context.cont_produtos }}</strong>)</a></h6>
-                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Pagos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_pagos }}</strong>)</a></h6>
-                    <h6 style="font-size: 13px;"><a href="#" >Ver / Ingresar Promesas &nbsp;(<strong>{{ context.cont_promesas }}</strong>)</a></h6> 
-                    <h6 style="font-size: 13px;" ><a href="#" >Ver / Ingresar Visitas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_promesas }})</strong></a></h6> 
-                    <h6 style="font-size: 13px;" ><a href="#" >Ver / Ingresar Contactos  (<strong>{{ context.cont_promesas }})</strong></a></h6> 
-                    <h6 style="font-size: 13px; text-align:left;"><a href="#" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><i class="far fa-bell"></i>&nbsp;Programar Alerta </strong></a></h6> 
+                    <h6 style="font-size: 13px;"><a href="#"  class="link_productos">Histórico de Productos &nbsp;(<strong>{{ context.cont_produtos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#"  class="link_pagos">Histórico de Pagos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_pagos }}</strong>)</a></h6>
+                    <h6 style="font-size: 13px;"><a href="#"  class="link_promesas">Histórico de Promesas &nbsp;&nbsp;(<strong>{{ context.cont_promesas }}</strong>)</a></h6> 
+                    <h6 style="font-size: 13px;" ><a href="#" class="link_visitas">Histórico de Visitas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_visitas }}</strong>)</a></h6> 
+                    <h6 style="font-size: 13px;" ><a href="#" class="link_contactos">Histórico de Contactos  &nbsp;&nbsp;(<strong>{{ context.cont_contactos}}</strong>)</a></h6> 
+                    <h6 style="font-size: 13px; text-align:left;"><a href="#" class="link_alerta">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><i class="far fa-bell"></i>&nbsp;Programar Alerta </strong></a></h6> 
                 </div>
 
             </div>
         <!-- /. DIV para cliente class="div_cliente"-->
 
-
-
+        
+            
             
         <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
             <div class=" div_ingresar_gestion" style="width: 100%; height:100%;">
@@ -61,9 +62,9 @@
                             <div style="width: 15%; float:right; ">
                             <br>
                    
-                                <a href="{{ context.btn_cancelar }}" class = "btn btn-danger" style="width:70%; position: relative; left: 10%; "><i class="fas fa-times"></i></i> Cancelar</a>
+                                <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width:70%; position: relative; left: 10%; top: 15px;"><i class="fas fa-times"></i></i> Cancelar</a>
                                 <br><br>
-                                <button type="submit" class = "btn btn-success t eventoAjax" style="width:70%; position: relative; left: 10%;"><i class="fas fa-save"></i> Guardar</button>
+                                <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width:70%; position: relative; left: 10%; top: 25px;"><i class="fas fa-save"></i> Guardar</button>
                             </div>
                         <!-- /. BOX BOTONES -->
 
@@ -114,7 +115,7 @@
 
 
 
-        <!-- DIV para historico_gestiones class="div_historico_gestiones"-->
+        <!-- DIV para historico_gestiones class="div_historico_gestiones" -->
        
             <div class=" div_historico_gestiones" >
                 <div class="row" style="font-size: 12px;">
@@ -122,7 +123,7 @@
                         <div class="table-responsive">
 
                             <table class="table table-bordered table-striped"  id="data_gestiones" >
-                                <thead style="background: #6CA3FC;">
+                                <thead style="background: #A4C6FF;">
                             
                                     <tr >
                                         <th  scope="col" style=" text-align:center; color: white;">Fecha</th>
@@ -147,120 +148,445 @@
 
                                 </tbody>
                             </table>
-                        <div>
-                    <div>
-                <div>
+                        </div>
+                    </div>
+                </div>
             </div>
         
 
         <!-- /. DIV para historico_gestiones class="div_historico_gestiones"-->
     </div> 
+
+
 {% endblock  %}
 
-
 {% block javascript %}
+ <!-- MODAL -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalOneLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" style="width: 200%; left: -50%; top: 100%;" >
+        <div class="modal-header">
+            <h5 class="modal-title hcinco" id="modalOneLabel"></h5>
+            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>-->
+            </button>
+        </div>
+        <div class="modal-body" >
+         
+          
+        <!-- CARGAR TABLA PAGOS-->
+            <div id="pago_mod" style="display:none;">
+                <div class="row" style="font-size: 12px;">
+                        <div class="col-md-12" >
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" >
+                                    <thead style="background: #A4C6FF;">
+                                
+                                        <tr >
+                                            <th  scope="col" style=" text-align:center; color: white;"><strong>Fecha del Pago</strong></th>
+                                            <th  scope="col" style=" text-align:center; color: white;"><strong>Valor</strong></th>
+                                            <th  scope="col" style=" text-align:center; color: white;"><strong>Usuario que Registró el Pago</strong></th>
+                                            <th  scope="col" style=" text-align:center; color: white;"><strong>Fecha en que se Ingresó al Sistema</strong></th>
+                                            <th  scope="col" style=" text-align:center; color: white;"><strong>Descripción</strong></th>
+                                        </tr>
+                                    
+                                    </thead>
+                                    <tbody >
+
+                                        {% for x in pagos %}
+                                                <tr >
+                                                    <td style=" text-align:left;">{{ x.fecha }}</td>
+                                                    <td style="height: auto; text-align:center;">  {{ x.valor |intcomma  }}  </td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.id_usuario }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.fch_creacion }}</td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:350px; overflow:hidden;">{{ x.descripcion }}</div></td>
+                                                </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <!-- /. CARGAR TABLA PAGOS-->  
+
+        
+        <!-- CARGAR TABLA PRODUCTOS-->
+            <div id="prod_mod" style="display:none;">
+                <div class="row" style="font-size: 12px;">
+                        <div class="col-md-12" >
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                    <thead style="background: #A4C6FF;">
+                                
+                                        <tr >
+                                            <th  scope="col" style=" text-align:center; color: white;">Tipo</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Número de Producto</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Días de Mora</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Capital</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Intereses</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Saldo Total</th>
+                                        </tr>
+                                    
+                                    </thead>
+                                    <tbody >
+
+                                            {% for x in productos %}
+                                                <tr >
+                                                    <td style=" text-align:left;">{{ x.descripcion }}</td>
+                                                    <td style="height: auto; text-align:left;">  {{ x.numero_producto }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.dias_mora }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.capital |intcomma }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.intereses |intcomma }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.saldo_total |intcomma }}</td>
+                                                </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <!-- /. CARGAR TABLA PRODUCTOS-->
+        
+        <!-- CARGAR TABLA PROMESAS-->
+            <div id="prom_mod" style="display:none;">
+                <div class="row" style="font-size: 12px;">
+                        <div class="col-md-12" >
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                    <thead style="background: #A4C6FF;">
+                                
+                                        <tr >
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Hora</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Valor</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha de Ingreso de Promesa</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Descripción</th>
+                                        </tr>
+                                    
+                                    </thead>
+                                    <tbody >
+
+                                            {% for x in promesas %}
+                                                <tr >
+                                                    <td style=" text-align:left;">{{ x.fecha }}</td>
+                                                    <td style="height: auto; text-align:left;">  {{ x.hora }}  </td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.valor |intcomma }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.estatus_promesa }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.fch_creacion }}</td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.descripcion }}</div></td>
+                                                </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <!-- /. CARGAR TABLA PROMESAS-->
+
+        <!-- CARGAR TABLA VISITAS-->
+            <div id="vis_mod" style="display:none;">
+                <div class="row" style="font-size: 12px;">
+                        <div class="col-md-12" >
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                    <thead style="background: #A4C6FF;">
+                                
+                                        <tr >
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha de Creación</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Lugar</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha que se Visitó</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Respuesta de la Visita</th>
+                                        </tr>
+                                    
+                                    </thead>
+                                    <tbody >
+
+                                            {% for x in visitas %}
+                                                <tr >
+                                                    <td style=" text-align:left;">{{ x.fecha }}</td>
+                                                    <td style="height: auto; text-align:left;">  {{ x.fch_creacion }}  </td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.lugar }}</div></td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.id_usuario }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.estatus_visita }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.fch_visita_realizada }}</td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.respuesta_visita }}</div></td>
+                                                </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <!-- /. CARGAR TABLA VISITAS-->
+
+        <!-- CARGAR TABLA CONTACTOS-->
+            <div id="cont_mod" style="display:none;">
+                <div class="row" style="font-size: 12px;">
+                        <div class="col-md-12" >
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-striped"  id="data_gestiones" >
+                                    <thead style="background: #A4C6FF;">
+                                
+                                        <tr >
+                                            <th  scope="col" style=" text-align:center; color: white;">Tipo de Contacto</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Descripción</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Comentario</th>
+                                        </tr>
+                                    
+                                    </thead>
+                                    <tbody >
+
+                                            {% for x in contactos %}
+                                                <tr >
+                                                    <td style=" text-align:left;">{{ x.tipo_contacto }}</td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.descripcion }}</div></td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.comentario }}</div></td>
+                                                </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <!-- /. CARGAR TABLA CONTACTOS-->
+
+        <!-- AGREGAR ALERTA-->
+        <div id="alert_mod" style="display:none;">
+            <form method="POST" action="." >
+                {% csrf_token %}
+                <label style="position: fixed; left:31.5%; ">Fecha:</label> <input type="date" name="fch_recordatorio" style="position: fixed; left:35%; border: 1px solid silver; border-radius: 4px; width: 15%;" min="{{ context.fecha_actual }}">
+                <label style="position: fixed; left:55%; ">Hora:</label> <input type="time" name="hora_recordatorio" style="position: fixed; left:58%;border: 1px solid silver; border-radius: 4px; ">
+                <br><br>
+                {{context.form_alerta.descripcion }}
+        </div>
+        <!-- /. AGREGAR ALERTA-->
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal">&nbsp;&nbsp;&nbsp;<strong>Salir</strong>&nbsp;&nbsp;&nbsp;</button>
+            <div id="guardar_alert_mod" style="display:none;">
+            <button type="submit" class="btn  btn-xs btn-primary">Guardar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+<!-- /. MODAL -->
+                
+
+
+<div >
+</div>
+            
+
+
 
 <script type="application/javascript">
 
-$("#id_motivo").chained("#id_codigo");
+// INICIO SELECT ANIDADO
+    $("#id_motivo").chained("#id_codigo");
+// FIN SELECT ANIDADO
 
- $(function () {
-  $('#data_gestiones').DataTable({
-      //responsive: true,
-      autoWidth: false,
-      "language": {
-                    url: '{% static 'lib/DataTables/spanish.txt' %}'
-                    },
-        /*columnDefs: [{
-            width: "10px",
-            targets: 0
-        },
-        {
-            width: "35px",
-            targets: 1
-        },
-        {
-            width: "15px",
-            targets: 2
-        },
-        {
-            width: "15px",
-            targets: 3
-        },
-        {
-            width: "15px",
-            targets: 4
+
+// INICIO DATATABLE
+    $(function () {
+    $('#data_gestiones').DataTable({
+        //responsive: true,
+        autoWidth: false,
+        "language": {
+                        url: '{% static 'lib/DataTables/spanish.txt' %}'
+                        },
+            /*columnDefs: [{
+                width: "10px",
+                targets: 0
+            },
+            {
+                width: "35px",
+                targets: 1
+            },
+            {
+                width: "15px",
+                targets: 2
+            },
+            {
+                width: "15px",
+                targets: 3
+            },
+            {
+                width: "15px",
+                targets: 4
+            }
+            ],*/
+        destroy: true,
+        deferRender: true,
+            
+        initComplete: function (settings, json) {
+
         }
-        ],*/
-      destroy: true,
-      deferRender: true,
-          
-      initComplete: function (settings, json) {
-
-      }
-    });
-});
-
-
-
-
-
-/*
-
-
-$(function () {
-            //  INICIO SELECT ANIDADO CON select2
-            $('.select2').select2({
-                theme: "bootstrap4",
-                language: 'es'
-            });
-            // FIN SELECT ANIDADO CON select2
-
-
-            // para select anidados con AJAX
-            $('select[name="codigoanidado"]').on('change', function () {
-                var id = $(this).val();
-                var select_motivos = $('select[name="motivoanidado"]');
-                var options = '<option value="">---------</option>';
-                if(id === ''){
-                    select_motivos.html(options);
-                    return false;
-                }
-                $.ajax({
-                    url: window.location.pathname,
-                    type: 'POST',
-                    data: {
-                        'action': 'search_codigo_id',
-                        'id': id
-                    },
-                    dataType: 'json',
-                }).done(function (data) {
-                    console.log(data);
-                    if (!data.hasOwnProperty('error')) {
-                        //select_motivos.select2({
-                            //theme: "bootstrap4",
-                            //language: 'es',
-                            //data: data
-                        //});
-                        $.each(data, function (key, value) {
-                            options+='<option value="'+value.id+'">'+value.descripcion+'</option>';
-                        });
-                        return false;
-                    }
-                    message_error(data.error);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus + ': ' + errorThrown);
-                }).always(function (data) {
-                    select_motivos.html(options);
-                });
-            });
-            // FIN para select anidados con AJAX
         });
+    });
+// FIN DATATABLE
 
-*/
+// INICIO ACTIVACIÓN DE MODAL
+  
+    $('.link_productos').on('click', function () {
+        var contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("alert_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("prod_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "Histórico de Productos";
+        $('#modal').modal('show');
+    });
+
+    $('.link_pagos').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("alert_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("pago_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "Histórico de Pagos";
+	        $('#modal').modal('show');
+    });
+
+    $('.link_promesas').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("alert_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("prom_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "Histórico de Promesas";
+	        $('#modal').modal('show');
+    });
+
+    $('.link_visitas').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("alert_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("vis_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "Histórico de Visitas";
+	        $('#modal').modal('show');
+    });
+
+    $('.link_contactos').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("alert_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("cont_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "Datos para contactar al cliente";
+	        $('#modal').modal('show');
+    });
+        
+    $('.link_alerta').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("guardar_alert_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("alert_mod");		
+        contenedor2.style.display = "block";
+        document.getElementById("modalOneLabel").innerHTML = "¡Ingrese los datos para la alerta!";
+	        $('#modal').modal('show');
+    });
+    
+    $('.link_alerta').on('click', function () {
+        var contenedor = document.getElementById("prod_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("pago_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("prom_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("vis_mod");		
+        contenedor.style.display = "none";
+        contenedor = document.getElementById("cont_mod");		
+        contenedor.style.display = "none";
+
+        var contenedor2 = document.getElementById("guardar_alert_mod");		
+        contenedor2.style.display = "block";
+    });
+// FIN ACTIVACIÓN DE MODAL
+
 
 </script>
-   
+
+
 
 
 

@@ -1,11 +1,11 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView,TemplateView
-from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos,Promesas,Pagos
+from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos,Promesas,Pagos,Visitas
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.urls import reverse_lazy
-from app.cobros.forms import formulario_motivos,formulario_gestion,formualario_guardar_gestion
+from app.cobros.forms import formulario_motivos,formulario_gestion,formualario_guardar_gestion,formulario_alertas
 from django.shortcuts import render,redirect
 
 from datetime import datetime,date
@@ -63,15 +63,19 @@ class listar_gestiones(TemplateView):
         return JsonResponse(data, safe=False)
 
     def get_context_data(self, **kwargs):
+        now = datetime.now()
         var = 0
         var2 = 0
         var3 = 0
         var4 = 0
         var5 = 0
         var6 = 0
+        var7 = 0
+        var8 = 0
         cliente = Clientes.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         productos = Productos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         promesas = Promesas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
+        visitas = Visitas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         promesas_incumplidas = Promesas.objects.filter(borrado=0,estatus_promesa=3,id_cliente=self.kwargs['pk'])
         pagos = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         ultimo_pago = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
@@ -93,8 +97,14 @@ class listar_gestiones(TemplateView):
         for x in promesas_incumplidas:
             var5 += 1
         
+        for x in visitas:
+            var7 += 1
+        
         for x in pagos:
             var4 += 1
+        
+        for x in contactos:
+            var8 += 1
         
         for x in ultimo_pago:
             ultimo_pago = x.fecha
@@ -104,135 +114,34 @@ class listar_gestiones(TemplateView):
 
         for y in cliente:
             usuario_duenio = y.id_usuario
+
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
           
 
         context = super().get_context_data(**kwargs)
         context['saldo_total'] = var
         context['cont_produtos'] = var2
         context['cont_pagos'] = var4
+        context['cont_visitas'] = var7
         context['cont_promesas'] = var3
+        context['cont_contactos'] = var8
         context['promesas_incumplidas'] = var5
         context['ultimo_pago'] = ultimo_pago
         context['usuario_duenio'] = usuario_duenio
         context['plantilla'] = 'Gestiones'
         context['dias_mora'] = mora
+        context['fecha_actual'] = str(now.year) + '-' + mes + '-' + str(now.day)
         context['quitar_footer'] = 'si'
         context['create_url'] = reverse_lazy('crm:crear_motivo')
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['form'] = formulario_gestion()
+        context['form_alerta'] = formulario_alertas()
         context['formGuardar'] = formualario_guardar_gestion()
         context['btn_cancelar'] = reverse_lazy('crm:listar_cliente')
         context['tipo'] = ''
+        context['abrir']=0
         
-        return {'cliente': cliente, 'contactos':contactos, 'gestiones': gestiones, 'context': context, 'productos': productos,'codigos': codigos, 'motivos': motivos}
+        return {'cliente': cliente, 'contactos':contactos, 'gestiones': gestiones,'visitas': visitas, 'context': context,'promesas': promesas, 'productos': productos,'codigos': codigos, 'motivos': motivos, 'pagos': pagos}
 
 
-
-"""
-
-class crear_motivos(CreateView):
-    model = Motivos
-    template_name = 'motivos/crear.html'
-    form_class = formulario_motivos 
-    success_url = reverse_lazy('crm:listar_motivos')
-
-    def post(self, request,*args,**kwargs):
-        data = {}
-        form = self.form_class(request.POST)
-        try:
-            if form.is_valid():
-                nuevo = Motivos(
-                    descripcion = form.cleaned_data.get('descripcion'),
-                    id_codigo = form.cleaned_data.get('id_codigo'),
-                    usuario_creacion = request.user.id,
-                    estado = form.cleaned_data.get('estado')
-                )
-                nuevo.save()
-                return redirect('crm:listar_motivos')
-        except Exception as e:
-            data['error'] = str(e)
-        return JsonResponse(data)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['nombre'] = 'carlos arteaga'
-        context['plantilla'] = 'Crear'
-        context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
-        context['titulo_lista'] = 'Ingrese datos del nuevo motivo'
-        context['tipo'] = 'nuevo'
-        return context
-
-
-
-class borrar_motivos(DeleteView):
-    model = Motivos
-    template_name = 'motivos/borrar.html'
-    success_url = reverse_lazy('crm:listar_motivos')
-
-    @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
-    def dispatch(self, request,*args,**kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request,*args,**kwargs)
-
-    def post(self, request,*args,**kwargs):
-        data = {}
-        try:
-            registro = self.get_object()
-            registro.borrado = 1
-            registro.usuario_modificacion = request.user.id
-            registro.fch_modificacion = datetime.now()
-            registro.save()
-        except Exception as e:
-            data['error'] = str(e)
-        return JsonResponse(data)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['nombre'] = 'carlos arteaga'
-        context['plantilla'] = 'Eliminar'
-        context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
-        context['list_url'] = reverse_lazy('crm:listar_motivos')
-        context['url_salir'] = reverse_lazy('login:iniciar')
-        context['titulo_lista'] = 'Eliminar motivo'
-        return context
-
-
-
-class actualizar_motivos(UpdateView):
-    model = Motivos
-    form_class = formulario_motivos
-    template_name = 'motivos/crear.html'
-    success_url = reverse_lazy('crm:listar_motivos')
-
-    @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
-    def dispatch(self, request,*args,**kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request,*args,**kwargs)
-
-    def post(self, request,*args,**kwargs):
-        data = {}
-        try:
-            registro = self.get_object()
-            registro.descripcion = request.POST['descripcion']
-            registro.estado = request.POST['estado']
-            registro.id_codigo_id = request.POST['id_codigo']
-            registro.usuario_modificacion = request.user.id
-            registro.fch_modificacion = datetime.now()
-            registro.save()
-            return redirect('crm:listar_motivos')
-        except Exception as e:
-            data['error'] = str(e)
-        return JsonResponse(data)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['nombre'] = 'carlos arteaga'
-        context['plantilla'] = 'Editar'
-        context['btn_cancelar'] = reverse_lazy('crm:listar_motivos')
-        context['titulo_lista'] = 'Editar motivo'
-        context['tipo'] = 'editar'
-        return context
-
-"""

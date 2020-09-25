@@ -75,7 +75,7 @@ class Empresas(models.Model):
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     id_empresa = models.ForeignKey(Empresas,on_delete=models.PROTECT,verbose_name="Empresa")
-    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")#models.IntegerField()
+    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     nombre = models.CharField("Nombre del cliente",max_length=150)
     tipo_id = models.CharField('Tipo de Identificación',max_length=1,default='1',choices= 
     [('1','Cédula de Identidad'),
@@ -164,10 +164,10 @@ class Recordatorios(models.Model):
     id_recordatorio = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     fch_recordatorio = models.DateField()
-    hora_recordatorio = models.TimeField()
-    descripción = models.TextField()
+    hora_recordatorio = models.TimeField(default="00:00:00")
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    usuario_creacion = models.IntegerField(blank=True,null=True)
+    usuario_creacion = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
@@ -176,8 +176,8 @@ class Recordatorios(models.Model):
     def __str__(self):
         return 'El cliente %s Recordatorio para el %s a las %s' % (self.id_cliente, self.fch_recordatorio,self.hora_recordatorio)
     
-    def toJSON(self): #función para crear diccionarios que se envían en la vista
-        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+    def toJSON(self): 
+        item = model_to_dict(self, exclude=['usuario_modificacion'])
         return item
     
     class Meta:
@@ -254,17 +254,17 @@ class Gestiones(models.Model):
 class Promesas(models.Model):
     id_promesa = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    id_usuario = models.IntegerField()#models.ForeignKey(User,on_delete=models.PROTECT)
+    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fecha = models.DateField()
     hora = models.TimeField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)
     descripcion = models.TextField()
-    estatus_promesa = models.CharField('Estatus de la Promesa',max_length=1,default='1',choices=
-    [('1','Pendiente'),
-     ('2','Cumplida'),
-     ('3','Incumplida')])
+    estatus_promesa = models.CharField('Estatus de la Promesa',max_length=11,default='Pendiente',choices=
+    [('Pendiente','Pendiente'),
+     ('Cumplida','Cumplida'),
+     ('Incumplida','Incumplida')])
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    descripcion = models.TextField()
+    descripcion = models.CharField(max_length=600, blank=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
@@ -285,12 +285,11 @@ class Promesas(models.Model):
 class Pagos(models.Model):
     id_pago = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    id_usuario = models.IntegerField()#models.ForeignKey(User,on_delete=models.PROTECT)
+    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fecha = models.DateField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)
-    descripcion = models.TextField()
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    descripcion = models.TextField()
+    descripcion = models.CharField(max_length=600, blank=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
@@ -307,6 +306,36 @@ class Pagos(models.Model):
     class Meta:
         verbose_name_plural = 'Pagos'
         ordering = ['fecha']
+
+class Visitas(models.Model):
+    id_visita = models.AutoField(primary_key=True)
+    id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
+    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
+    fch_creacion = models.DateTimeField(auto_now_add=True)
+    fch_visita_realizada = models.DateField()
+    lugar = models.CharField(max_length=1500, blank=True)
+    respuesta_visita = models.CharField(max_length=1500, blank=True)
+    estatus_visita = models.CharField('Estatus de la Visita',max_length=25,default='Pendiente',choices=
+    [('Pendiente','Pendiente'),
+     ('Localizado sin Promesa','Localizado sin Promesa'),
+     ('Localizado con Promesa','Localizado con Promesa'),
+     ('Dirección Incorrecta','Dirección Incorrecta')])
+    usuario_creacion = models.IntegerField(blank=True,null=True)
+    fch_modificacion = models.CharField(max_length=35, blank=True)
+    usuario_modificacion = models.IntegerField(blank=True,null=True)
+    estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
+    borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
+
+    def __str__(self):
+        return self.lugar
+    
+    def toJSON(self): #función para crear diccionarios que se envían en la vista
+        item = model_to_dict(self, exclude=['usuario_modificacion']) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']
+        return item
+    
+    class Meta:
+        verbose_name_plural = 'Visitas'
+        ordering = ['id_cliente']
 
 class LogCobros(models.Model):
     id_log = models.AutoField(primary_key=True)

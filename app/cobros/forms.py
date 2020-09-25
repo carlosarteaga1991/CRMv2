@@ -347,7 +347,7 @@ class formualario_guardar_gestion(ModelForm):
             'descripcion': Textarea(
                 attrs={
                     'placeholder': 'Ingrese la nueva gestión',
-                    'rows': '5',
+                    'rows': '2',
                     'cols': '10',
                     #'style': 'width: 150%;',
         
@@ -364,7 +364,7 @@ class formulario_alertas(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['descripcion'].widget.attrs['autofocus'] = True
+        self.fields['descripcion_alerta'].widget.attrs['autofocus'] = True
         #self.fields['fch_recordatorio'].widget = widgets.AdminSplitDateTime()
         
         #self.fields['usuario_creacion'].widget.attrs['value'] = ''
@@ -375,7 +375,7 @@ class formulario_alertas(ModelForm):
         exclude = ['id_cliente','fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado']
 
         widgets = {
-            'descripcion': TextInput(attrs={'placeholder': 'Ingrese una breve descripción', }),
+            'descripcion_alerta': TextInput(attrs={'placeholder': 'Ingrese una breve descripción', }),
      
         }
 

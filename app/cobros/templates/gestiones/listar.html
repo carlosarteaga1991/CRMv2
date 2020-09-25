@@ -54,36 +54,24 @@
             
             
         <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
-            <div class=" div_ingresar_gestion" style="width: 100%; height:100%;">
-                    <form method="POST" action="." style=" width: 100%;  overflow: hidden; "> 
+            <div class=" div_ingresar_gestion"><!-- style="width: 100%; height:100%;"-->
+                    <form method="POST" action="." > <!--style=" width: 100%;  overflow: hidden; "-->
                         {% csrf_token %}
-
-                        <!-- BOX BOTONES -->
-                            <div style="width: 15%; float:right; ">
-                            <br>
-                   
-                                <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width:70%; position: relative; left: 10%; top: 15px;"><i class="fas fa-times"></i></i> Cancelar</a>
-                                <br><br>
-                                <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width:70%; position: relative; left: 10%; top: 25px;"><i class="fas fa-save"></i> Guardar</button>
-                            </div>
-                        <!-- /. BOX BOTONES -->
+                        <input type="hidden" name="action" value="gestion">
+                        
 
                         <!-- BOX INGRESAR GESTIÓN -->
-                            <div style="  width: 60%;  float:left;">
+                            <div style="  width: 100%; "><!-- float:left;-->
                                 <div class="form-group" style="">
                                     {{ context.formGuardar.descripcion }}
-                                </div>
-                            </div>
-                        <!-- /. BOX INGRESAR GESTIÓN -->
-                       
-
-                        <!-- BOX ANIDADO -->
-                            <div style="float:right; width: 25%;">
-                                
+                                    <!-- BOX ANIDADO -->
+                                    <br>
+                            <div style=" width: 25%; ">
                                     <!-- SELECT ANIDADO -->
-                                    <label style="font-size: 13px;">&nbsp;Código</label>
-                                        <div class="col-md-6">
-                                            <select name="codigo" id="id_codigo" required class="fornm-control form-control" style="width: 200%; height: 36px;">>
+                                    
+                                        <div class="col-md-6" style="position: absolute; ">
+                                        <label style="font-size: 13px; ">&nbsp;Código:</label>
+                                            <select name="codigo" id="id_codigo" required style=" background-color: #fff; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px;">>
                                                 <option  value="0" >--------------</option>
                                                     {% for xx in codigos %}
                                                 <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
@@ -91,10 +79,9 @@
                                             </select>
                                         </div>
                                         
-                                        <label style="font-size: 13px;">&nbsp;Motivo:</label>
-                                        
-                                        <div class="col-md-6">
-                                            <select name="motivo" id="id_motivo" required class="fornm-control form-control" style="width: 200%; height: 36px;"><!-- order-radius: 4px; font-family: 'Verdana', sans-serif; background-color: #fff;-->
+                                        <div class="col-md-6" style="position: absolute; left: 22%;">
+                                        <label style="font-size: 13px; ">&nbsp;Motivo:</label>
+                                            <select name="motivo" id="id_motivo" required style=" background-color: #fff; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px;" ><!--onchange="ShowSelected();"-->
                                                 <option value="0">-----Seleccione Motivo-----</option>
                                                     {% for yy in motivos %}
                                                 <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
@@ -103,8 +90,36 @@
                                         </div>
                                     <!-- /. SELECT ANIDADO -->
 
+                                    <div class="col-md-6" style="position: absolute; left: 44%; ">
+                                    <label style="font-size: 13px; ">Valor:</label> <input id="valor_input" disabled style=" border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px; width: 20%;" type="number">
+                                    </div>
+
+                                    <div class="col-md-6" style="position: absolute; left: 60%; ">
+                                    <label style="font-size: 13px; ">Fecha:</label> <input id="fecha_input" type="date" disabled style=" border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px; width: 25%;">
+                                    </div>
+                        <!-- /. BOX ANIDADO --> 
+
+                        <!-- BOX BOTONES -->
+                                    <!--<div class="col-md-6" style="position: absolute; left: 80%; ">
+                                    <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width: 15%; height: 31px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
+                                    </div>-->
+
+                                    <div class="col-md-6" style="position: absolute; left: 80%; ">
+                                    <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width: 30%; height: 31px;"><i class="fas fa-save"></i> Guardar</button><!--style="width:70%; position: relative; left: -50%; top: 10px;"-->
+                                    </div>
+                         <!-- /. BOX BOTONES -->
+
+                                </div>
                             </div>
-                        <!-- /. BOX ANIDADO -->             
+                        <!-- /. BOX INGRESAR GESTIÓN -->
+                       
+                        
+
+                       
+                        
+                                
+                                    
+                                        
 
                         
                         
@@ -116,7 +131,7 @@
 
 
         <!-- DIV para historico_gestiones class="div_historico_gestiones" -->
-       
+            <br>
             <div class=" div_historico_gestiones" >
                 <div class="row" style="font-size: 12px;">
                     <div class="col-md-12" >
@@ -368,14 +383,15 @@
         <!-- /. CARGAR TABLA CONTACTOS-->
 
         <!-- AGREGAR ALERTA-->
-        <div id="alert_mod" style="display:none;">
-            <form method="POST" action="." >
-                {% csrf_token %}
-                <label style="position: fixed; left:31.5%; ">Fecha:</label> <input type="date" name="fch_recordatorio" style="position: fixed; left:35%; border: 1px solid silver; border-radius: 4px; width: 15%;" min="{{ context.fecha_actual }}">
-                <label style="position: fixed; left:55%; ">Hora:</label> <input type="time" name="hora_recordatorio" style="position: fixed; left:58%;border: 1px solid silver; border-radius: 4px; ">
-                <br><br>
-                {{context.form_alerta.descripcion }}
-        </div>
+            <div id="alert_mod" style="display:none;">
+                <form method="POST" action="." >
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="alerta">
+                    <label style="position: fixed; left:31.5%;">Fecha:</label> <input type="date" required name="fch_recordatorio" style="position: fixed; left:35%; border: 1px solid silver; border-radius: 4px; width: 15%;" min="{{ context.fecha_actual }}">
+                    <label style="position: fixed; left:55%; ">Hora:</label> <input type="time" required name="hora_recordatorio" style="position: fixed; left:58%;border: 1px solid silver; border-radius: 4px; ">
+                    <br><br>
+                    {{context.form_alerta.descripcion_alerta }}
+            </div>
         <!-- /. AGREGAR ALERTA-->
 
         </div>
@@ -389,14 +405,6 @@
     </div>
     </div>
 <!-- /. MODAL -->
-                
-
-
-<div >
-</div>
-            
-
-
 
 <script type="application/javascript">
 
@@ -583,6 +591,74 @@
     });
 // FIN ACTIVACIÓN DE MODAL
 
+
+// INICIO VALIDACIÓN INPUT EN DISABLED
+    /*function ShowSelected()
+    {
+        var cod = document.getElementById("id_motivo").value;
+        alert(cod);
+    }*/
+    $('#id_motivo').on('click', function () {
+    var id = $('#id_motivo').val();
+    var hoy = new Date();    
+    var anio = hoy.getFullYear();
+    var dia = hoy.getDate();
+    var mes = hoy.getMonth()+1;
+
+    if(dia<10) {
+    dia='0'+dia;
+    } 
+    
+    if(mes<10) {
+        mes='0'+mes;
+    }
+
+    var fecha = String(anio) + "-" + String(mes) + "-" + String(dia);
+
+    if (id == 4) { // arreglo de pago
+        document.getElementById('valor_input').disabled = false;
+        document.getElementById('fecha_input').disabled = false;
+        document.getElementById('valor_input').placeholder = "Monto de arreglo";
+        document.getElementById('valor_input').required = true;
+        document.getElementById('fecha_input').required = true;
+        $("#fecha_input").val("");
+        document.getElementById('fecha_input').min = fecha;
+        document.getElementById('fecha_input').max = "2050-12-30";
+    } else {
+        if (id == 6) { //promesa
+            document.getElementById('valor_input').disabled = false;
+            document.getElementById('fecha_input').disabled = false;
+            document.getElementById('valor_input').placeholder = "Monto promesa";
+            document.getElementById('valor_input').required = true;
+            document.getElementById('fecha_input').required = true;
+            $("#fecha_input").val("");
+            document.getElementById('fecha_input').min = fecha;
+            document.getElementById('fecha_input').max = "2050-12-30";
+        }else {
+            if (id == 7) { //monto pagado
+                document.getElementById('valor_input').disabled = false;
+                document.getElementById('fecha_input').disabled = false;
+                document.getElementById('valor_input').placeholder = "Monto de pago";
+                document.getElementById('valor_input').required = true;
+                document.getElementById('fecha_input').required = true;
+                $("#fecha_input").val("");
+                document.getElementById('fecha_input').max = fecha;
+                document.getElementById('fecha_input').min = "2010-12-30";
+            }else {
+                $("#fecha_input").val("");
+                document.getElementById('valor_input').disabled = true;
+                document.getElementById('fecha_input').disabled = true;
+                document.getElementById('valor_input').placeholder = "";
+                document.getElementById('valor_input').required = false;
+                document.getElementById('fecha_input').required = false;
+                
+            }
+        }
+    }
+    
+       
+    });
+// FIN VALIDACIÓN INPUT EN DISABLED
 
 </script>
 

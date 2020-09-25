@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView,TemplateView
-from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos,Promesas,Pagos,Visitas
+from app.cobros.models import Codigos,Motivos,Gestiones,Contactos,Clientes,Productos,Promesas,Pagos,Visitas,Recordatorios
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -30,32 +30,36 @@ class listar_gestiones(TemplateView):
         try:
             # INICIO esto para hacer el select anidado con AJAX
            
-            #action = request.POST['action']
-            #if action == 'search_codigo_id':
-            #    data = []
-            #    #data = [{'id': '', 'text': '---------'}]
-            #    for i in Motivos.objects.filter(id_codigo=request.POST['id']):
-            #        data.append({'id':i.id_motivo, 'descripcion':i.descripcion})
-            #        #data.append({'id':i.id_motivo, 'text':i.descripcion})
-            #else:
-            #    data['error'] = 'Ha ocurrido un error'
+            action = request.POST['action']
+            if action == 'alerta':
+                nuevo1 = Recordatorios(
+                    descripcion_alerta = request.POST['descripcion_alerta'],
+                    fch_recordatorio = request.POST['fch_recordatorio'],
+                    hora_recordatorio = request.POST['hora_recordatorio'],
+                    id_cliente_id = self.kwargs['pk'],
+                    usuario_creacion_id = request.user.id,
+                    estado = '1'
+                )
+                nuevo1.save()
+                return redirect('/cobros/gestion/' + str(self.kwargs['pk']) +'/')
+            else:
+                data['error'] = 'Ha ocurrido un error'
             
             # FIN esto para hacer el select anidado con AJAX
            
-            # importante cuando quiuto lo del anidamiento si guarda bien y comento lo del form.is_valid y sus referencias
 
-            #if form.is_valid():
-            nuevo = Gestiones(
-                descripcion = request.POST['descripcion'],
-                id_codigo_id = int(request.POST['codigo']),
-                id_motivo_id = int(request.POST['motivo']),
-                id_cliente_id = self.kwargs['pk'],
-                #id_usuario_id = request.user.id,
-                usuario_creacion_id = request.user.id,
-                estado = '1'
-            )
-            nuevo.save()
-            return redirect('/cobros/gestion/' + str(self.kwargs['pk']) +'/')
+            action2 = request.POST['action']
+            if action2 == 'gestion':
+                nuevo = Gestiones(
+                    descripcion = request.POST['descripcion'],
+                    id_codigo_id = int(request.POST['codigo']),
+                    id_motivo_id = int(request.POST['motivo']),
+                    id_cliente_id = self.kwargs['pk'],
+                    usuario_creacion_id = request.user.id,
+                    estado = '1'
+                )
+                nuevo.save()
+                return redirect('/cobros/gestion/' + str(self.kwargs['pk']) +'/')
      
                 
         except Exception as e:

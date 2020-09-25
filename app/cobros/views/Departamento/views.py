@@ -14,7 +14,7 @@ from datetime import datetime
 
 
 def home(request):
-    diccionario = {
+    diccionario = { 
         'nombre': 'carlos portillo',
         'plantilla': 'Home',
         'objeto_departamento': Departamentos.objects.all()

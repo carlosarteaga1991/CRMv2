@@ -165,7 +165,7 @@ class Recordatorios(models.Model):
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     fch_recordatorio = models.DateField()
     hora_recordatorio = models.TimeField(default="00:00:00")
-    descripcion = models.CharField(max_length=100, blank=True, null=True)
+    descripcion_alerta = models.CharField(max_length=100, blank=True, null=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fch_modificacion = models.CharField(max_length=35, blank=True)

@@ -59,6 +59,54 @@ class listar_gestiones(TemplateView):
                     estado = '1'
                 )
                 nuevo.save()
+
+                # INICIO PROMESAS / ARREGLOS
+                if int(request.POST['motivo']) == 6 or int(request.POST['motivo']) == 4 :
+                    if int(request.POST['motivo']) == 6:
+                        mot = "Promesa"
+                    else:
+                        mot = "Arreglo de Pago"
+                    promesa = Promesas(
+                        id_usuario_id = request.user.id,
+                        fecha = request.POST['fecha'],
+                        hora = request.POST['hora'],
+                        valor =  request.POST['valor'],
+                        motivo_descrip = mot,
+                        descripcion = request.POST['descripcion'],
+                        usuario_creacion = request.user.id,
+                        id_cliente_id = self.kwargs['pk']
+                    )
+                    promesa.save()
+                # FIN PROMESAS / ARREGLOS
+
+                # INICIO PAGOS
+                if int(request.POST['motivo']) == 7:
+                    pago = Pagos(
+                        id_usuario_id = request.user.id,
+                        fecha = request.POST['fecha'],
+                        valor =  request.POST['valor'],
+                        descripcion = request.POST['descripcion'],
+                        usuario_creacion = request.user.id,
+                        id_cliente_id = self.kwargs['pk']
+                    )
+                    pago.save()
+                # FIN PAGOS
+
+                # INICIO VISITAS
+                if int(request.POST['motivo']) == 8 or int(request.POST['motivo']) == 9:
+                    if int(request.POST['motivo']) == 8:
+                        moti = "Trabajo"
+                    else:
+                        moti = "Casa"
+                    visita = Visitas(
+                        id_usuario_id = request.user.id,
+                        lugar = request.POST['descripcion'],
+                        motivo_descrip = moti,
+                        usuario_creacion = request.user.id,
+                        id_cliente_id = self.kwargs['pk']
+                    )
+                    visita.save()
+                # FIN VISITAS
                 return redirect('/cobros/gestion/' + str(self.kwargs['pk']) +'/')
      
                 
@@ -80,7 +128,7 @@ class listar_gestiones(TemplateView):
         productos = Productos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         promesas = Promesas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         visitas = Visitas.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
-        promesas_incumplidas = Promesas.objects.filter(borrado=0,estatus_promesa=3,id_cliente=self.kwargs['pk'])
+        promesas_incumplidas = Promesas.objects.filter(borrado=0,estatus_promesa='Incumplida',id_cliente=self.kwargs['pk'])
         pagos = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         ultimo_pago = Pagos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])
         contactos = Contactos.objects.filter(borrado=0,id_cliente=self.kwargs['pk'])

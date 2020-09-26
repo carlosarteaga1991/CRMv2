@@ -259,6 +259,7 @@ class Promesas(models.Model):
     hora = models.TimeField()
     valor = models.DecimalField(max_digits=19, decimal_places=2)
     descripcion = models.TextField()
+    motivo_descrip = models.CharField(max_length=20, blank=True, null=True)
     estatus_promesa = models.CharField('Estatus de la Promesa',max_length=11,default='Pendiente',choices=
     [('Pendiente','Pendiente'),
      ('Cumplida','Cumplida'),
@@ -312,8 +313,9 @@ class Visitas(models.Model):
     id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    fch_visita_realizada = models.DateField()
+    fch_visita_realizada = models.DateField(blank=True, null=True)
     lugar = models.CharField(max_length=1500, blank=True)
+    motivo_descrip = models.CharField(max_length=20, blank=True, null=True)
     respuesta_visita = models.CharField(max_length=1500, blank=True)
     estatus_visita = models.CharField('Estatus de la Visita',max_length=25,default='Pendiente',choices=
     [('Pendiente','Pendiente'),

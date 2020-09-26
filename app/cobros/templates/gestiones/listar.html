@@ -79,7 +79,7 @@
                                             </select>
                                         </div>
                                         
-                                        <div class="col-md-6" style="position: absolute; left: 22%;">
+                                        <div class="col-md-6" style="position: absolute; left: 20%;">
                                         <label style="font-size: 13px; ">&nbsp;Motivo:</label>
                                             <select name="motivo" id="id_motivo" required style=" background-color: #fff; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px;" ><!--onchange="ShowSelected();"-->
                                                 <option value="0">-----Seleccione Motivo-----</option>
@@ -90,12 +90,16 @@
                                         </div>
                                     <!-- /. SELECT ANIDADO -->
 
-                                    <div class="col-md-6" style="position: absolute; left: 44%; ">
-                                    <label style="font-size: 13px; ">Valor:</label> <input id="valor_input" disabled style=" border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px; width: 20%;" type="number">
+                                    <div class="col-md-6" style="position: absolute; left: 40%; ">
+                                    <label style="font-size: 13px; ">Valor:</label> <input id="valor_input" name="valor" disabled style=" border: 1px solid silver; border-radius: 4px; width: 20%; height: 33px; " type="number" step = "any">
                                     </div>
 
-                                    <div class="col-md-6" style="position: absolute; left: 60%; ">
-                                    <label style="font-size: 13px; ">Fecha:</label> <input id="fecha_input" type="date" disabled style=" border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px; width: 25%;">
+                                    <div class="col-md-6" style="position: absolute; left: 54%; ">
+                                    <label style="font-size: 13px; ">Fecha:</label> <input id="fecha_input" name="fecha" type="date" disabled style=" border: 1px solid silver; border-radius: 4px; width: 24%; height: 33px; ">
+                                    </div>
+
+                                    <div class="col-md-6" style="position: absolute; left: 70%; ">
+                                    <label style="font-size: 13px; ">Hora:</label> <input type="time" id="hora_input" name="hora" disabled style="border: 1px solid silver; border-radius: 4px; width: 15%; height: 33px;">
                                     </div>
                         <!-- /. BOX ANIDADO --> 
 
@@ -104,8 +108,8 @@
                                     <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width: 15%; height: 31px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
                                     </div>-->
 
-                                    <div class="col-md-6" style="position: absolute; left: 80%; ">
-                                    <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width: 30%; height: 31px;"><i class="fas fa-save"></i> Guardar</button><!--style="width:70%; position: relative; left: -50%; top: 10px;"-->
+                                    <div class="col-md-6" style="position: absolute; left: 82%; ">
+                                    <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width: 30%; height: 31px;"><i class="fas fa-save"></i> &nbsp;&nbsp;&nbsp;<strong>Guardar</strong></button><!--style="width:70%; position: relative; left: -50%; top: 10px;"-->
                                     </div>
                          <!-- /. BOX BOTONES -->
 
@@ -281,8 +285,9 @@
                                             <th  scope="col" style=" text-align:center; color: white;">Hora</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Valor</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
-                                            <th  scope="col" style=" text-align:center; color: white;">Fecha de Ingreso de Promesa</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Motivo</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Descripción</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha de Ingreso</th>
                                         </tr>
                                     
                                     </thead>
@@ -294,8 +299,9 @@
                                                     <td style="height: auto; text-align:left;">  {{ x.hora }}  </td>
                                                     <td style="height: auto; text-align:center;"> {{ x.valor |intcomma }}</td>
                                                     <td style="height: auto; text-align:center;"> {{ x.estatus_promesa }}</td>
+                                                    <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
+                                                    <td style="height: auto; text-align:center;"> <div style="width:350px; overflow:hidden;">{{ x.descripcion }}</div></td>
                                                     <td style="height: auto; text-align:center;"> {{ x.fch_creacion }}</td>
-                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.descripcion }}</div></td>
                                                 </tr>
                                         {% endfor %}
 
@@ -317,7 +323,8 @@
                                     <thead style="background: #A4C6FF;">
                                 
                                         <tr >
-                                            <th  scope="col" style=" text-align:center; color: white;">Fecha de Creación</th>
+                                            <th  scope="col" style=" text-align:center; color: white;">Fecha Creación</th>
+                                            <!--<th  scope="col" style=" text-align:center; color: white;">Descripción</th>-->
                                             <th  scope="col" style=" text-align:center; color: white;">Lugar</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
@@ -330,12 +337,16 @@
 
                                             {% for x in visitas %}
                                                 <tr >
-                                                    <td style=" text-align:left;">{{ x.fecha }}</td>
                                                     <td style="height: auto; text-align:left;">  {{ x.fch_creacion }}  </td>
-                                                    <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.lugar }}</div></td>
+                                                    <!--<td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.lugar }}</div></td>-->
+                                                    <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
                                                     <td style="height: auto; text-align:center;"> {{ x.id_usuario }}</td>
                                                     <td style="height: auto; text-align:center;"> {{ x.estatus_visita }}</td>
-                                                    <td style="height: auto; text-align:center;"> {{ x.fch_visita_realizada }}</td>
+                                                    <td style="height: auto; text-align:center;"> {% if x.fch_visita_realizada == Null %}
+                                                    
+                                                    {% else %}
+                                                    {{ x.fch_visita_realizada }}
+                                                    {% endif %}</td>
                                                     <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.respuesta_visita }}</div></td>
                                                 </tr>
                                         {% endfor %}
@@ -618,39 +629,55 @@
     if (id == 4) { // arreglo de pago
         document.getElementById('valor_input').disabled = false;
         document.getElementById('fecha_input').disabled = false;
-        document.getElementById('valor_input').placeholder = "Monto de arreglo";
+        document.getElementById('hora_input').disabled = false;
+        $("#valor_input").val("");
+        document.getElementById('valor_input').placeholder = "Monto arreglo";
         document.getElementById('valor_input').required = true;
         document.getElementById('fecha_input').required = true;
+        document.getElementById('hora_input').required = true;
         $("#fecha_input").val("");
+        $("#hora_input").val("");
         document.getElementById('fecha_input').min = fecha;
         document.getElementById('fecha_input').max = "2050-12-30";
     } else {
         if (id == 6) { //promesa
             document.getElementById('valor_input').disabled = false;
             document.getElementById('fecha_input').disabled = false;
+            document.getElementById('hora_input').disabled = false;
+            $("#valor_input").val("");
             document.getElementById('valor_input').placeholder = "Monto promesa";
             document.getElementById('valor_input').required = true;
             document.getElementById('fecha_input').required = true;
+            document.getElementById('hora_input').required = true;
             $("#fecha_input").val("");
+            $("#hora_input").val("");
             document.getElementById('fecha_input').min = fecha;
             document.getElementById('fecha_input').max = "2050-12-30";
         }else {
             if (id == 7) { //monto pagado
                 document.getElementById('valor_input').disabled = false;
                 document.getElementById('fecha_input').disabled = false;
-                document.getElementById('valor_input').placeholder = "Monto de pago";
+                document.getElementById('hora_input').disabled = true;
+                $("#valor_input").val("");
+                document.getElementById('valor_input').placeholder = "Monto pago";
                 document.getElementById('valor_input').required = true;
                 document.getElementById('fecha_input').required = true;
+                document.getElementById('hora_input').required = false;
                 $("#fecha_input").val("");
+                $("#hora_input").val("");
                 document.getElementById('fecha_input').max = fecha;
                 document.getElementById('fecha_input').min = "2010-12-30";
             }else {
                 $("#fecha_input").val("");
+                $("#hora_input").val("");
+                $("#valor_input").val("");
                 document.getElementById('valor_input').disabled = true;
                 document.getElementById('fecha_input').disabled = true;
+                document.getElementById('hora_input').disabled = true;
                 document.getElementById('valor_input').placeholder = "";
                 document.getElementById('valor_input').required = false;
                 document.getElementById('fecha_input').required = false;
+                document.getElementById('hora_input').required = false;
                 
             }
         }

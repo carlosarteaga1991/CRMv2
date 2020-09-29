@@ -9,15 +9,18 @@
 <script src="{% static 'js/functions.js' %}"></script>
 
 {% block contenido %}
-    <div style="color: blue; padding-top: 3%;"><!-- style="background: #6CA3FC; "-->
-        <h3 class="card-title"> <strong>Datos del Cliente</strong></h3>
+    <!--<div style="color: blue; padding-top: 0%; ">--><!-- style="background: #6CA3FC; "-->
+       
+            <a href="{{ context.btn_cancelar }}" class = "" style="width: 15%; height: 31px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
+        
+        <!--<h3 class="card-title"> <strong>Datos del Cliente</strong></h3>-->
         <!--<h3 class="card-title float-right" >Usuario seguimiento: <strong>{{ context.usuario_duenio }}</strong></h3>-->
-    </div>
-    <div >
+    <!--</div>-->
+    <div>
         
         <br>
         <!-- DIV para cliente class="div_cliente"-->   
-           <div style=" width: 100%;  overflow: hidden; top: 5%;">
+           <div style=" width: 100%;  overflow: hidden; top: 5%; ">
             {% for clte in cliente %} 
                 <div style="  width: 40%;  float:left; ">
                     <h6 style="font-size: 13px;"><strong>Nombre:</strong> {{ clte.nombre }} </h6>
@@ -38,7 +41,7 @@
                 </div>
                 {% endfor %}
 
-                <div style="  width: 30%;  float:right; text-align:left;">
+                <div style="  width: 30%;  float:right; text-align:left; ">
                     <h6 style="font-size: 13px;"><a href="#"  class="link_productos">Histórico de Productos &nbsp;(<strong>{{ context.cont_produtos }}</strong>)</a></h6>
                     <h6 style="font-size: 13px;"><a href="#"  class="link_pagos">Histórico de Pagos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<strong>{{ context.cont_pagos }}</strong>)</a></h6>
                     <h6 style="font-size: 13px;"><a href="#"  class="link_promesas">Histórico de Promesas &nbsp;&nbsp;(<strong>{{ context.cont_promesas }}</strong>)</a></h6> 
@@ -54,79 +57,69 @@
             
             
         <!-- DIV para ingresar_gestion class="div_ingresar_gestion"-->
-            <div class=" div_ingresar_gestion"><!-- style="width: 100%; height:100%;"-->
-                    <form method="POST" action="." > <!--style=" width: 100%;  overflow: hidden; "-->
+            <div class=" div_ingresar_gestion" >
+                    <form method="POST" action="." > 
                         {% csrf_token %}
                         <input type="hidden" name="action" value="gestion">
                         
 
                         <!-- BOX INGRESAR GESTIÓN -->
-                            <div style="  width: 100%; "><!-- float:left;-->
-                                <div class="form-group" style="">
-                                    {{ context.formGuardar.descripcion }}
-                                    <!-- BOX ANIDADO -->
-                                    <br>
-                            <div style=" width: 25%; ">
-                                    <!-- SELECT ANIDADO -->
-                                    
-                                        <div class="col-md-6" style="position: absolute; ">
-                                        <label style="font-size: 13px; ">&nbsp;Código:</label>
-                                            <select name="codigo" id="id_codigo" required style=" background-color: #fff; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px;">>
-                                                <option  value="0" >--------------</option>
-                                                    {% for xx in codigos %}
-                                                <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
-                                                    {% endfor %}
-                                            </select>
+                                <div >
+                                    <div class="form-group" >
+                                        {{ context.formGuardar.descripcion }}
+                                       
+                                        <br>
+                                        <div >
+                                            <!-- SELECT ANIDADO -->
+                                                <div class="col-md-6" style="position: absolute; ">
+                                                    <label style="font-size: 13px; ">&nbsp;Código:</label>
+                                                        <select name="codigo" id="id_codigo" required style=" background-color: #fff; font-size: 12px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 25%; height: 26px;">>
+                                                            <option  value="0" >--------------</option>
+                                                                {% for xx in codigos %}
+                                                            <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    
+                                                                {% endfor %}
+                                                        </select>
+                                                </div>
+                                                
+                                                <div class="col-md-6" style="position: absolute; left: 18%; ">
+                                                    <label style="font-size: 13px; ">&nbsp;Motivo:</label>
+                                                        <select name="motivo" id="id_motivo" required style=" background-color: #fff; font-size: 12px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 25%; height: 26px;" ><!--onchange="ShowSelected();"-->
+                                                            <option value="0">-----Seleccione Motivo-----</option>
+                                                                {% for yy in motivos %}
+                                                            <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
+                                                                {% endfor %}
+                                                        </select>
+                                                </div>
+                                            <!-- /. SELECT ANIDADO -->
+
+                                                <div  style="position: absolute; left: 36%; width: 47%;">
+                                                    <label style="font-size: 13px; ">Valor:</label> <input id="valor_input" name="valor" disabled style=" font-size: 12px; border: 1px solid silver; border-radius: 4px; width: 20%; height: 26px; " type="number" step = "any">
+                                                </div>
+
+                                                <div  style="position: absolute; left: 49%; width: 49%;">
+                                                    <label style="font-size: 13px; ">Fecha:</label> <input id="fecha_input" name="fecha" type="date" disabled style=" font-size: 12px; border: 1px solid silver; border-radius: 4px; width: 24%; height: 26px; ">
+                                                </div>
+
+                                                <div  style="position: absolute; left: 65%; ">
+                                                    <label style="font-size: 13px; ">Hora:</label> <input type="time" id="hora_input" name="hora" disabled style="font-size: 12px; border: 1px solid silver; border-radius: 4px; height: 26px;">
+                                                </div>
+                            
+
+                                            <!-- BOX BOTONES -->
+                                                        <div  style="position: absolute; left: 79%; ">
+                                                        <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width: 150%; height: 26px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
+                                                        </div>
+
+                                                        <div  style="position: absolute; left: 88%; ">
+                                                            <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style=" width: 150%; height: 26px;"><i class="fas fa-save"></i> &nbsp;&nbsp;&nbsp;<strong>Guardar</strong></button>
+                                                        </div>
+                                            <!-- /. BOX BOTONES -->
+
                                         </div>
-                                        
-                                        <div class="col-md-6" style="position: absolute; left: 20%;">
-                                        <label style="font-size: 13px; ">&nbsp;Motivo:</label>
-                                            <select name="motivo" id="id_motivo" required style=" background-color: #fff; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 30%; height: 34px;" ><!--onchange="ShowSelected();"-->
-                                                <option value="0">-----Seleccione Motivo-----</option>
-                                                    {% for yy in motivos %}
-                                                <option value="{{ yy.id_motivo }}" data-chained="{{ yy.id_codigo_id }}">{{ yy.descripcion }}</option>    
-                                                    {% endfor %}
-                                                </select>
-                                        </div>
-                                    <!-- /. SELECT ANIDADO -->
-
-                                    <div class="col-md-6" style="position: absolute; left: 40%; ">
-                                    <label style="font-size: 13px; ">Valor:</label> <input id="valor_input" name="valor" disabled style=" border: 1px solid silver; border-radius: 4px; width: 20%; height: 33px; " type="number" step = "any">
                                     </div>
-
-                                    <div class="col-md-6" style="position: absolute; left: 54%; ">
-                                    <label style="font-size: 13px; ">Fecha:</label> <input id="fecha_input" name="fecha" type="date" disabled style=" border: 1px solid silver; border-radius: 4px; width: 24%; height: 33px; ">
-                                    </div>
-
-                                    <div class="col-md-6" style="position: absolute; left: 70%; ">
-                                    <label style="font-size: 13px; ">Hora:</label> <input type="time" id="hora_input" name="hora" disabled style="border: 1px solid silver; border-radius: 4px; width: 15%; height: 33px;">
-                                    </div>
-                        <!-- /. BOX ANIDADO --> 
-
-                        <!-- BOX BOTONES -->
-                                    <!--<div class="col-md-6" style="position: absolute; left: 80%; ">
-                                    <a href="{{ context.btn_cancelar }}" class = "btn btn-xs btn-danger" style="width: 15%; height: 31px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
-                                    </div>-->
-
-                                    <div class="col-md-6" style="position: absolute; left: 82%; ">
-                                    <button type="submit" class = "btn btn-xs btn-success t eventoAjax" style="width: 30%; height: 31px;"><i class="fas fa-save"></i> &nbsp;&nbsp;&nbsp;<strong>Guardar</strong></button><!--style="width:70%; position: relative; left: -50%; top: 10px;"-->
-                                    </div>
-                         <!-- /. BOX BOTONES -->
-
                                 </div>
-                            </div>
                         <!-- /. BOX INGRESAR GESTIÓN -->
                        
-                        
-
-                       
-                        
-                                
-                                    
-                                        
-
-                        
-                        
                     </form>
             </div>
         <!-- /. DIV para ingresar_gestion class="div_ingresar_gestion"-->
@@ -316,12 +309,11 @@
         <!-- CARGAR TABLA VISITAS-->
             <div id="vis_mod" style="display:none;">
                 <div class="row" style="font-size: 12px;">
-                        <div class="col-md-12" >
+                        <div class="col-md-12">
                             <div class="table-responsive">
 
                                 <table class="table table-bordered table-striped"  id="data_gestiones" >
                                     <thead style="background: #A4C6FF;">
-                                
                                         <tr >
                                             <th  scope="col" style=" text-align:center; color: white;">Fecha Creación</th>
                                             <!--<th  scope="col" style=" text-align:center; color: white;">Descripción</th>-->
@@ -331,7 +323,6 @@
                                             <th  scope="col" style=" text-align:center; color: white;">Fecha que se Visitó</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Respuesta de la Visita</th>
                                         </tr>
-                                    
                                     </thead>
                                     <tbody >
 
@@ -398,8 +389,8 @@
                 <form method="POST" action="." >
                     {% csrf_token %}
                     <input type="hidden" name="action" value="alerta">
-                    <label style="position: fixed; left:31.5%;">Fecha:</label> <input type="date" required name="fch_recordatorio" style="position: fixed; left:35%; border: 1px solid silver; border-radius: 4px; width: 15%;" min="{{ context.fecha_actual }}">
-                    <label style="position: fixed; left:55%; ">Hora:</label> <input type="time" required name="hora_recordatorio" style="position: fixed; left:58%;border: 1px solid silver; border-radius: 4px; ">
+                    <label style="position: fixed; left:31.5%;">Fecha:&nbsp;&nbsp;</label> <input type="date" required name="fch_recordatorio" style="position: fixed; left:37%; border: 1px solid silver; border-radius: 4px; width: 15%;" min="{{ context.fecha_actual }}">
+                    <label style="position: fixed; left:55%; ">Hora:&nbsp;&nbsp;</label> <input type="time" required name="hora_recordatorio" style="position: fixed; left:60%;border: 1px solid silver; border-radius: 4px; ">
                     <br><br>
                     {{context.form_alerta.descripcion_alerta }}
             </div>

@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from app.cobros.forms import formulario_motivos,formulario_gestion,formualario_guardar_gestion,formulario_alertas
 from django.shortcuts import render,redirect
 
+
 from datetime import datetime,date
 
 

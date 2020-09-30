@@ -138,6 +138,13 @@ class listar_gestiones(TemplateView):
         motivos = Motivos.objects.filter(borrado=0,estado=1)
         mora = 0
 
+        # PARA RECORDATORIOS
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.kwargs['pk'])
+        cont_rcrio = 0
+
+        for x in recordatorios:
+            cont_rcrio += 1
+
         for x in productos:
             var += x.saldo_total
             var2 += 1
@@ -175,6 +182,7 @@ class listar_gestiones(TemplateView):
         context = super().get_context_data(**kwargs)
         context['saldo_total'] = var
         context['cont_produtos'] = var2
+        context['cont_recordatorio'] = cont_rcrio 
         context['cont_pagos'] = var4
         context['cont_visitas'] = var7
         context['cont_promesas'] = var3

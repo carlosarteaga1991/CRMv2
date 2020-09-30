@@ -50,7 +50,7 @@ class Puestos(models.Model):
 
 class Empresas(models.Model):
     id_empresa = models.AutoField(primary_key=True)
-    nombre_empresa = models.CharField("Nombre de la empresa",max_length=120)
+    nombre_empresa = models.CharField("Nombre de la empresa",max_length=120, unique=True)
     descripcion = models.CharField("Descripción",max_length=450,blank=True)
     telefono = models.CharField("Teléfono",max_length=50, blank=True)
     nombre_contacto = models.CharField("Nombre del contacto",max_length=80,blank=True)
@@ -186,7 +186,7 @@ class Recordatorios(models.Model):
 
 class Codigos(models.Model):
     id_codigo = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -208,7 +208,7 @@ class Codigos(models.Model):
 class Motivos(models.Model):
     id_motivo = models.AutoField(primary_key=True)
     id_codigo = models.ForeignKey(Codigos,on_delete=models.PROTECT)
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
@@ -341,7 +341,7 @@ class Visitas(models.Model):
 
 class LogCobros(models.Model):
     id_log = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
+    id_user = models.ForeignKey(Usuario,on_delete=models.PROTECT,default=1,verbose_name="Usuario")
     nombre_tabla = models.CharField(max_length=35)
     fecha = models.DateTimeField(auto_now_add=True)
     id_registro = models.IntegerField(blank=True,null=True)
@@ -352,7 +352,7 @@ class LogCobros(models.Model):
     campo_afectado = models.CharField(max_length=35,blank=True)
 
     def __str__(self):
-        return 'Cliente Número: %s, tabla afectada: %s' %( self.id_cliente,self.nombre_tabla)
+        return self.nombre_tabla
     
     def toJSON(self): #función para crear diccionarios que se envían en la vista
         item = model_to_dict(self) # si deseamos excluir ciertos parámetros usamos  como atributo ,exclude['']

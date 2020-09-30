@@ -11,26 +11,32 @@
 
 {% block columnas %}
                     <tr>
-                        <th scope="col" style="width: 10%;">Id</th>
-                        <th scope="col" style="width: 70%;">Nombre Departamento</th>
-                        <th scope="col" style="width: 15%;">Opciones</th>
+                       <!-- <th scope="col" style="width: 10%; text-align:center">Id</th>-->
+                        <th scope="col" style="width: 50%; text-align:center">Nombre Departamento</th>
+                        <th scope="col" style="width: 20%; text-align:center">Estatus</th>
+                        <th scope="col" style="width: 20%; text-align:center">Opciones</th>
                     </tr>
 {% endblock  %}
 
 
 {% block filas %}
                         <!-- se cometa ya que se usará AJAX para hacer la carga de datos  -->
-                        <!--{% for x in object_list %}
+                        {% for x in object_list %}
                             <tr>
-                                <td>{{ x.id_departamento }}</td>
-                                <td>{{ x.nombre }}</td>
-                                <td>
-                                    <a href="{% url 'crm:actualizar_departamento' x.id_departamento %}" class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
-                                    <a href="{% url 'crm:borrar_departamento' x.id_departamento %}"  class="btn btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
-                                    onClick="fun_borrar({{x.id_departamento}},'{{x.nombre}}')" 
+                                <!--<td style="text-align:center">{{ x.id_departamento }}</td>-->
+                                <td >{{ x.nombre }}</td>
+                                <td style="text-align:center">{% if x.estado == '1' %}
+                                    Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}</td></td>
+                                <td style="text-align:center">
+                                    <a href="{% url 'crm:actualizar_departamento' x.id_departamento %}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_departamento' x.id_departamento %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                            
                                 </td>
                             </tr>
-                        {% endfor %}-->
+                        {% endfor %}
 
 {% endblock  %}
 
@@ -48,7 +54,7 @@
                     },
       destroy: true,
       deferRender: true,
-      ajax: {
+      /*ajax: {
           url: window.location.pathname,
           type: 'POST',
           data: {
@@ -60,6 +66,7 @@
       columns: [
           {"data": "id_departamento"},
           {"data": "nombre"},
+          {"data": "estado"},
           {"data": "opciones"},
       ],
       columnDefs: [
@@ -73,7 +80,7 @@
                   return buttons;
               } 
           },
-      ],
+      ],*/
       
       initComplete: function (settings, json) {
 

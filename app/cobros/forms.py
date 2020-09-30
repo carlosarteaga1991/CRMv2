@@ -71,7 +71,7 @@ class formulario_puestos(ModelForm):
     class Meta():
         model = Puestos
         fields = '__all__'
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado']
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado', 'id_departamento']
 
         widgets = {
             'nombre': TextInput(

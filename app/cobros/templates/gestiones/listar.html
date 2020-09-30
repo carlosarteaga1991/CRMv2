@@ -9,7 +9,7 @@
 <script src="{% static 'js/functions.js' %}"></script>
 
 {% block contenido %}
-    <!--<div style="color: blue; padding-top: 0%; ">--><!-- style="background: #6CA3FC; "-->
+    <!--<div style="color: blue; padding-top: 0%; ">--><!-- style="background: white; "-->
        
             <a href="{{ context.btn_cancelar }}" class = "" style="width: 15%; height: 31px;"><i class="fas fa-times"></i></i> <strong>Cancelar</strong></a>
         
@@ -20,7 +20,7 @@
         
         <br>
         <!-- DIV para cliente class="div_cliente"-->   
-           <div style=" width: 100%;  overflow: hidden; top: 5%; ">
+           <div style=" width: 100%;  overflow: hidden; top: 5%;">
             {% for clte in cliente %} 
                 <div style="  width: 40%;  float:left; ">
                     <h6 style="font-size: 13px;"><strong>Nombre:</strong> {{ clte.nombre }} </h6>
@@ -73,7 +73,7 @@
                                             <!-- SELECT ANIDADO -->
                                                 <div class="col-md-6" style="position: absolute; ">
                                                     <label style="font-size: 13px; ">&nbsp;Código:</label>
-                                                        <select name="codigo" id="id_codigo" required style=" background-color: #fff; font-size: 12px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 25%; height: 26px;">>
+                                                        <select name="codigo" id="id_codigo" required style=" background-color: #fff; font-size: 12px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 25%; height: 26px;">
                                                             <option  value="0" >--------------</option>
                                                                 {% for xx in codigos %}
                                                             <option value="{{ xx.id_codigo }}">{{ xx.descripcion }}</option>    

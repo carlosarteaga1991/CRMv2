@@ -19,9 +19,17 @@
 </div>-->
 
 {% block contenido %}
-    <div class=" card-primary" style="padding-top: 2%">
-                <!-- Botón para crear nuevo -->
-                <div class = "card-footer" >
+    <div class=" card-primary" style="padding-top: 5%; ">
+                
+              <div class="" style=" color: black; font-size: 11px; height: 22px">
+
+                <h3 class="card-title">
+                  &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
+                  <strong>{{ titulo_lista }}</strong> <strong>{{ nombre_cliente }}</strong>
+                </h3>
+              </div>
+              <!-- Botón para crear nuevo -->
+                <div class="card-footer" style="background: #FFFFFF;">
                     <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
                         <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
                     </a>
@@ -33,16 +41,7 @@
                   {% endif %}
                     
                 </div>
-              <div class="card" style="background: #A4C6FF; color: white; font-size: 11px; height: 22px">
-
-                            
-
-                <h3 class="card-title">
-                  &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
-                  {{ titulo_lista }} <strong>{{ nombre_cliente }}</strong>
-                </h3>
-              </div>
-
+               
               <!-- alerta exitosa -->
               {% if  tipo  == 'nuevo' %}
                 <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">

@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Puestos
+from app.cobros.models import Puestos,Departamentos
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -47,7 +47,7 @@ class crear_puesto(CreateView):
             if form.is_valid():
                 nuevo = Puestos(
                     nombre = form.cleaned_data.get('nombre'),
-                    id_departamento = form.cleaned_data.get('id_departamento'),
+                    id_departamento_id = int(request.POST['id_departamento']),
                     usuario_creacion = request.user.id,
                     estado = form.cleaned_data.get('estado')
                 )
@@ -65,6 +65,9 @@ class crear_puesto(CreateView):
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Ingrese datos del nuevo puesto'
         context['tipo'] = 'nuevo'
+        context['select_puesto'] = 'mostrar'
+        departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
         return context
 
 class borrar_puesto(DeleteView):
@@ -139,4 +142,12 @@ class actualizar_puesto(UpdateView):
         context['titulo_lista'] = 'Editar puestos'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
+        context['select_puesto'] = 'mostrar'
+        puesto = Puestos.objects.filter(borrado=0, id_puesto = self.kwargs['pk'])
+        z = 0
+        for c in puesto:
+            z = c.id_departamento_id
+        context['seleccionar'] = z
+        departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
         return context

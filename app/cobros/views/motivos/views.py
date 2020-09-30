@@ -58,6 +58,7 @@ class crear_motivos(CreateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -119,6 +120,7 @@ class actualizar_motivos(UpdateView):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
 
+    """
     def post(self, request,*args,**kwargs):
         data = {}
         try:
@@ -133,6 +135,7 @@ class actualizar_motivos(UpdateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
+    """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

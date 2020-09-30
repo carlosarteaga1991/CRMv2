@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
-from app.cobros.models import Departamentos,Clientes
+from app.cobros.models import Departamentos,Clientes,Recordatorios
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -71,8 +71,6 @@ class listview_departamento(ListView):
         return JsonResponse(data, safe=False)
         # #2: se comenta ya que como se envía una coleccion de diccionarios y vienen serializados se coloca el atributo, safe=False.
         # #2return JsonResponse(data)
-        
-
 
     
     
@@ -87,14 +85,22 @@ class listview_departamento(ListView):
         context['create_url'] = reverse_lazy('crm:crear_departamento')
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
+        # INICIO PARA RECORDATORIOS
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user)
+        cont_rcrio = 0
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_recordatorio'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS
         return context
     
 class createview_departamento(CreateView):
     model = Departamentos
-    form_class = form_departamento # llamamos al formulario creado en forms.py y hay q importarlo
+    form_class = form_departamento 
     template_name = 'Departamento/crear.html'
     success_url = reverse_lazy('crm:listar_departamento')
 
+    
     def post(self, request,*args,**kwargs):
         data = {}
         form = self.form_class(request.POST)
@@ -107,16 +113,20 @@ class createview_departamento(CreateView):
                 )
                 nuevo.save()
                 return redirect('crm:listar_departamento')
+            else:
+                #return render(request, self.template_name, {'error1': 'error', 'form':form, 'quitar_footer': 'si', 'tabla': 'departamento', 'titulo_lista': 'Ingrese datos del nuevo departamento'})
+                return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Ingrese datos del nuevo departamento','plantilla': 'Crear'})
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['nombre'] = 'carlos arteaga'
         context['plantilla'] = 'Crear'
         context['btn_cancelar'] = reverse_lazy('crm:listar_departamento')
-        context['titulo_lista'] = 'Ingrese datos del nuevo departamentos'
+        context['titulo_lista'] = 'Ingrese datos del nuevo departamento'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
         return context
@@ -127,6 +137,33 @@ class updateview_departamento(UpdateView):
     template_name = 'Departamento/crear.html'
     success_url = reverse_lazy('crm:listar_departamento')
 
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+
+    def post(self, request,*args,**kwargs):
+        data = {}
+        form = self.form_class(request.POST)
+        try:
+            #if form.is_valid():
+                registro = self.get_object()
+                registro.nombre = request.POST['nombre']
+                registro.estado = request.POST['estado']
+                registro.usuario_modificacion = request.user.id
+                registro.fch_modificacion = datetime.now()
+                try:
+                    registro.save()
+                    return redirect('crm:listar_departamento')
+                except Exception as e:
+                    return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Editar departamento','plantilla': 'Editar'})
+                
+            #else:
+                #return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Editar departamento','plantilla': 'Editar'})
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -153,6 +190,8 @@ class deleteview_departamento(DeleteView):
         try:
             #self.object.delete()
             registro = self.get_object()
+            registro.usuario_modificacion = request.user.id
+            registro.fch_modificacion = datetime.now()
             registro.borrado = 1
             registro.save()
         except Exception as e:

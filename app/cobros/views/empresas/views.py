@@ -42,6 +42,7 @@ class crear_empresa(CreateView):
     form_class = formulario_empresa 
     success_url = reverse_lazy('crm:listar_empresa')
 
+    """
     def post(self, request,*args,**kwargs):
         data = {}
         form = self.form_class(request.POST)
@@ -60,6 +61,7 @@ class crear_empresa(CreateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
+    """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,6 +120,7 @@ class actualizar_empresa(UpdateView):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
 
+    """
     def post(self, request,*args,**kwargs):
         data = {}
         data['nombre_empresa'] = request.POST['nombre_empresa']
@@ -139,6 +142,7 @@ class actualizar_empresa(UpdateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
+    """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

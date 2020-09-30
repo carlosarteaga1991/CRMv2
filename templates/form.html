@@ -4,10 +4,10 @@
 {% block contenido %}
     <form method="POST" action="." style="padding-top: 7%"> <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
         <div class="card card-primary" >
-            <div class="card" style="background: #A4C6FF; color: white; font-size: 11px; height: 22px">
+            <div class="" style=" color: blue; font-size: 11px; height: 22px; ">
                 <h3 class="card-title" >
                     &nbsp;<i class="fas fa-plus" style="font-size: 15px;"></i>
-                    {{ titulo_lista }} <strong>{{nombre_cliente}}</strong>
+                    <strong>{{ titulo_lista }}</strong> <strong>{{nombre_cliente}}</strong>
                 </h3>
             </div>
             <div class="card-body">
@@ -15,7 +15,7 @@
 
                 <!-- verificaciones de errores antes de guardar -->
                     {% if form.errors %}
-                        <div class="alert alert-danger alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                             <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
                             
@@ -25,14 +25,34 @@
                                         <li>{{ error }}</li>
                                     {% endfor %}
                                 {% endfor %}
-                        </ul>
+                            </ul>
                         </div>
                     {% endif %}
+
+                   
                     
                 <!-- /. verificaciones de errores antes de guardar -->
 
+                {% if select_puesto == 'mostrar' %}
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Departamento:</label>
+                        <select name="id_departamento" id="id_id_departamento" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in departamento %}
+                            {% if xx.id_departamento ==  seleccionar  %}
+                                <option value="{{ xx.id_departamento }}" selected>{{ xx.nombre }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id_departamento }}" >{{ xx.nombre }}</option> 
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                    </div>
+                {% endif %}
+                
+
                 {% for campo in form.visible_fields %}
-                    <div class="form-group">
+                    <div class="form-group" style="font-size: 12px;">
                         <label for="email">{{ campo.label }}</label>
                         {{ campo }}
                     </div>

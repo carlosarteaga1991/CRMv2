@@ -10,10 +10,11 @@
 
 {% block columnas %}
                     <tr>
-                        <th scope="col" style="width: 10%;">Id</th>
-                        <th scope="col" style="width: 40%;">Nombre puesto</th>
-                        <th scope="col" style="width: 35%;">Departamento al que pertenece</th>
-                        <th scope="col" style="width: 15%;">Opciones</th>
+                        <!--<th scope="col" style="width: 10%;">Id</th>-->
+                        <th scope="col" style="width: 30%; text-align:center;">Nombre puesto</th>
+                        <th scope="col" style="width: 30%; text-align:center;">Departamento al que pertenece</th>
+                        <th scope="col" style="width: 20%; text-align:center;">Estatus</th>
+                        <th scope="col" style="width: 20%; text-align:center;">Opciones</th>
                     </tr>
 {% endblock  %}
 
@@ -22,10 +23,15 @@
                        
                         {% for x in object_list %}
                             <tr>
-                                <td>{{ x.id_puesto }}</td>
+                                <!--<td>{{ x.id_puesto }}</td>-->
                                 <td>{{ x.nombre }}</td>
                                 <td>{{ x.id_departamento }}</td>
-                                <td> <!-- {% url 'crm:borrar_departamento' x.id_puesto %} -->
+                                <td style="text-align:center;">{% if x.estado == '1' %}
+                                    Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}</td>
+                                <td style="text-align:center;"> 
                                     <a href="{% url 'crm:actualizar_puesto' x.id_puesto %}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
                                     <a href="{% url 'crm:borrar_puesto' x.id_puesto %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
                                 </td>

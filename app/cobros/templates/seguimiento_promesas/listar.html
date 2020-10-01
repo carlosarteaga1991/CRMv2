@@ -1,0 +1,76 @@
+ 
+{% extends "list.html" %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+{% block columnas %}
+                    <tr >
+                        <th  scope="col" style=" text-align:center; color: white;">Cliente</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Fecha promesa</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Valor</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Motivo</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Opciones</th>
+                    </tr>
+{% endblock  %}
+
+
+{% block filas %}
+                       
+                        {% for x in object_list %}
+                            <tr >
+                                <td style=" text-align:left;">{{ x.id_cliente }}</td>
+                                <td style=" text-align:left;">{{ x.id_usuario }}</td>
+                                {% if x.estatus_promesa == 'Incumplida' %}
+                                    <td style="height: auto; text-align:center; color:red"> <strong>{{ x.estatus_promesa }}</strong></td>
+                                {% else %}
+                                    {% if x.estatus_promesa == 'Cumplida' %}
+                                        <td style="height: auto; text-align:center; color:green"> <strong>{{ x.estatus_promesa }}</strong></td>
+                                    {% else %}
+                                        <td style="height: auto; text-align:center; color:blue"><strong>{{ x.estatus_promesa }}</strong></td>
+                                    {% endif %}
+                                {% endif %}
+                                <td style="height: auto; text-align:left;">  {{ x.fecha }}  </td>
+                                <td style="height: auto; text-align:center;"> {{ x.valor |intcomma }}</td>
+                                <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
+                                <td style="height: auto; text-align:center;"> 
+                                    <a href="{% url 'crm:listar_gestiones' x.id_cliente_id %}" class="btn btn-success  btn-xs" title="Nuevo"><i class="fas fa-plus"></i> Gestión</a>
+                                    <a href="{% url 'crm:actualizar_seg_promesa' x.id_promesa %}" class="btn btn-warning  btn-xs" title="Editar"><i class="fas fa-edit"></i> Editar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+ $(function () {
+  $('#data').DataTable({
+      responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

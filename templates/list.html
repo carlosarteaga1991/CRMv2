@@ -29,10 +29,16 @@
                 </h3>
               </div>
               <!-- Botón para crear nuevo -->
+              
                 <div class="card-footer" style="background: #FFFFFF;">
+                  {% if quitar_btn_nuevo == 'si' %}
+                
+                  {% else %}
                     <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
                         <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
                     </a>
+                  {% endif %}
+                    
 
                   {% if boton_volver == 'si' %}
                       <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >

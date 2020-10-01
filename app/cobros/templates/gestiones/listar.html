@@ -291,7 +291,15 @@
                                                     <td style=" text-align:left;">{{ x.fecha }}</td>
                                                     <td style="height: auto; text-align:left;">  {{ x.hora }}  </td>
                                                     <td style="height: auto; text-align:center;"> {{ x.valor |intcomma }}</td>
-                                                    <td style="height: auto; text-align:center;"> {{ x.estatus_promesa }}</td>
+                                                    {% if x.estatus_promesa == 'Incumplida' %}
+                                                        <td style="height: auto; text-align:center; color:red"> <strong>{{ x.estatus_promesa }}</strong></td>
+                                                    {% else %}
+                                                        {% if x.estatus_promesa == 'Cumplida' %}
+                                                            <td style="height: auto; text-align:center; color:green"> <strong>{{ x.estatus_promesa }}</strong></td>
+                                                        {% else %}
+                                                            <td style="height: auto; text-align:center; color:blue"><strong>{{ x.estatus_promesa }}</strong></td>
+                                                        {% endif %}
+                                                    {% endif %}
                                                     <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
                                                     <td style="height: auto; text-align:center;"> <div style="width:350px; overflow:hidden;">{{ x.descripcion }}</div></td>
                                                     <td style="height: auto; text-align:center;"> {{ x.fch_creacion }}</td>
@@ -320,7 +328,7 @@
                                             <th  scope="col" style=" text-align:center; color: white;">Lugar</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
                                             <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
-                                            <th  scope="col" style=" text-align:center; color: white;">Fecha que se Visitó</th>
+                                            <!--<th  scope="col" style=" text-align:center; color: white;">Fecha que se Visitó</th>-->
                                             <th  scope="col" style=" text-align:center; color: white;">Respuesta de la Visita</th>
                                         </tr>
                                     </thead>
@@ -332,12 +340,20 @@
                                                     <!--<td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.lugar }}</div></td>-->
                                                     <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
                                                     <td style="height: auto; text-align:center;"> {{ x.id_usuario }}</td>
-                                                    <td style="height: auto; text-align:center;"> {{ x.estatus_visita }}</td>
-                                                    <td style="height: auto; text-align:center;"> {% if x.fch_visita_realizada == Null %}
+                                                    {% if x.estatus_visita == 'Localizado sin Promesa' or x.estatus_visita == 'Dirección Incorrecta' %}
+                                                        <td style="height: auto; text-align:center; color:red"> <strong>{{ x.estatus_visita }}</strong></td>
+                                                    {% else %}
+                                                        {% if x.estatus_visita == 'Localizado con Promesa' %}
+                                                            <td style="height: auto; text-align:center; color:green"> <strong>{{ x.estatus_visita }}</strong></td>
+                                                        {% else %}
+                                                            <td style="height: auto; text-align:center; color:blue"><strong>{{ x.estatus_visita }}</strong></td>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <!--<td style="height: auto; text-align:center;"> {% if x.fch_visita_realizada == Null %}
                                                     
                                                     {% else %}
                                                     {{ x.fch_visita_realizada }}
-                                                    {% endif %}</td>
+                                                    {% endif %}</td>-->
                                                     <td style="height: auto; text-align:center;"> <div style="width:400px; overflow:hidden;">{{ x.respuesta_visita }}</div></td>
                                                 </tr>
                                         {% endfor %}

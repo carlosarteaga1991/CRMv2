@@ -177,6 +177,8 @@ class listar_gestiones(TemplateView):
 
         if len(str(now.month)) == 1:
             mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
           
 
         context = super().get_context_data(**kwargs)

@@ -1,0 +1,81 @@
+ 
+{% extends "list.html" %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+{% block columnas %}
+                    <tr >
+                        <th  scope="col" style=" text-align:center; color: white;">Cliente</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Usuario</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Estatus</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Fecha de ingreso</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Lugar</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Respuesta</th>
+                        <th  scope="col" style=" text-align:center; color: white;">Opciones</th>
+                    </tr>
+{% endblock  %}
+
+
+{% block filas %}
+                       
+                        {% for x in object_list %}
+                            <tr >
+                                <td style=" text-align:left;">{{ x.id_cliente }}</td>
+                                <td style=" text-align:left;">{{ x.id_usuario }}</td>
+                                {% if x.estatus_visita == 'Localizado sin Promesa' or x.estatus_visita == 'Dirección Incorrecta' %}
+                                    <td style="height: auto; text-align:center; color:red"> <strong>{{ x.estatus_visita }}</strong></td>
+                                {% else %}
+                                    {% if x.estatus_visita == 'Localizado con Promesa' %}
+                                        <td style="height: auto; text-align:center; color:green"> <strong>{{ x.estatus_visita }}</strong></td>
+                                    {% else %}
+                                        <td style="height: auto; text-align:center; color:blue"><strong>{{ x.estatus_visita }}</strong></td>
+                                    {% endif %}
+                                {% endif %}
+                                <td style="height: auto; text-align:left;">  {{ x.fch_creacion }}  </td>
+                                <td style="height: auto; text-align:center;"> {{ x.motivo_descrip }}</td>
+                                <td style="height: auto; text-align:center;"> <div style="width:300px; overflow:hidden;">{{ x.respuesta_visita }}</div></td>
+                                <!--<td style="height: auto; text-align:center;"> {% if x.fch_visita_realizada == Null %}
+                                                    
+                                                    {% else %}
+                                                    {{ x.fch_visita_realizada }}
+                                                    {% endif %}</td>-->
+                                <td style="height: auto; text-align:center;"> 
+                                    <a href="{% url 'crm:listar_gestiones' x.id_cliente_id %}" class="btn btn-success  btn-xs" title="Nuevo"><i class="fas fa-plus"></i> Gestión</a>
+                                    <a href="{% url 'crm:respuesta_seg_visita' x.id_visita %}" class="btn btn-warning  btn-xs" title="Editar"><i class="fas fa-edit"></i> Respuesta</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+ $(function () {
+  $('#data').DataTable({
+      responsive: true,
+      autoWidth: false,
+      "language": {
+                    url: '{% static 'lib/DataTables/spanish.txt' %}'
+                    },
+      destroy: true,
+      deferRender: true,
+          
+      initComplete: function (settings, json) {
+
+      }
+    });
+});
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

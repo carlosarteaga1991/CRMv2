@@ -24,7 +24,7 @@
             <a href="#" class="nav-link"><strong>Gestiones</strong></a>
           </li>
           <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><strong>Mantenimiento</strong></a>
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><strong>Administración</strong></a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
               <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
               <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
@@ -37,24 +37,24 @@
 
               <!-- Level two dropdown-->
               <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Mantenimiento</a>
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
                 <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
                   <li>
-                    <a tabindex="-1" href="#" class="dropdown-item">Clientes</a>
+                    <a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a>
                   </li>
 
                   <!-- Level three dropdown-->
-                  <li class="dropdown-submenu">
+                  <!--<li class="dropdown-submenu">
                     <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Departamentos</a>
                     <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
                       <li><a href="#" class="dropdown-item">Puestos</a></li>
                       
                     </ul>
-                  </li>
+                  </li>-->
                   <!-- End Level three -->
 
-                  <li><a href="#" class="dropdown-item">Códigos</a></li>
-                  <li><a href="#" class="dropdown-item">Motivos</a></li>
+                  <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                  <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
                 </ul>
               </li>
               
@@ -77,24 +77,24 @@
 
               </a>
               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="font-size: 12px;">
-                <span class="dropdown-header" style="font-size: 12px;">15 Notifications</span>
+                <span class="dropdown-header" style="font-size: 12px;">15 Notificaciones</span>
                 <div class="dropdown-divider"></div>
                   <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    <span class="float-right text-muted text-sm">2 mins</span>
+                    <i class="fas fa-phone-square"></i>&nbsp;&nbsp;&nbsp; &nbsp;Promesas de hoy
+                    <span class="float-right text-muted text-sm">2 </span>
                   </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                  <i class="fas fa-users mr-2"></i> 8 friend requests
-                  <span class="float-right text-muted text-sm">2 hours</span>
+                  <i class="fas fa-headset"></i> &nbsp;&nbsp;&nbsp;&nbsp;Promesas futuras
+                  <span class="float-right text-muted text-sm">8 </span>
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                  <i class="fas fa-file mr-2"></i> 3 new reports
-                  <span class="float-right text-muted text-sm">2 days</span>
+                  <i class="fas fa-bell mr-2"></i> &nbsp;&nbsp;Alertas de hoy
+                  <span class="float-right text-muted text-sm">7 </span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer" style="font-size: 12px;">See All Notifications</a>
+                <a href="#" class="dropdown-item dropdown-footer" style="font-size: 12px;">Ver todas las Alertas</a>
               </div>
             </li>
             <!-- /. Para Alertas -->

@@ -169,6 +169,9 @@ class Recordatorios(models.Model):
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
     fch_modificacion = models.CharField(max_length=35, blank=True)
+    estatus_alerta = models.CharField('Estatus de la Alerta',max_length=11,default='Pendiente',choices=
+    [('Pendiente','Pendiente'),
+     ('Atendida','Atendida')])
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
     borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])

@@ -1,18 +1,18 @@
 from django.views.generic import ListView,UpdateView
-from app.cobros.models import Visitas,Promesas,Recordatorios
+from app.cobros.models import Promesas,Recordatorios
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.urls import reverse_lazy
-from app.cobros.forms import formulario_seg_visitas
+from app.cobros.forms import formulario_seg_promesas
 from django.shortcuts import render,redirect
 
 from datetime import datetime
 
-class listar_seg_visitas(ListView):
-    model = Visitas
-    template_name = 'seguimiento_visitas/listar.html'
+class listar_promesas_hoy(ListView):
+    model = Promesas
+    template_name = 'promesas_del_dia/listar.html'
 
     def get_queryset(self):
         return self.model.objects.filter(borrado=0)
@@ -24,12 +24,13 @@ class listar_seg_visitas(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['plantilla'] = 'Seguimiento'
-        context['titulo_lista'] = 'Total de visitas'
+        context['plantilla'] = 'Promesa'
+        context['titulo_lista'] = 'Promesas pendientes del día de hoy'
         #context['create_url'] = reverse_lazy('crm:crear_motivo')
         #context['url_salir'] = reverse_lazy('login:iniciar')
         context['quitar_footer'] = 'si'
         context['quitar_btn_nuevo'] = 'si'
+        
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -52,13 +53,16 @@ class listar_seg_visitas(ListView):
         context['cont_promesa'] = cont_promesa 
         context['cont_total'] = cont_promesa + cont_rcrio
         # FIN PARA PROMESAS HEADER
+
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        context['promesa'] = promesa
         return context
 
-class respuesta_seg_visitas(UpdateView):
-    model = Visitas
-    form_class = formulario_seg_visitas
-    template_name = 'seguimiento_visitas/crear.html'
-    success_url = reverse_lazy('crm:listar_seg_visita')
+class actualizar_promesas_hoy(UpdateView):
+    model = Promesas
+    form_class = formulario_seg_promesas
+    template_name = 'promesas_del_dia/crear.html'
+    success_url = reverse_lazy('crm:listar_promesas_hoy')
 
     @method_decorator(csrf_exempt)
     @method_decorator(login_required)
@@ -71,13 +75,12 @@ class respuesta_seg_visitas(UpdateView):
         data = {}
         try:
             registro = self.get_object()
-            registro.respuesta_visita = request.POST['respuesta_visita']
-            registro.estatus_visita = request.POST['estatus_visita']
+            registro.valor = request.POST['valor']
+            registro.estatus_promesa = request.POST['estatus_promesa']
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
-            registro.fch_visita_realizada = datetime.now()
             registro.save()
-            return redirect('crm:listar_seg_visita')
+            return redirect('crm:listar_promesas_hoy')
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -87,8 +90,8 @@ class respuesta_seg_visitas(UpdateView):
         context = super().get_context_data(**kwargs)
         context['plantilla'] = 'Editar'
         context['quitar_footer'] = 'si'
-        context['btn_cancelar'] = reverse_lazy('crm:listar_seg_visita')
-        context['titulo_lista'] = 'Ingresar respuesta de visita'
+        context['btn_cancelar'] = reverse_lazy('crm:listar_promesas_hoy')
+        context['titulo_lista'] = 'Editar promesa'
         context['tipo'] = 'editar'
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()

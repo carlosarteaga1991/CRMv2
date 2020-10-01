@@ -27,11 +27,17 @@
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><strong>Administración</strong></a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
               <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
+              <div class="dropdown-divider"></div>
               <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
+              <div class="dropdown-divider"></div>
               <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
+              <div class="dropdown-divider"></div>
               <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
+              <div class="dropdown-divider"></div>
               <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
+              <div class="dropdown-divider"></div>
               <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
+              
 
               <li class="dropdown-divider"></li>
 
@@ -42,7 +48,7 @@
                   <li>
                     <a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a>
                   </li>
-
+                  <div class="dropdown-divider"></div>
                   <!-- Level three dropdown-->
                   <!--<li class="dropdown-submenu">
                     <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Departamentos</a>
@@ -54,6 +60,7 @@
                   <!-- End Level three -->
 
                   <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
                 </ul>
               </li>
@@ -69,33 +76,36 @@
             <li class="nav-item ml-auto" >
               <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                {% if context.cont_recordatorio == 0 or cont_recordatorio == 0 %}
+                {% if context.cont_total == 0 or cont_total == 0 %}
                   <span class="badge badge-warning navbar-badge"></span>
                 {% else %}
-                  <span class="badge badge-warning navbar-badge"> {{ context.cont_recordatorio }} {{ cont_recordatorio }} </span>
+                  <span class="badge badge-warning navbar-badge"> {{ context.cont_total }} {{ cont_total }}</span>
                 {% endif %}
 
               </a>
               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="font-size: 12px;">
-                <span class="dropdown-header" style="font-size: 12px;">15 Notificaciones</span>
+                <span class="dropdown-header" style="font-size: 12px;">{{ cont_total }} {{ context.cont_total }} Notificaciones</span>
                 <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                    <i class="fas fa-phone-square"></i>&nbsp;&nbsp;&nbsp; &nbsp;Promesas de hoy
-                    <span class="float-right text-muted text-sm">2 </span>
+                  <a href="{% url 'crm:listar_promesas_hoy' %}" class="dropdown-item">
+                    <i class="fas fa-phone-square"></i>&nbsp;&nbsp;&nbsp; &nbsp;Promesas pendientes de hoy
+                    <span class="float-right text-muted text-sm"> {{ cont_promesa }} {{ context.cont_promesa }}</span>
                   </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <!--<a href="#" class="dropdown-item">
                   <i class="fas fa-headset"></i> &nbsp;&nbsp;&nbsp;&nbsp;Promesas futuras
                   <span class="float-right text-muted text-sm">8 </span>
-                </a>
+                </a>-->
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                  <i class="fas fa-bell mr-2"></i> &nbsp;&nbsp;Alertas de hoy
-                  <span class="float-right text-muted text-sm">7 </span>
+                <a href="{% url 'crm:listar_alertas_hoy' %}" class="dropdown-item">
+                  <i class="fas fa-bell mr-2"></i> &nbsp;&nbsp;Alertas pendientes de hoy
+                  <span class="float-right text-muted text-sm">{{ context.cont_alerta }} {{ cont_alerta }} </span>
                 </a>
-                <div class="dropdown-divider"></div>
+                <!--<div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer" style="font-size: 12px;">Ver todas las Alertas</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item dropdown-footer" style="font-size: 12px;">Ver todas las Promesas</a>-->
               </div>
+              
             </li>
             <!-- /. Para Alertas -->
 

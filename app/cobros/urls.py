@@ -12,6 +12,8 @@ from app.cobros.views.dashboard.views import *
 from app.cobros.views.seguimiento_promesas.views import *
 from app.cobros.views.seguimiento_visitas.views import *
 from app.cobros.views.seguimiento_alertas.views import *
+from app.cobros.views.promesas_del_dia.views import *
+from app.cobros.views.alertas_del_dia.views import *
 
 
 app_name = 'crm'
@@ -83,4 +85,12 @@ urlpatterns = [
     # URL para seguimiento de ALERTAS
     path('seguimiento/alertas/',listar_seg_alertas.as_view(), name='listar_seg_alertas'),
     path('seguimiento/alertas/editar/<int:pk>/',actualizar_seg_alertas.as_view(), name='actualizar_seg_alertas'),
+
+    # URL para promesas del día
+    path('promesas/hoy/',listar_promesas_hoy.as_view(), name='listar_promesas_hoy'),
+    path('promesas/actualizar/<int:pk>/',actualizar_promesas_hoy.as_view(), name='actualizar_promesas_hoy'),
+
+    # URL para alertas del d+ia
+    path('/alertas/hoy/',listar_alertas_hoy.as_view(), name='listar_alertas_hoy'),
+    path('alertas/editar/<int:pk>/',actualizar_alertas_hoy.as_view(), name='actualizar_alertas_hoy'),
 ]

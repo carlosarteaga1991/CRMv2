@@ -204,6 +204,28 @@ class listar_gestiones(TemplateView):
         context['btn_cancelar'] = reverse_lazy('crm:listar_cliente')
         context['tipo'] = ''
         context['abrir']=0
+        # INICIO PARA RECORDATORIOS HEADER
+        now = datetime.now()
+        cont_rcrio = 0
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_alerta'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        cont_promesa = 0
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        for x in promesa:
+            cont_promesa += 1
+        context['cont_promesa'] = cont_promesa 
+        context['cont_total'] = cont_promesa + cont_rcrio
+        # FIN PARA PROMESAS HEADER
         
         return {'cliente': cliente, 'contactos':contactos, 'gestiones': gestiones,'visitas': visitas, 'context': context,'promesas': promesas, 'productos': productos,'codigos': codigos, 'motivos': motivos, 'pagos': pagos}
 

@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Clientes,Empresas
+from app.cobros.models import Clientes,Empresas,Promesas,Recordatorios
 from app.usuario.models import Usuario
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -33,6 +33,28 @@ class listar_cliente(ListView):
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['quitar_footer'] = 'si'
         context['tipo'] = ''
+        # INICIO PARA RECORDATORIOS HEADER
+        now = datetime.now()
+        cont_rcrio = 0
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_alerta'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        cont_promesa = 0
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        for x in promesa:
+            cont_promesa += 1
+        context['cont_promesa'] = cont_promesa 
+        context['cont_total'] = cont_promesa + cont_rcrio
+        # FIN PARA PROMESAS HEADER
         return context
 
 
@@ -77,6 +99,28 @@ class crear_cliente(CreateView):
         context['empresa'] = empresa
         usuario = Usuario.objects.filter(borrado=0,estado=1)
         context['usuario'] = usuario
+        # INICIO PARA RECORDATORIOS HEADER
+        now = datetime.now()
+        cont_rcrio = 0
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_alerta'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        cont_promesa = 0
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        for x in promesa:
+            cont_promesa += 1
+        context['cont_promesa'] = cont_promesa 
+        context['cont_total'] = cont_promesa + cont_rcrio
+        # FIN PARA PROMESAS HEADER
         return context
 
 
@@ -113,6 +157,28 @@ class borrar_cliente(DeleteView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar cliente'
+        # INICIO PARA RECORDATORIOS HEADER
+        now = datetime.now()
+        cont_rcrio = 0
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_alerta'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        cont_promesa = 0
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        for x in promesa:
+            cont_promesa += 1
+        context['cont_promesa'] = cont_promesa 
+        context['cont_total'] = cont_promesa + cont_rcrio
+        # FIN PARA PROMESAS HEADER
         return context
 
 
@@ -172,5 +238,27 @@ class actualizar_cliente(UpdateView):
         empresa = Empresas.objects.filter(borrado=0,estado=1)
         context['empresa'] = empresa
         context['usuario'] = usuario
+        # INICIO PARA RECORDATORIOS HEADER
+        now = datetime.now()
+        cont_rcrio = 0
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
+        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
+        for x in recordatorios:
+            cont_rcrio += 1
+        context['cont_alerta'] = cont_rcrio 
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        cont_promesa = 0
+        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
+        for x in promesa:
+            cont_promesa += 1
+        context['cont_promesa'] = cont_promesa 
+        context['cont_total'] = cont_promesa + cont_rcrio
+        # FIN PARA PROMESAS HEADER
         return context
 

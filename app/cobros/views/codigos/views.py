@@ -54,6 +54,8 @@ class crear_codigos(CreateView):
                 )
                 nuevo.save()
                 return redirect('crm:listar_codigos')
+            else:
+                return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Ingrese datos del nuevo código','plantilla': 'Crear'})
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -120,14 +122,18 @@ class actualizar_codigos(UpdateView):
 
     def post(self, request,*args,**kwargs):
         data = {}
+        form = self.form_class(request.POST)
         try:
             registro = self.get_object()
             registro.descripcion = request.POST['descripcion']
             registro.estado = request.POST['estado']
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
-            registro.save()
-            return redirect('crm:listar_codigos')
+            try:
+                registro.save()
+                return redirect('crm:listar_codigos')
+            except Exception as e:
+                return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Editar código','plantilla': 'Editar'})
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

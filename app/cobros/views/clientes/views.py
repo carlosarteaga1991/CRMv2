@@ -1,5 +1,6 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Clientes
+from app.cobros.models import Clientes,Empresas
+from app.usuario.models import Usuario
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -71,6 +72,11 @@ class crear_cliente(CreateView):
         context['titulo_lista'] = 'Ingrese datos del nuevo cliente'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
+        context['select_cliente'] = 'mostrar'
+        empresa = Empresas.objects.filter(borrado=0,estado=1)
+        context['empresa'] = empresa
+        usuario = Usuario.objects.filter(borrado=0,estado=1)
+        context['usuario'] = usuario
         return context
 
 
@@ -133,6 +139,7 @@ class actualizar_cliente(UpdateView):
             registro.tipo_id = request.POST['tipo_id']
             registro.identidad = request.POST['identidad']
             registro.fch_nacimiento = request.POST['fch_nacimiento']
+            registro.estado_civil = request.POST['estado_civil']
             registro.estado = request.POST['estado'] 
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
@@ -150,5 +157,20 @@ class actualizar_cliente(UpdateView):
         context['titulo_lista'] = 'Editar cliente'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
+        context['select_cliente'] = 'mostrar'
+        cliente = Clientes.objects.filter(borrado=0, id_cliente = self.kwargs['pk'])
+        z = 0
+        x = 0
+        for c in cliente:
+            z = c.id_empresa_id
+            x = c.id_usuario_id
+        
+        usuario = Usuario.objects.filter(borrado=0,estado=1)
+
+        context['seleccionar'] = z
+        context['seleccionaruser'] = x
+        empresa = Empresas.objects.filter(borrado=0,estado=1)
+        context['empresa'] = empresa
+        context['usuario'] = usuario
         return context
 

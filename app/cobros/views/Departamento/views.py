@@ -112,7 +112,7 @@ class createview_departamento(CreateView):
                     estado = form.cleaned_data.get('estado')
                 )
                 nuevo.save()
-                return redirect('crm:listar_departamento')
+                return redirect('crm:listar_departamento') 
             else:
                 #return render(request, self.template_name, {'error1': 'error', 'form':form, 'quitar_footer': 'si', 'tabla': 'departamento', 'titulo_lista': 'Ingrese datos del nuevo departamento'})
                 return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Ingrese datos del nuevo departamento','plantilla': 'Crear'})

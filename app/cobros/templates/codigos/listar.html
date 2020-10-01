@@ -5,7 +5,7 @@
 
 {% block columnas %}
                     <tr>
-                        <th scope="col" style="width: 5%; text-align:center">Id</th>
+                        <!--<th scope="col" style="width: 5%; text-align:center">Id</th>-->
                         <th scope="col" style="width: 30%; text-align:center">Nombre del Código</th>
                         <th scope="col" style="width: 15%; text-align:center">Estado</th>
                         <th scope="col" style="width: 15%; text-align:center">Opciones</th>
@@ -17,7 +17,7 @@
                        
                         {% for x in object_list %}
                             <tr>
-                                <td>{{ x.id_codigo }}</td>
+                                <!--<td>{{ x.id_codigo }}</td>-->
                                 <td>{{ x.descripcion }}</td>
                                 <td style="text-align:center">
                                 {% if x.estado == '1' %}

@@ -170,7 +170,7 @@ class formulario_cliente(ModelForm):
     class Meta():
         model = Clientes
         fields = '__all__'
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado']
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado', 'id_empresa','id_usuario']
 
         widgets = {
             'nombre': TextInput(

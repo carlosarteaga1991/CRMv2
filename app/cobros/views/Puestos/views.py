@@ -140,7 +140,7 @@ class actualizar_puesto(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_puestos')
         context['titulo_lista'] = 'Editar puestos'
-        context['quitar_footer'] = 'si'
+        context['quitar_footer'] = 'si' 
         context['tipo'] = 'editar'
         context['select_puesto'] = 'mostrar'
         puesto = Puestos.objects.filter(borrado=0, id_puesto = self.kwargs['pk'])

@@ -49,6 +49,38 @@
                     </select>
                     </div>
                 {% endif %}
+
+                {% if select_cliente == 'mostrar' %}
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Empresa:</label>
+                        <select name="id_empresa" id="id_id_empresa" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in empresa %}
+                            {% if xx.id_empresa ==  seleccionar  %}
+                                <option value="{{ xx.id_empresa }}" selected>{{ xx.nombre_empresa }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id_empresa }}" >{{ xx.nombre_empresa }}</option> 
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Usuario:</label>
+                        <select name="id_usuario" id="id_id_usuario" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in usuario %}
+                            {% if xx.id ==  seleccionaruser  %}
+                                <option value="{{ xx.id }}" selected>{{ xx.username }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id }}" >{{ xx.username }}</option> 
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
                 
 
                 {% for campo in form.visible_fields %}

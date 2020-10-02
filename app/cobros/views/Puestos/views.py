@@ -196,7 +196,7 @@ class actualizar_puesto(LoginRequiredMixin,UpdateView):
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
             registro.save()
-            return redirect('crm:listar_puestos')
+            return redirect('crm:listar_puestos') 
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

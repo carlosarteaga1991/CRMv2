@@ -16,6 +16,7 @@ from app.cobros.views.promesas_del_dia.views import *
 from app.cobros.views.alertas_del_dia.views import *
 
 
+
 app_name = 'crm'
 
 urlpatterns = [
@@ -90,7 +91,10 @@ urlpatterns = [
     path('promesas/hoy/',listar_promesas_hoy.as_view(), name='listar_promesas_hoy'),
     path('promesas/actualizar/<int:pk>/',actualizar_promesas_hoy.as_view(), name='actualizar_promesas_hoy'),
 
-    # URL para alertas del d+ia
+    # URL para alertas del día
     path('alertas/hoy/',listar_alertas_hoy.as_view(), name='listar_alertas_hoy'),
     path('alertas/editar/<int:pk>/',actualizar_alertas_hoy.as_view(), name='actualizar_alertas_hoy'),
+
+    
+    
 ]

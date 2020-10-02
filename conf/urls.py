@@ -21,12 +21,20 @@ from app.login.views import login
 from django.conf import settings
 from django.conf.urls.static import static
 
+from app.usuario.views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',indexview.as_view(), name='principal'),
     path('login/',include('app.login.urls'), name='inicio_sesion'),
     path('cobros/',include('app.cobros.urls')), # incluimos el app y el llamado a sus urls
+
+    # URL para USUARIOS
+    path('usuarios/',listar_usuarios.as_view(), name='listar_usuarios'),
+    path('usuarios/crear/',crear_usuario.as_view(), name='crear_usuarios'),
+    path('usuarios/editar/<int:pk>/',editar_usuario.as_view(), name='editar_usuarios'),
+    path('usuarios/borrar/<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

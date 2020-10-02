@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-#from app.cobros.models import Departamentos,Puestos
+#from app.cobros.models import Departamentos
 
 class UsuarioManager(BaseUserManager):
     def create_user(self,email,username,nombres,id_departamento,id_puesto,password = None):
@@ -35,14 +35,13 @@ class UsuarioManager(BaseUserManager):
 class Usuario(AbstractBaseUser):
     username = models.CharField('Usuario',max_length=40, unique=True)
     email = models.EmailField('Correo Electrónico', max_length=254,unique=True)
-    nombres = models.CharField('Nombres',max_length=200,blank= True, null = True)
-    apellidos = models.CharField('Apellidos',max_length=200,blank= True, null = True)
-    #id_departamento = models.ForeignKey(Departamentos, on_delete=models.PROTECT, verbose_name="Departamento")
-    #id_puesto = models.ForeignKey(Puestos, on_delete=models.PROTECT, verbose_name="Puesto")
+    nombres = models.CharField('Nombres',max_length=50,blank= True, null = True)
+    apellidos = models.CharField('Apellidos',max_length=50,blank= True, null = True)
     id_departamento = models.IntegerField("Departamento",blank=True, null=True)
     id_puesto = models.IntegerField("Puesto",blank=True, null=True)
     ip_ultimo_acceso = models.CharField(max_length=50, blank=True)
     usuario_creacion = models.IntegerField(blank=True, null=True)
+    fch_creacion = models.DateTimeField(auto_now_add=True)
     fch_modificacion = models.CharField(max_length=35, blank=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField('Estado',max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])

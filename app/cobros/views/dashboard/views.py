@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
 
-class dashboard_vista(TemplateView):
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class dashboard_vista(LoginRequiredMixin,TemplateView):
     template_name = 'dashboard.html'
 
     def get_context_data(self, **kwargs):

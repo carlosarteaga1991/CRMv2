@@ -9,11 +9,13 @@ from app.cobros.forms import form_departamento
 from django.urls import reverse_lazy
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
 # Create your views here.
 
 
 def home(request):
+
     diccionario = { 
         'nombre': 'carlos portillo',
         'plantilla': 'Home',
@@ -37,7 +39,7 @@ def listar_departamento(request):
 
 # declarando vistas basadas en clase
 
-class listview_departamento(ListView):
+class listview_departamento(LoginRequiredMixin,ListView):
     model = Departamentos
     template_name = 'Departamento/listar.html'
 
@@ -48,7 +50,7 @@ class listview_departamento(ListView):
 
     # sobre escribiendo el método POST
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -111,7 +113,7 @@ class listview_departamento(ListView):
 
         return context
     
-class createview_departamento(CreateView):
+class createview_departamento(LoginRequiredMixin,CreateView):
     model = Departamentos
     form_class = form_departamento 
     template_name = 'Departamento/crear.html'
@@ -170,14 +172,14 @@ class createview_departamento(CreateView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class updateview_departamento(UpdateView):
+class updateview_departamento(LoginRequiredMixin,UpdateView):
     model = Departamentos
     form_class = form_departamento # llamamos al formulario creado en forms.py y hay q importarlo
     template_name = 'Departamento/crear.html'
     success_url = reverse_lazy('crm:listar_departamento')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -236,7 +238,7 @@ class updateview_departamento(UpdateView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class deleteview_departamento(DeleteView):
+class deleteview_departamento(LoginRequiredMixin,DeleteView):
     model = Departamentos
     template_name = 'Departamento/borrar.html'
     success_url = reverse_lazy('crm:listar_departamento')

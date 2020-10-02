@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_seg_promesas
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_promesas_hoy(ListView):
+class listar_promesas_hoy(LoginRequiredMixin,ListView):
     model = Promesas
     template_name = 'promesas_del_dia/listar.html'
 
@@ -18,7 +19,7 @@ class listar_promesas_hoy(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -58,14 +59,14 @@ class listar_promesas_hoy(ListView):
         context['promesa'] = promesa
         return context
 
-class actualizar_promesas_hoy(UpdateView):
+class actualizar_promesas_hoy(LoginRequiredMixin,UpdateView):
     model = Promesas
     form_class = formulario_seg_promesas
     template_name = 'promesas_del_dia/crear.html'
     success_url = reverse_lazy('crm:listar_promesas_hoy')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

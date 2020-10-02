@@ -91,6 +91,6 @@ urlpatterns = [
     path('promesas/actualizar/<int:pk>/',actualizar_promesas_hoy.as_view(), name='actualizar_promesas_hoy'),
 
     # URL para alertas del d+ia
-    path('/alertas/hoy/',listar_alertas_hoy.as_view(), name='listar_alertas_hoy'),
+    path('alertas/hoy/',listar_alertas_hoy.as_view(), name='listar_alertas_hoy'),
     path('alertas/editar/<int:pk>/',actualizar_alertas_hoy.as_view(), name='actualizar_alertas_hoy'),
 ]

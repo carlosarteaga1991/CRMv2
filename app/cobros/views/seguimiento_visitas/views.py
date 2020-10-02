@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_seg_visitas
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_seg_visitas(ListView):
+class listar_seg_visitas(LoginRequiredMixin,ListView):
     model = Visitas
     template_name = 'seguimiento_visitas/listar.html'
 
@@ -18,7 +19,7 @@ class listar_seg_visitas(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -54,14 +55,14 @@ class listar_seg_visitas(ListView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class respuesta_seg_visitas(UpdateView):
+class respuesta_seg_visitas(LoginRequiredMixin,UpdateView):
     model = Visitas
     form_class = formulario_seg_visitas
     template_name = 'seguimiento_visitas/crear.html'
     success_url = reverse_lazy('crm:listar_seg_visita')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

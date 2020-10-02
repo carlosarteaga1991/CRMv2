@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_puestos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_puestos(ListView):
+class listar_puestos(LoginRequiredMixin,ListView):
     model = Puestos
     template_name = 'Puestos/listar.html'
 
@@ -18,7 +19,7 @@ class listar_puestos(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -56,7 +57,7 @@ class listar_puestos(ListView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class crear_puesto(CreateView):
+class crear_puesto(LoginRequiredMixin,CreateView):
     model = Puestos
     template_name = 'Puestos/crear.html'
     form_class = formulario_puestos 
@@ -114,13 +115,13 @@ class crear_puesto(CreateView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class borrar_puesto(DeleteView):
+class borrar_puesto(LoginRequiredMixin,DeleteView):
     model = Puestos
     template_name = 'Puestos/borrar.html'
     success_url = reverse_lazy('crm:listar_puestos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -170,14 +171,14 @@ class borrar_puesto(DeleteView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class actualizar_puesto(UpdateView):
+class actualizar_puesto(LoginRequiredMixin,UpdateView):
     model = Puestos
     form_class = formulario_puestos
     template_name = 'Puestos/crear.html'
     success_url = reverse_lazy('crm:listar_puestos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

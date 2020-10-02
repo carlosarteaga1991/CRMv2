@@ -9,8 +9,10 @@ from app.cobros.forms import formulario_seg_alertas
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from app.cobros.mixins import IsSuperuserMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_alertas_hoy(ListView):
+class listar_alertas_hoy(LoginRequiredMixin,ListView):
     model = Recordatorios
     template_name = 'alertas_del_dia/listar.html'
 
@@ -18,7 +20,7 @@ class listar_alertas_hoy(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -57,14 +59,14 @@ class listar_alertas_hoy(ListView):
         context['alerta'] = recordatorios
         return context
 
-class actualizar_alertas_hoy(UpdateView):
+class actualizar_alertas_hoy(LoginRequiredMixin,UpdateView):
     model = Recordatorios
     form_class = formulario_seg_alertas
     template_name = 'alertas_del_dia/crear.html'
     success_url = reverse_lazy('crm:listar_alertas_hoy')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

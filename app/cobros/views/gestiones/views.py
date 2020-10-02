@@ -10,9 +10,9 @@ from django.shortcuts import render,redirect
 
 
 from datetime import datetime,date
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class listar_gestiones(TemplateView):
+class listar_gestiones(LoginRequiredMixin,TemplateView):
     template_name = 'gestiones/listar.html'
     form_class = formualario_guardar_gestion 
 
@@ -20,7 +20,7 @@ class listar_gestiones(TemplateView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 

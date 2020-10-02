@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_empresa
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_empresas(ListView):
+class listar_empresas(LoginRequiredMixin,ListView):
     model = Empresas
     template_name = 'Empresas/listar.html'
 
@@ -18,7 +19,7 @@ class listar_empresas(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -58,7 +59,7 @@ class listar_empresas(ListView):
 
 
 
-class crear_empresa(CreateView):
+class crear_empresa(LoginRequiredMixin,CreateView):
     model = Empresas
     template_name = 'Empresas/crear.html'
     form_class = formulario_empresa 
@@ -119,13 +120,13 @@ class crear_empresa(CreateView):
         # FIN PARA PROMESAS HEADER
         return context
 
-class borrar_empresa(DeleteView):
+class borrar_empresa(LoginRequiredMixin,DeleteView):
     model = Empresas
     template_name = 'Empresas/borrar.html'
     success_url = reverse_lazy('crm:listar_empresa')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -176,14 +177,14 @@ class borrar_empresa(DeleteView):
         return context
 
 
-class actualizar_empresa(UpdateView):
+class actualizar_empresa(LoginRequiredMixin,UpdateView):
     model = Empresas
     form_class = formulario_empresa
     template_name = 'Empresas/crear.html'
     success_url = reverse_lazy('crm:listar_empresa')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

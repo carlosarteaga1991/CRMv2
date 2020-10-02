@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_motivos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_motivos(ListView):
+class listar_motivos(LoginRequiredMixin,ListView):
     model = Motivos
     template_name = 'motivos/listar.html'
 
@@ -18,7 +19,7 @@ class listar_motivos(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -58,7 +59,7 @@ class listar_motivos(ListView):
 
 
 
-class crear_motivos(CreateView):
+class crear_motivos(LoginRequiredMixin,CreateView):
     model = Motivos
     template_name = 'motivos/crear.html'
     form_class = formulario_motivos 
@@ -116,13 +117,13 @@ class crear_motivos(CreateView):
 
 
 
-class borrar_motivos(DeleteView):
+class borrar_motivos(LoginRequiredMixin,DeleteView):
     model = Motivos
     template_name = 'motivos/borrar.html'
     success_url = reverse_lazy('crm:listar_motivos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -174,14 +175,14 @@ class borrar_motivos(DeleteView):
 
 
 
-class actualizar_motivos(UpdateView):
+class actualizar_motivos(LoginRequiredMixin,UpdateView):
     model = Motivos
     form_class = formulario_motivos
     template_name = 'motivos/crear.html'
     success_url = reverse_lazy('crm:listar_motivos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

@@ -10,8 +10,9 @@ from app.cobros.forms import formulario_cliente
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_cliente(ListView):
+class listar_cliente(LoginRequiredMixin,ListView):
     model = Clientes
     template_name = 'clientes/listar.html'
 
@@ -19,7 +20,7 @@ class listar_cliente(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -59,7 +60,7 @@ class listar_cliente(ListView):
 
 
 
-class crear_cliente(CreateView):
+class crear_cliente(LoginRequiredMixin,CreateView):
     model = Clientes
     template_name = 'clientes/crear.html'
     form_class = formulario_cliente 
@@ -125,13 +126,13 @@ class crear_cliente(CreateView):
 
 
 
-class borrar_cliente(DeleteView):
+class borrar_cliente(LoginRequiredMixin,DeleteView):
     model = Clientes
     template_name = 'clientes/borrar.html'
     success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -183,14 +184,14 @@ class borrar_cliente(DeleteView):
 
 
 
-class actualizar_cliente(UpdateView):
+class actualizar_cliente(LoginRequiredMixin,UpdateView):
     model = Clientes
     form_class = formulario_cliente
     template_name = 'clientes/crear.html'
     success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

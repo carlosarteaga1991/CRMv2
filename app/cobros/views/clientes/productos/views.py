@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_cliente_productos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_cliente_productos(ListView):
+class listar_cliente_productos(LoginRequiredMixin,ListView):
     model = Productos
     template_name = 'clientes/productos/listar.html'
 
@@ -18,7 +19,7 @@ class listar_cliente_productos(ListView):
         return self.model.objects.filter(borrado=0,id_cliente_id=self.kwargs['pk'])
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -60,7 +61,7 @@ class listar_cliente_productos(ListView):
 
 
 
-class crear_cliente_productos(CreateView):
+class crear_cliente_productos(LoginRequiredMixin,CreateView):
     model = Productos
     template_name = 'clientes/productos/crear.html'
     form_class = formulario_cliente_productos 
@@ -126,13 +127,13 @@ class crear_cliente_productos(CreateView):
 
 
 
-class borrar_cliente_productos(DeleteView):
+class borrar_cliente_productos(LoginRequiredMixin,DeleteView):
     model = Productos
     template_name = 'clientes/productos/borrar.html'
     #success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -187,13 +188,13 @@ class borrar_cliente_productos(DeleteView):
 
 
 
-class actualizar_cliente_productos(UpdateView):
+class actualizar_cliente_productos(LoginRequiredMixin,UpdateView):
     model = Productos
     form_class = formulario_cliente_productos
     template_name = 'clientes/productos/crear.html'
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

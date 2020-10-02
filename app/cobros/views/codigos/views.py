@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_codigos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_codigos(ListView):
+class listar_codigos(LoginRequiredMixin,ListView):
     model = Codigos
     template_name = 'codigos/listar.html'
 
@@ -18,7 +19,7 @@ class listar_codigos(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -58,7 +59,7 @@ class listar_codigos(ListView):
 
 
 
-class crear_codigos(CreateView):
+class crear_codigos(LoginRequiredMixin,CreateView):
     model = Codigos
     template_name = 'codigos/crear.html'
     form_class = formulario_codigos 
@@ -116,13 +117,13 @@ class crear_codigos(CreateView):
 
 
 
-class borrar_codigos(DeleteView):
+class borrar_codigos(LoginRequiredMixin,DeleteView):
     model = Codigos
     template_name = 'codigos/borrar.html'
     success_url = reverse_lazy('crm:listar_codigos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -174,14 +175,14 @@ class borrar_codigos(DeleteView):
 
 
 
-class actualizar_codigos(UpdateView):
+class actualizar_codigos(LoginRequiredMixin,UpdateView):
     model = Codigos
     form_class = formulario_codigos
     template_name = 'codigos/crear.html'
     success_url = reverse_lazy('crm:listar_codigos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

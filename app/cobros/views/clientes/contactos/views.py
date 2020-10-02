@@ -9,8 +9,9 @@ from app.cobros.forms import formulario_cliente_contactos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_cliente_contactos(ListView):
+class listar_cliente_contactos(LoginRequiredMixin,ListView):
     model = Contactos
     template_name = 'clientes/contactos/listar.html'
 
@@ -18,7 +19,7 @@ class listar_cliente_contactos(ListView):
         return self.model.objects.filter(borrado=0,id_cliente_id=self.kwargs['pk'])
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -60,7 +61,7 @@ class listar_cliente_contactos(ListView):
 
 
 
-class crear_cliente_contactos(CreateView):
+class crear_cliente_contactos(LoginRequiredMixin,CreateView):
     model = Contactos
     template_name = 'clientes/contactos/crear.html'
     form_class = formulario_cliente_contactos 
@@ -123,13 +124,13 @@ class crear_cliente_contactos(CreateView):
 
 
 
-class borrar_cliente_contactos(DeleteView):
+class borrar_cliente_contactos(LoginRequiredMixin,DeleteView):
     model = Contactos
     template_name = 'clientes/contactos/borrar.html'
     #success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -184,14 +185,14 @@ class borrar_cliente_contactos(DeleteView):
 
 
 
-class actualizar_cliente_contactos(UpdateView):
+class actualizar_cliente_contactos(LoginRequiredMixin,UpdateView):
     model = Contactos
     form_class = formulario_cliente_contactos
     template_name = 'clientes/contactos/crear.html'
     #success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)

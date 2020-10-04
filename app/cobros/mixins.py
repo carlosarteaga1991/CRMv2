@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from datetime import date,datetime
 
+
 class IsSuperuserMixin(object):
     def dispatch(self, request,*args,**kwargs):
         if request.user.usuario_administrador:

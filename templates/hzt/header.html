@@ -26,44 +26,78 @@
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><strong>Administración</strong></a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-              <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
+              <!-- INICIO Módulo de seguridad-->
+              <li class="dropdown-submenu dropdown-hover ">
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                  <li><a href="" class="dropdown-item">Perfiles</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="" class="dropdown-item">Permisos</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
+                  <div class="dropdown-divider"></div>
+                  <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
+                </ul>
+              </li>
+              <!-- FIN Módulo de seguridad -->
+
               <div class="dropdown-divider"></div>
-              <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
+
+              <!-- INICIO Módulo de gerencial-->
+              <li class="dropdown-submenu dropdown-hover ">
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo Gerencial</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                  <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="#" class="dropdown-item">KPI</a></li>
+                </ul>
+              </li>
+              <!-- FIN Módulo de gerencial -->
+              
               <div class="dropdown-divider"></div>
-              <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
-              <div class="dropdown-divider"></div>
-              <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
-              <div class="dropdown-divider"></div>
-              <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
-              <div class="dropdown-divider"></div>
-              <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
-              <div class="dropdown-divider"></div>
-              <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
+
+              <!-- INICIO Módulo de cobros-->
+              <li class="dropdown-submenu dropdown-hover ">
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                  <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li class="dropdown-submenu dropdown-hover ">
+                  <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
+                  <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                    <li><a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a></li>
+                    <div class="dropdown-divider"></div>
+                    <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                    <div class="dropdown-divider"></div>
+                    <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
+                  </ul>
+              </li>
+                </ul>
+              </li>
+              <!-- FIN Módulo de cobros -->
+
+              
               
 
               <li class="dropdown-divider"></li>
 
               <!-- Level two dropdown-->
               <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
                 <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                  <li>
-                    <a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a>
-                  </li>
+                  <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
                   <div class="dropdown-divider"></div>
-                  <!-- Level three dropdown-->
-                  <!--<li class="dropdown-submenu">
-                    <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Departamentos</a>
-                    <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                      <li><a href="#" class="dropdown-item">Puestos</a></li>
-                      
-                    </ul>
-                  </li>-->
-                  <!-- End Level three -->
-
-                  <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                  <li><a href="" class="dropdown-item">Pagos</a></li>
                   <div class="dropdown-divider"></div>
-                  <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
+                  <li><a href="" class="dropdown-item">Promesas</a></li>
                 </ul>
               </li>
               

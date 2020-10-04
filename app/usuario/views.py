@@ -12,6 +12,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from app.usuario.models import Usuario
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 
 class listar_usuarios(LoginRequiredMixin,ListView):
@@ -91,11 +92,14 @@ class crear_usuario(LoginRequiredMixin,CreateView):
                 nuevo.save()
                 return redirect('listar_usuarios') 
             #else:
-                #return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Ingrese datos del nuevo usuario','plantilla': 'Crear'})
+                
         except Exception as e:
+            departamento = Departamentos.objects.filter(borrado=0,estado=1)
+            puesto = Puestos.objects.filter(borrado=0,estado=1)
+            return render(request, self.template_name, {'puesto':puesto,'departamento':departamento,'form':form, 'quitar_footer': 'si','ya_existe': 'si','nombres_post':request.POST['nombres'],'apellidos_post':request.POST['apellidos'],'email_post':request.POST['email'],'user_post':request.POST['username'], 'titulo_lista': 'Ingrese datos del nuevo usuario','plantilla': 'Crear'})
             data['error'] = str(e)
         return JsonResponse(data)
-    
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -269,3 +273,4 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
         context['cont_total'] = cont_promesa + cont_rcrio
         # FIN PARA PROMESAS HEADER
         return context
+

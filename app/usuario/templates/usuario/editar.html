@@ -69,9 +69,13 @@
                 {% for campo in form.visible_fields %}
                     <div class="form-group" style="font-size: 12px;">
                         <label for="email">{% if campo.label == 'Cambiar contrasenia' %}
-                            Cambiar Contraseña <--será el mismo usuario-->
+                            Cambiar Contraseña <li style="color:red; font-size:10px; font-family: 'Verdana'; list-style: none;align='left'">*Al seleccionar "SI" se le generará el mismo usuario, y el sistema lo obligará a cambiarla.</li>
                         {% else %}
-                            {{ campo.label }}
+                            {% if  campo.label == 'Bloqueado' %}
+                                Acceso al Sistema
+                            {% else %}
+                                {{ campo.label }}
+                            {% endif %}
                         {% endif %}</label>
                         
                         {% if campo.label == 'Correo Electrónico' %}

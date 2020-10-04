@@ -36,12 +36,12 @@
                
 
                 <div class="form-group" style="font-size: 12px;">
-                        <label for="email"><label style="color:red;">*</label>Nombres</label>
+                        <label for="email"><label style="color:red;">*</label>Nombres:</label>
                         <input type="text" onpaste="return false" value="{{ nombres_post }}" name="nombres" onkeypress="return nombre(event)" required placeholder="Ingrese los primeros nombres" minlength="5" maxlength="50" class="form-control" autocomplete="off" autofocus="" id="id_nombres">
                     </div>
                 
                     <div class="form-group" style="font-size: 12px;">
-                        <label for="email"><label style="color:red;">*</label>Apellidos</label>
+                        <label for="email"><label style="color:red;">*</label>Apellidos:</label>
                         <input type="text" onpaste="return false" value="{{ apellidos_post }}" name="apellidos" onkeypress="return nombre(event)" required placeholder="Ingrese los apellidos" minlength="5" maxlength="50" class="form-control" autocomplete="off" id="id_apellidos">
                     </div>
          
@@ -65,14 +65,23 @@
                     </select>
                 </div>
 
-             
+                <div class="form-group">
+                    <label style="font-size: 13px; ">&nbsp;<label style="color:red;">*</label>Perfil del usuario::</label>
+                    <select name="id_rol" id="id_rol" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                            <option  value="" >--------------</option>
+                                {% for xx in rol %}
+                            <option value="{{ xx.id_rol }}" >{{ xx.nombre }}</option> 
+                                {% endfor %}
+                    </select>
+                </div>
+
                     <div class="form-group" style="font-size: 12px;">
-                        <label for="email"><label style="color:red;">*</label>Usuario</label>
+                        <label for="email"><label style="color:red;">*</label>Usuario:</label>
                         <input type="text" onpaste="return false" value="{{ user_post }}" name="username" onkeypress="return usuario(event)" placeholder="Ejemplo: nombreapellido" maxlength="40" minlength="8" class="form-control" autocomplete="off" required="" id="id_username">
                     </div>
                 
                     <div class="form-group" style="font-size: 12px;">
-                        <label for="email"><label style="color:red;">*</label>Correo Electrónico</label>
+                        <label for="email"><label style="color:red;">*</label>Correo Electrónico:</label>
                         <input type="email" onpaste="return false" value="{{ email_post }}" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" name="email" minlength="10" maxlength="254" class="form-control" autocomplete="off" required id="id_email" placeholder="Ejemplo: nombre@dominio.com">
                         <span style="color:green; font-weight: bold;" id="emailOK"></span>
                         <span style="color:red; font-weight: bold;" id="emailnoOK"></span>

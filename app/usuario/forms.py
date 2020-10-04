@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from django.contrib.admin import widgets
 
 class form_usuarios(ModelForm):
+    user = Usuario.objects.filter(borrado=0,estado=1)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -24,7 +25,7 @@ class form_usuarios(ModelForm):
         
         fields = '__all__'
         # si deseo excluir ciertos campos coloco
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
 
         widgets = {
             'nombres': TextInput(

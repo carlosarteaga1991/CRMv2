@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
-from app.usuario.models import Usuario
+from app.usuario.models import Usuario,Roles
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 
@@ -86,8 +86,8 @@ class crear_usuario(LoginRequiredMixin,CreateView):
                     fch_creacion = datetime.now(),
                     username = request.POST['username'],
                     email = request.POST['email'],
-                    usuario_creacion = int(request.user.id)
-
+                    usuario_creacion = int(request.user.id),
+                    id_rol_id = int(request.POST['id_rol'])
                 )
                 nuevo.save()
                 return redirect('listar_usuarios') 
@@ -96,7 +96,8 @@ class crear_usuario(LoginRequiredMixin,CreateView):
         except Exception as e:
             departamento = Departamentos.objects.filter(borrado=0,estado=1)
             puesto = Puestos.objects.filter(borrado=0,estado=1)
-            return render(request, self.template_name, {'puesto':puesto,'departamento':departamento,'form':form, 'quitar_footer': 'si','ya_existe': 'si','nombres_post':request.POST['nombres'],'apellidos_post':request.POST['apellidos'],'email_post':request.POST['email'],'user_post':request.POST['username'], 'titulo_lista': 'Ingrese datos del nuevo usuario','plantilla': 'Crear'})
+            rol = Roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+            return render(request, self.template_name, {'rol': rol,'puesto':puesto,'departamento':departamento,'form':form, 'quitar_footer': 'si','ya_existe': 'si','nombres_post':request.POST['nombres'],'apellidos_post':request.POST['apellidos'],'email_post':request.POST['email'],'user_post':request.POST['username'], 'titulo_lista': 'Ingrese datos del nuevo usuario','plantilla': 'Crear'})
             data['error'] = str(e)
         return JsonResponse(data)
 
@@ -108,10 +109,13 @@ class crear_usuario(LoginRequiredMixin,CreateView):
         context['titulo_lista'] = 'Ingrese datos del nuevo usuario'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
+        context['formguardarusuario'] = form_usuarios()
         departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        rol = Roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
         puesto = Puestos.objects.filter(borrado=0,estado=1)
         context['departamento'] = departamento
         context['puesto'] = puesto
+        context['rol'] = rol
         
 
 
@@ -161,6 +165,7 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
             registro.nombres = request.POST['nombres']
             registro.apellidos = request.POST['apellidos']
             registro.estado = request.POST['estado']
+            registro.id_rol_id = request.POST['id_rol']
             if request.POST['cambiar_contrasenia'] == '1':
                 registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
                 registro.password = make_password(request.POST['username'])
@@ -189,11 +194,16 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
         user = Usuario.objects.filter(borrado=0, id = self.kwargs['pk'])
         z = 0
         zz = 0
+        zzz = 0
         for c in user:
             z = c.id_departamento
             zz = c.id_puesto
+            zzz = c.id_rol_id
         context['seleccionar_dep'] = z
         context['seleccionar_puesto'] = zz
+        context['seleccionar_rol'] = zzz
+        rol = Roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+        context['rol'] = rol
         
 
         # INICIO PARA RECORDATORIOS HEADER

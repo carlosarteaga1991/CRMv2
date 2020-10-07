@@ -11,6 +11,8 @@ from django.urls import reverse_lazy
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
+from app.usuario.models import *
+
 # Create your views here.
 
 
@@ -87,6 +89,13 @@ class listview_departamento(LoginRequiredMixin,ListView):
         context['create_url'] = reverse_lazy('crm:crear_departamento')
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
+        # INICIO VERIFICACIÓN DE PERMISOS
+        # from app.usuario.models import *
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 5
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
 
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
@@ -124,6 +133,10 @@ class createview_departamento(LoginRequiredMixin,CreateView):
         data = {}
         form = self.form_class(request.POST)
         try:
+            if condition:
+                pass
+            else:
+                pass
             if form.is_valid():
                 nuevo = Departamentos(
                     nombre = form.cleaned_data.get('nombre'),
@@ -133,7 +146,6 @@ class createview_departamento(LoginRequiredMixin,CreateView):
                 nuevo.save()
                 return redirect('crm:listar_departamento') 
             else:
-                #return render(request, self.template_name, {'error1': 'error', 'form':form, 'quitar_footer': 'si', 'tabla': 'departamento', 'titulo_lista': 'Ingrese datos del nuevo departamento'})
                 return render(request, self.template_name, {'form':form, 'quitar_footer': 'si', 'titulo_lista': 'Ingrese datos del nuevo departamento','plantilla': 'Crear'})
         except Exception as e:
             data['error'] = str(e)
@@ -148,6 +160,16 @@ class createview_departamento(LoginRequiredMixin,CreateView):
         context['titulo_lista'] = 'Ingrese datos del nuevo departamento'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        # from app.usuario.models import *
+        # usuario_administrador == True
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 5
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -214,6 +236,16 @@ class updateview_departamento(LoginRequiredMixin,UpdateView):
         context['titulo_lista'] = 'Editar departamento'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        # from app.usuario.models import *
+        # usuario_administrador == True
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 5
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -270,6 +302,16 @@ class deleteview_departamento(LoginRequiredMixin,DeleteView):
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar departamento'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        # from app.usuario.models import *
+        # usuario_administrador == True
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 5
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+        
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0

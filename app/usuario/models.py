@@ -91,12 +91,18 @@ class Usuario(AbstractBaseUser):
         return self.usuario_administrador
 
 
+class Pantallas(models.Model):
+    id_pantalla = models.AutoField(primary_key=True)
+    nombre = models.CharField('Pantalla',max_length=50, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Pantallas"
+        ordering = ['id_pantalla']
 
 class Permisos(models.Model):
     id_permiso = models.AutoField(primary_key=True)
     id_rol = models.ForeignKey(Roles,on_delete=models.PROTECT,verbose_name="Perfil de Usuario")
-    id_usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT,verbose_name="Usuario")
-    pantalla = models.CharField('Pantalla',max_length=100, unique=True)
+    pantalla = models.ForeignKey(Pantallas,on_delete=models.PROTECT,verbose_name="Pantalla")
     ver = models.IntegerField(default=1,blank=True,null=True)
     actualizar = models.IntegerField(default=1,blank=True,null=True)
     crear = models.IntegerField(default=1,blank=True,null=True)
@@ -118,3 +124,4 @@ class Permisos(models.Model):
     class Meta:
         verbose_name_plural = "Permisos"
         ordering = ['id_permiso']
+

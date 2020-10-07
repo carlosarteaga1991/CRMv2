@@ -10,6 +10,7 @@ from django.shortcuts import render,redirect
 
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
+from app.usuario.models import *
 
 class listar_puestos(LoginRequiredMixin,ListView):
     model = Puestos
@@ -33,6 +34,14 @@ class listar_puestos(LoginRequiredMixin,ListView):
         context['create_url'] = reverse_lazy('crm:crear_puesto')
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 6
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -91,6 +100,14 @@ class crear_puesto(LoginRequiredMixin,CreateView):
         context['select_puesto'] = 'mostrar'
         departamento = Departamentos.objects.filter(borrado=0,estado=1)
         context['departamento'] = departamento
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 6
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -147,6 +164,14 @@ class borrar_puesto(LoginRequiredMixin,DeleteView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar puesto'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 6
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -217,6 +242,14 @@ class actualizar_puesto(LoginRequiredMixin,UpdateView):
         context['seleccionar'] = z
         departamento = Departamentos.objects.filter(borrado=0,estado=1)
         context['departamento'] = departamento
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 6
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0

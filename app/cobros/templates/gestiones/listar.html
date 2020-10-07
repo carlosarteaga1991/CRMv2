@@ -150,9 +150,39 @@
 
                                         {% for x in gestiones %}
                                             <tr >
-                                                <td style=" text-align:left;"><div style="width:130px; overflow:hidden;">{{ x.fch_gestion }}</div></td>
-                                                <td style="height: auto; text-align:left;"> <div style="width:545px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
-                                                <td style="height: auto; text-align:center;"> <div style="width:100px; overflow:hidden;">{{ x.usuario_creacion }}</div></td>
+                                                <td style=" text-align:left;"><div style="width:140px; overflow:hidden;">{{x.fch_gestion.year}}-
+                                                {% if x.fch_gestion.month < 10 %}
+                                                0{{x.fch_gestion.month}}-
+                                                {% else %}
+                                                {{x.fch_gestion.month}}-
+                                                {% endif %} 
+                                                {% if x.fch_gestion.day < 10 %}
+                                                0{{x.fch_gestion.day}}
+                                                {% else %}
+                                                {{x.fch_gestion.day}}
+                                                {% endif %}a las
+
+                                                {% if x.fch_gestion.hour < 10 %}
+                                                0{{x.fch_gestion.hour}}:
+                                                {% else %}
+                                                {{x.fch_gestion.hour}}:
+                                                {% endif %}
+                                                
+                                                {% if x.fch_gestion.minute < 10 %}
+                                                0{{x.fch_gestion.minute}}:
+                                                {% else %}
+                                                {{x.fch_gestion.minute}}:
+                                                {% endif %}
+
+                                                {% if x.fch_gestion.second < 10 %}
+                                                0{{x.fch_gestion.second}}
+                                                {% else %}
+                                                {{x.fch_gestion.second}}
+                                                {% endif %}
+                                                
+                                                </div></td>
+                                                <td style="height: auto; text-align:left;"> <div style="width:540px; overflow:hidden;"> {{ x.descripcion }} </div> </td>
+                                                <td style="height: auto; text-align:center;"> <div style="width:90px; overflow:hidden;">{{ x.usuario_creacion }}</div></td>
                                                 <td style="height: auto; text-align:center;"> <div style=" width:160px; overflow:hidden;">{{ x.id_codigo }}</div></td>
                                                 <td style="height: auto; text-align:center;"> <div style="width:150px; overflow:hidden;">{{ x.id_motivo }}</div></td>
                                             </tr>
@@ -435,6 +465,7 @@
     $(function () {
     $('#data_gestiones').DataTable({
         //responsive: true,
+        order: [[ 0, "desc" ]],
         autoWidth: false,
         "language": {
                         url: '{% static 'lib/DataTables/spanish.txt' %}'

@@ -10,6 +10,7 @@ from django.shortcuts import render,redirect
 
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
+from app.usuario.models import *
 
 class listar_empresas(LoginRequiredMixin,ListView):
     model = Empresas
@@ -33,6 +34,14 @@ class listar_empresas(LoginRequiredMixin,ListView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 7
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -96,6 +105,14 @@ class crear_empresa(LoginRequiredMixin,CreateView):
         context['titulo_lista'] = 'Ingrese datos de la nueva empresa'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 7
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -152,6 +169,14 @@ class borrar_empresa(LoginRequiredMixin,DeleteView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar empresa'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 7
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0
@@ -251,6 +276,14 @@ class actualizar_empresa(LoginRequiredMixin,UpdateView):
         context['titulo_lista'] = 'Editar empresa'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
+        context['permisos_usuario'] = permisos_usuario
+        context['numero_pantalla'] = 7
+        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        # FIN VERIFICACIÓN DE PERMISOS
+        
         # INICIO PARA RECORDATORIOS HEADER
         now = datetime.now()
         cont_rcrio = 0

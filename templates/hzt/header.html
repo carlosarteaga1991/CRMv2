@@ -26,82 +26,232 @@
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><strong>Administración</strong></a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+
               <!-- INICIO Módulo de seguridad-->
-              <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
-                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                  <li><a href="" class="dropdown-item">Perfiles</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="" class="dropdown-item">Permisos</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
-                  <div class="dropdown-divider"></div>
-                  <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
-                </ul>
-              </li>
+                {% if usuario_administrador == True %}
+                    <li class="dropdown-submenu dropdown-hover ">
+                      <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
+                      <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                        <li><a href="{% url 'listar_roles' %}" class="dropdown-item">Perfiles</a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li><a href="{% url 'listar_permisos'%}" class="dropdown-item">Permisos </a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
+                      </ul>
+                    </li>
+                {% else %}
+                  {% for x in permisos_usuario  %}
+                  {% if x.pantalla_id == 20 and x.ver == 1 %}
+                  <!--<div class="dropdown-divider"></div>-->
+                  <li class="dropdown-submenu dropdown-hover ">
+                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
+                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                    {% for xx in permisos_usuario %}
+                        {% if xx.pantalla_id == 1 and xx.ver == 1 and xx.estado == '1' %}
+                      <li><a href="{% url 'listar_roles' %}" class="dropdown-item">Perfiles</a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      {% endif %}
+                      {% if xx.pantalla_id == 2 and xx.ver == 1 and xx.estado == '1' %}
+                      <li><a href="{% url 'listar_permisos'%}" class="dropdown-item">Permisos </a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      {% endif %}
+                      {% if xx.pantalla_id == 3 and xx.ver == 1 and xx.estado == '1' %}
+                      <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      {% endif %}
+                      {% if xx.pantalla_id == 4 and xx.ver == 1 and xx.estado == '1' %}
+                      <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
+                      {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </li>
+                  <!--<div class="dropdown-divider"></div>-->
+                  {% endif %}
+                  {% endfor %}
+                {% endif %}
+                  
               <!-- FIN Módulo de seguridad -->
 
-              <div class="dropdown-divider"></div>
+              
 
               <!-- INICIO Módulo de gerencial-->
-              <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo Gerencial</a>
-                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                  <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="#" class="dropdown-item">KPI</a></li>
-                </ul>
-              </li>
+                  {% if usuario_administrador == True %}
+                    <!--<div class="dropdown-divider"></div>-->
+                  
+                  <li class="dropdown-submenu dropdown-hover ">
+                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo Gerencial</a>
+                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;"> 
+                            <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
+                            <!--<div class="dropdown-divider"></div>-->
+                          <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          <li><a href="#" class="dropdown-item">KPI</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                    </ul>
+                  </li>
+      
+                  {% else %}
+
+                  {% for x in permisos_usuario %}
+                  {% if  x.pantalla_id == 21 and x.ver == 1  %}
+                  
+                  
+                  <li class="dropdown-submenu dropdown-hover ">
+                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo Gerencial</a>
+                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;"> 
+                        {% for xx in permisos_usuario %}
+                        {% if xx.pantalla_id == 5 and xx.ver == 1 and xx.estado == '1' %}
+                            <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
+                            <!--<div class="dropdown-divider"></div>-->
+                        {% endif %}
+                        {% if xx.pantalla_id == 6 and xx.ver == 1  and xx.estado == '1' %}
+                          <li><a href="{% url 'crm:listar_puestos' %}" class="dropdown-item">Puestos</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          {% endif %}
+                        {% if xx.pantalla_id == 7 and xx.ver == 1  and xx.estado == '1' %}
+                          <li><a href="{% url 'crm:listar_empresa' %}" class="dropdown-item">Empresas</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          {% endif %}
+                        {% if xx.pantalla_id == 8 and xx.ver == 1 and xx.estado == '1' %}
+                          <li><a href="#" class="dropdown-item">KPI</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          {% endif %}
+                        {% endfor %}
+                    </ul>
+                  </li>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% endif %}
+
+              
               <!-- FIN Módulo de gerencial -->
               
-              <div class="dropdown-divider"></div>
+              
 
               <!-- INICIO Módulo de cobros-->
-              <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
-                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                  <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li class="dropdown-submenu dropdown-hover ">
-                  <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
-                  <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                    <li><a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a></li>
-                    <div class="dropdown-divider"></div>
-                    <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
-                    <div class="dropdown-divider"></div>
-                    <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
-                  </ul>
-              </li>
-                </ul>
-              </li>
+                {% if usuario_administrador == True %}
+                  <!--<div class="dropdown-divider"></div>-->
+                    <li class="dropdown-submenu dropdown-hover ">
+                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
+                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                      <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <li class="dropdown-submenu dropdown-hover ">
+                      <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
+                      <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                        <li><a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
+                      </ul>
+                  </li>
+                    </ul>
+                  </li>
+                {% else %}
+                      {% for x in permisos_usuario  %}
+                        {% if x.pantalla_id == 22 and x.ver == 1 %}
+                          <!--<div class="dropdown-divider"></div>-->
+                            <li class="dropdown-submenu dropdown-hover ">
+                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
+                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                              {% for xx in permisos_usuario %}
+                                  {% if xx.pantalla_id == 9 and xx.ver == 1 and xx.estado == '1' %}
+                                      <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
+                                      <!--<div class="dropdown-divider"></div>-->
+                                      {% endif %}
+                                      {% if xx.pantalla_id == 23 and xx.ver == 1 and xx.estado == '1' %}
+                                      <li><a href="{% url 'crm:listar_codigos' %}" class="dropdown-item">Códigos</a></li>
+                                      <!--<div class="dropdown-divider"></div>-->
+                                      {% endif %}
+                                      {% if xx.pantalla_id == 24 and xx.ver == 1 and xx.estado == '1' %}
+                                        <li><a href="{% url 'crm:listar_motivos' %}" class="dropdown-item">Motivos</a></li>
+                                        <!--<div class="dropdown-divider"></div>-->
+                                        {% endif %}
+
+                                        {% if xx.pantalla_id == 27 %}
+                                        <li class="dropdown-submenu dropdown-hover ">
+                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
+                                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                                            {% for v in permisos_usuario %}
+                                                {% if v.pantalla_id == 17 and v.ver == 1 and v.estado == '1' %}
+                                                <li><a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a></li>
+                                                <!--<div class="dropdown-divider"></div>-->
+                                                {% endif %}
+                                                {% if v.pantalla_id == 18 and v.ver == 1 and v.estado == '1'%}
+                                                <li><a href="{% url 'crm:listar_seg_visita' %}" class="dropdown-item">Visitas</a></li>
+                                                <!--<div class="dropdown-divider"></div>-->
+                                                {% endif %}
+                                                {% if v.pantalla_id == 19 and v.ver == 1 and v.estado == '1'%}
+                                                <li><a href="{% url 'crm:listar_seg_alertas' %}" class="dropdown-item">Alertas</a></li>
+                                                {% endif %}
+                                              {% endfor %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+                              {% endfor %}
+                              </ul>
+                              </li>
+                        {% endif %}
+                      {% endfor %}
+                {% endif %}
+                
               <!-- FIN Módulo de cobros -->
 
               
               
 
-              <li class="dropdown-divider"></li>
-
-              <!-- Level two dropdown-->
-              <li class="dropdown-submenu dropdown-hover ">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
-                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                  <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="" class="dropdown-item">Pagos</a></li>
-                  <div class="dropdown-divider"></div>
-                  <li><a href="" class="dropdown-item">Promesas</a></li>
-                </ul>
-              </li>
               
-              <!-- End Level two -->
+
+              <!-- INICIO MÓDULO DE MONITOREO-->
+              {% if usuario_administrador == True %}
+              <li class="dropdown-divider"></li>
+                <li class="dropdown-submenu dropdown-hover ">
+                  <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
+                  <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                    <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
+                    <!--<div class="dropdown-divider"></div>-->
+                    <li><a href="" class="dropdown-item">Pagos</a></li>
+                    <!--<div class="dropdown-divider"></div>-->
+                    <li><a href="" class="dropdown-item">Promesas</a></li>
+                  </ul>
+                </li>
+              {% else %}
+                {% for x in permisos_usuario  %}
+                  {% if x.pantalla_id == 25 and x.ver == 1 %}
+                  <!--<div class="dropdown-divider"></div>-->
+                    <li class="dropdown-submenu dropdown-hover ">
+                      <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
+                      <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                        {% for xx in permisos_usuario %}
+                          {% if xx.pantalla_id == 26 and xx.ver == 1 and xx.estado == '1' %}
+                          <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          {% endif %}
+                          {% if xx.pantalla_id == 10 and xx.ver == 1 and xx.estado == '1' %}
+                          <li><a href="" class="dropdown-item">Pagos</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          {% endif %}
+                          {% if xx.pantalla_id == 11 and xx.ver == 1 and xx.estado == '1' %}
+                          <li><a href="" class="dropdown-item">Promesas</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+                
+              <!-- FIN MÓDULO DE MONITOREO -->
             </ul>
           </li>
         </ul>

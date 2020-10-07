@@ -23,7 +23,7 @@
     <div class=" card-primary" style="padding-top: 5%; ">
          
 
-              {% if usuario_administrador == True %}
+              {% if permisos.usuario_administrador == True %}
                 <!-- INICIO PARTE DEL ADMINISTRADOR -->
                       <div class="" style=" color: black; font-size: 11px; height: 22px">
 
@@ -56,8 +56,7 @@
                     </div>
                 <!-- FIN PARTE DEL ADMINISTRADOR -->
               {% else %}
-                  {% for  x in permisos_usuario  %}
-                      {% if x.pantalla_id == numero_pantalla and x.ver == 1 %}
+                      {% if permisos.pantalla_template == 'ver' and permisos.ver_pantalla == 1 %}
                         <!-- FIN PARTE DEL USUARIO ACEPTADO -->
                                       <div class="" style=" color: black; font-size: 11px; height: 22px">
 
@@ -92,7 +91,6 @@
                       {% else %}
 
                       {% endif %}
-                  {% endfor %}
               {% endif %}  
               
                

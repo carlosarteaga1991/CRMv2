@@ -11,6 +11,9 @@ from django.shortcuts import render,redirect
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from app.usuario.permisos import asignar_permiso
+from app.usuario.alertas import alertas
+
 class listar_cliente_productos(LoginRequiredMixin,ListView):
     model = Productos
     template_name = 'clientes/productos/listar.html'
@@ -19,7 +22,7 @@ class listar_cliente_productos(LoginRequiredMixin,ListView):
         return self.model.objects.filter(borrado=0,id_cliente_id=self.kwargs['pk'])
 
     @method_decorator(csrf_exempt)
-    #@method_decorator(login_required)
+    #@method_decorator(login_required) 
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -35,28 +38,20 @@ class listar_cliente_productos(LoginRequiredMixin,ListView):
         context['boton_volver'] = 'si'
         context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 
@@ -101,28 +96,20 @@ class crear_cliente_productos(LoginRequiredMixin,CreateView):
         context['boton_volver'] = 'si'
         context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 
@@ -162,28 +149,20 @@ class borrar_cliente_productos(LoginRequiredMixin,DeleteView):
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar producto'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 
@@ -228,27 +207,19 @@ class actualizar_cliente_productos(LoginRequiredMixin,UpdateView):
         context['titulo_lista'] = 'Editar contacto de cliente'
         context['quitar_footer'] = 'si'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 

@@ -43,25 +43,23 @@
             <!-- Botón para guardar nuevo -->
             <div class = "card-footer" >
 
-                {% if usuario_administrador == True %}
+                {% if permisos.usuario_administrador == True %}
                     <button type="submit" class = "btn btn-xs btn-primary float-right btn-borrar" >
                     <i class="fas fa-trash"></i> ¡Sí, borrar!
                     </button>
                 {% else %}
-                        {% for x in permisos_usuario %}
-                    {% if x.pantalla_id == numero_pantalla and x.borrar == 1 %}
+                    {% if permisos.pantalla_template == 'borrar' and permisos.borrar_pantalla == 1 %}
                         <button type="submit" class = "btn btn-xs btn-primary float-right btn-borrar" >
                         <i class="fas fa-trash"></i> ¡Sí, borrar!
                         </button>
                     {% else %}
-                        {% if  x.pantalla_id == numero_pantalla %}
+                        {% if  permisos.pantalla_template == 'borrar' %}
                             <button  disabled="true" style= "background: #6D6D6D; color: white;" class = "btn btn-xs btn-primary float-right " >
                             <i class="fas fa-ban"></i> Sin permiso
                         </button>
                         {% endif %}
-                        
+                          
                     {% endif %}
-                {% endfor %}
                 {% endif %}
                 
                 <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger">

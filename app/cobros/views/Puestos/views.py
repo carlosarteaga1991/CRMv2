@@ -12,6 +12,9 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app.usuario.models import *
 
+from app.usuario.permisos import asignar_permiso
+from app.usuario.alertas import alertas
+
 class listar_puestos(LoginRequiredMixin,ListView):
     model = Puestos
     template_name = 'Puestos/listar.html'
@@ -36,34 +39,18 @@ class listar_puestos(LoginRequiredMixin,ListView):
         context['tipo'] = ''
 
         # INICIO VERIFICACIÓN DE PERMISOS
-        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
-        context['permisos_usuario'] = permisos_usuario
-        context['numero_pantalla'] = 6
-        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
         # FIN VERIFICACIÓN DE PERMISOS
 
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 class crear_puesto(LoginRequiredMixin,CreateView):
@@ -101,35 +88,19 @@ class crear_puesto(LoginRequiredMixin,CreateView):
         departamento = Departamentos.objects.filter(borrado=0,estado=1)
         context['departamento'] = departamento
 
-        # INICIO VERIFICACIÓN DE PERMISOS
-        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
-        context['permisos_usuario'] = permisos_usuario
-        context['numero_pantalla'] = 6
-        context['usuario_administrador'] = self.request.user.usuario_administrador 
+       # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
         # FIN VERIFICACIÓN DE PERMISOS
 
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 class borrar_puesto(LoginRequiredMixin,DeleteView):
@@ -166,34 +137,18 @@ class borrar_puesto(LoginRequiredMixin,DeleteView):
         context['titulo_lista'] = 'Eliminar puesto'
 
         # INICIO VERIFICACIÓN DE PERMISOS
-        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
-        context['permisos_usuario'] = permisos_usuario
-        context['numero_pantalla'] = 6
-        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
         # FIN VERIFICACIÓN DE PERMISOS
 
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context
 
 class actualizar_puesto(LoginRequiredMixin,UpdateView):
@@ -244,32 +199,16 @@ class actualizar_puesto(LoginRequiredMixin,UpdateView):
         context['departamento'] = departamento
 
         # INICIO VERIFICACIÓN DE PERMISOS
-        permisos_usuario = Permisos.objects.filter(id_rol_id = self.request.user.id_rol_id)
-        context['permisos_usuario'] = permisos_usuario
-        context['numero_pantalla'] = 6
-        context['usuario_administrador'] = self.request.user.usuario_administrador 
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
         # FIN VERIFICACIÓN DE PERMISOS
 
         # INICIO PARA RECORDATORIOS HEADER
-        now = datetime.now()
-        cont_rcrio = 0
-        if len(str(now.month)) == 1:
-            mes = '0' + str(now.month)
-        else:
-            mes = str(now.month)
-        fecha = str(now.year) + '-' + mes + '-' + str(now.day)
-        recordatorios = Recordatorios.objects.filter(borrado=0,usuario_creacion=self.request.user,estatus_alerta='Pendiente',fch_recordatorio=fecha)
-        for x in recordatorios:
-            cont_rcrio += 1
-        context['cont_alerta'] = cont_rcrio 
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER
 
         # INICIO PARA PROMESAS HEADER
-        cont_promesa = 0
-        promesa = Promesas.objects.filter(borrado=0,id_usuario=self.request.user,estatus_promesa='Pendiente',fecha=fecha)
-        for x in promesa:
-            cont_promesa += 1
-        context['cont_promesa'] = cont_promesa 
-        context['cont_total'] = cont_promesa + cont_rcrio
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
         # FIN PARA PROMESAS HEADER
+
         return context

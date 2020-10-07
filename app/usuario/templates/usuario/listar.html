@@ -8,7 +8,7 @@
 
 
 {% block columnas %}
-{% if usuario_administrador == True %}
+{% if permisos.usuario_administrador == True %}
     <tr>
                         <!--<th scope="col" style="width: 5%; text-align:center">Id</th>-->
                         <th scope="col" style="width: 20%; text-align:center">Nombre</th>
@@ -21,8 +21,7 @@
                         <th scope="col" style="width: 15%; text-align:center">Opciones</th>
                     </tr>
 {% else %}
-    {% for x in permisos_usuario  %}
-        {% if x.pantalla_id == numero_pantalla and x.ver == 1 %}
+        {% if permisos.ver_pantalla > 0 %}
                 <tr>
                         <!--<th scope="col" style="width: 5%; text-align:center">Id</th>-->
                         <th scope="col" style="width: 20%; text-align:center">Nombre</th>
@@ -37,14 +36,13 @@
         {% else %}
 
         {% endif %}
-    {% endfor %}
 {% endif %}
                     
 {% endblock  %}
 
 
 {% block filas %}
-{% if usuario_administrador == True %}
+{% if permisos.usuario_administrador == True %}
     {% for x in object_list %}
                             <tr>
                                 <!--<td>{{ x.id_motivo }}</td>-->
@@ -82,7 +80,7 @@
     {% endfor %}
 {% else %}
 
-        {%if ver_pantalla > 0 %}
+        {%if permisos.ver_pantalla > 0 %}
             {% for x in object_list %}
                 <tr>
                                 <td>{{ x.nombres }} {{ x.apellidos }}</td>
@@ -118,7 +116,7 @@
                             </tr>
                 {% endfor %}
         {% else %}
-            {% if ver == 0 %}
+            {% if permisos.ver_pantalla == 0 %}
                 <div class="card-body">
                     <div class="alert alert-warning fade in alert-dismissible show" style="margin-top:18px; font-size:20px">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

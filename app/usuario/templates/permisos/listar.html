@@ -7,7 +7,7 @@
 
 
 {% block columnas %}
-{% if usuario_administrador == True %}
+{% if permisos.usuario_administrador == True %}
     <tr>
                         <th scope="col" style="width: 16%; text-align:center">Tipo de Perfil</th>
                         <th scope="col" style="width: 15%; text-align:center">Acceso a la Pantalla</th>
@@ -19,7 +19,7 @@
                         <th scope="col" style="width: 10%; text-align:center">Opciones</th>
     </tr>
 {% else %}
-    {% if ver_pantalla > 0 %}
+    {% if permisos.ver_pantalla > 0 %}
         <tr>
                         <th scope="col" style="width: 16%; text-align:center">Tipo de Perfil</th>
                         <th scope="col" style="width: 15%; text-align:center">Acceso a la Pantalla</th>
@@ -38,7 +38,7 @@
 
 
 {% block filas %}
-{% if usuario_administrador == True %}
+{% if permisos.usuario_administrador == True %}
     {% for x in object_list %}
                             <tr>
                                 <td>{{ x.id_rol }} </td>
@@ -74,7 +74,7 @@
                             </tr>
                         {% endfor %}
 {% else %}
-    {% if ver_pantalla > 0 %}
+    {% if permisos.ver_pantalla > 0 %}
     {% for x in object_list %}
                             <tr>
                                 <td>{{ x.id_rol }} </td>
@@ -110,7 +110,7 @@
                             </tr>
                         {% endfor %}
     {% else %}
-        {% if ver_pantalla == 0 %}
+        {% if permisos.ver_pantalla == 0 %}
             <div class="card-body">
                     <div class="alert alert-warning fade in alert-dismissible show" style="margin-top:18px; font-size:20px">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -119,7 +119,7 @@
                     </div>
                 </div>
         {% else %}
-        {% endif %}
+        {% endif %} 
     {% endif %}
 {% endif %}                       
                         

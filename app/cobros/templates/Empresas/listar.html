@@ -10,6 +10,7 @@
 
 
 {% block columnas %}
+{% if permisos.usuario_administrador == True %}
                     <tr>
                         <!--<th scope="col" style="width: 10%; text-align: center;">Id</th>-->
                         <th scope="col" style="width: 25%; text-align: center;">Nombre empresa</th>
@@ -18,11 +19,25 @@
                         <th scope="col" style="width: 15%; text-align: center;">Estatus</th>
                         <th scope="col" style="width: 20%; text-align: center;">Opciones</th>
                     </tr>
+{% else %}
+{% if permisos.ver_pantalla > 0 %}
+                    <tr>
+                        <!--<th scope="col" style="width: 10%; text-align: center;">Id</th>-->
+                        <th scope="col" style="width: 25%; text-align: center;">Nombre empresa</th>
+                        <th scope="col" style="width: 25%; text-align: center;">Descripción</th>
+                        <th scope="col" style="width: 15%; text-align: center;">Teléfono</th>
+                        <th scope="col" style="width: 15%; text-align: center;">Estatus</th>
+                        <th scope="col" style="width: 20%; text-align: center;">Opciones</th>
+                    </tr>
+{% else %}
+{% endif %}
+{% endif %}
+
 {% endblock  %}
 
 
 {% block filas %}
-                       
+{% if permisos.usuario_administrador == True %}
                         {% for x in object_list %}
                             <tr>
                                 <!--<td style="text-align: center;">{{ x.id_empresa }}</td>-->
@@ -40,6 +55,39 @@
                                 </td>
                             </tr>
                         {% endfor %}
+{% else %}
+{% if permisos.ver_pantalla > 0 %}
+                        {% for x in object_list %}
+                            <tr>
+                                <!--<td style="text-align: center;">{{ x.id_empresa }}</td>-->
+                                <td >{{ x.nombre_empresa }}</td>
+                                <td style="text-align: center;">{{ x.descripcion }}</td>
+                                <td style="text-align: center;">{{ x.telefono }}</td>
+                                <td style="text-align: center;">{% if x.estado == '1' %}
+                                    Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}</td>
+                                <td style="text-align: center;"> 
+                                    <a href="{% url 'crm:actualizar_empresa' x.id_empresa%}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'crm:borrar_empresa' x.id_empresa %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+{% else %}
+{% if permisos.ver_pantalla == 0 %}
+            <div class="card-body">
+                    <div class="alert alert-warning fade in alert-dismissible show" style="margin-top:18px; font-size:20px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+                    </button>    <strong>¡No cuenta con los permisos necesarios para visualizar esta opción!</strong> <br>Comuníquese con el administrador del sistema.
+                    </div>
+                </div>
+        {% else %}
+        {% endif %}
+{% endif %}
+{% endif %}                      
+
 
 {% endblock  %}
 

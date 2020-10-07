@@ -28,27 +28,27 @@
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
 
               <!-- INICIO Módulo de seguridad-->
-                {% if usuario_administrador == True %}
-                    <li class="dropdown-submenu dropdown-hover ">
-                      <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
-                      <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                        <li><a href="{% url 'listar_roles' %}" class="dropdown-item">Perfiles</a></li>
-                        <!--<div class="dropdown-divider"></div>-->
-                        <li><a href="{% url 'listar_permisos'%}" class="dropdown-item">Permisos </a></li>
-                        <!--<div class="dropdown-divider"></div>-->
-                        <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
-                        <!--<div class="dropdown-divider"></div>-->
-                        <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
-                      </ul>
-                    </li>
+                {% if permisos.usuario_administrador == True or context.permisos.usuario_administrador == True %}
+                      <li class="dropdown-submenu dropdown-hover ">
+                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
+                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                          <li><a href="{% url 'listar_roles' %}" class="dropdown-item">Perfiles</a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          <li><a href="{% url 'listar_permisos'%}" class="dropdown-item">Permisos </a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          <li ><a href="{% url 'listar_usuarios' %}" class="dropdown-item" >Usuarios </a></li>
+                          <!--<div class="dropdown-divider"></div>-->
+                          <li ><a href="#" class="dropdown-item" >Bitácoras/Auditoría </a></li>
+                        </ul>
+                      </li>
                 {% else %}
-                  {% for x in permisos_usuario  %}
+                  {% for x in permisos.permisos_usuario %}
                   {% if x.pantalla_id == 20 and x.ver == 1 %}
                   <!--<div class="dropdown-divider"></div>-->
                   <li class="dropdown-submenu dropdown-hover ">
                     <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Segurdad</a>
                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                    {% for xx in permisos_usuario %}
+                    {% for xx in permisos.permisos_usuario %}
                         {% if xx.pantalla_id == 1 and xx.ver == 1 and xx.estado == '1' %}
                       <li><a href="{% url 'listar_roles' %}" class="dropdown-item">Perfiles</a></li>
                       <!--<div class="dropdown-divider"></div>-->
@@ -77,7 +77,7 @@
               
 
               <!-- INICIO Módulo de gerencial-->
-                  {% if usuario_administrador == True %}
+                  {% if permisos.usuario_administrador == True or context.permisos.usuario_administrador == True %}
                     <!--<div class="dropdown-divider"></div>-->
                   
                   <li class="dropdown-submenu dropdown-hover ">
@@ -96,14 +96,14 @@
       
                   {% else %}
 
-                  {% for x in permisos_usuario %}
+                  {% for x in permisos.permisos_usuario %}
                   {% if  x.pantalla_id == 21 and x.ver == 1  %}
                   
                   
                   <li class="dropdown-submenu dropdown-hover ">
                     <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo Gerencial</a>
                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;"> 
-                        {% for xx in permisos_usuario %}
+                        {% for xx in permisos.permisos_usuario %}
                         {% if xx.pantalla_id == 5 and xx.ver == 1 and xx.estado == '1' %}
                             <li ><a href="{% url 'crm:listar_departamento' %}" class="dropdown-item" >Departamentos </a></li>
                             <!--<div class="dropdown-divider"></div>-->
@@ -134,7 +134,7 @@
               
 
               <!-- INICIO Módulo de cobros-->
-                {% if usuario_administrador == True %}
+                {% if permisos.usuario_administrador == True or context.permisos.usuario_administrador == True %}
                   <!--<div class="dropdown-divider"></div>-->
                     <li class="dropdown-submenu dropdown-hover ">
                     <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
@@ -158,13 +158,13 @@
                     </ul>
                   </li>
                 {% else %}
-                      {% for x in permisos_usuario  %}
+                      {% for x in permisos.permisos_usuario  %}
                         {% if x.pantalla_id == 22 and x.ver == 1 %}
                           <!--<div class="dropdown-divider"></div>-->
                             <li class="dropdown-submenu dropdown-hover ">
                             <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Cobros</a>
                             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                              {% for xx in permisos_usuario %}
+                              {% for xx in permisos.permisos_usuario %}
                                   {% if xx.pantalla_id == 9 and xx.ver == 1 and xx.estado == '1' %}
                                       <li><a href="{% url 'crm:listar_cliente' %}" class="dropdown-item">Clientes</a></li>
                                       <!--<div class="dropdown-divider"></div>-->
@@ -182,7 +182,7 @@
                                         <li class="dropdown-submenu dropdown-hover ">
                                         <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Seguimiento</a>
                                             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                                            {% for v in permisos_usuario %}
+                                            {% for v in permisos.permisos_usuario %}
                                                 {% if v.pantalla_id == 17 and v.ver == 1 and v.estado == '1' %}
                                                 <li><a tabindex="-1" href="{% url 'crm:listar_seg_promesas'%}" class="dropdown-item">Promesas</a></li>
                                                 <!--<div class="dropdown-divider"></div>-->
@@ -213,44 +213,44 @@
               
 
               <!-- INICIO MÓDULO DE MONITOREO-->
-              {% if usuario_administrador == True %}
-              <li class="dropdown-divider"></li>
-                <li class="dropdown-submenu dropdown-hover ">
-                  <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
-                  <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                    <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
-                    <!--<div class="dropdown-divider"></div>-->
-                    <li><a href="" class="dropdown-item">Pagos</a></li>
-                    <!--<div class="dropdown-divider"></div>-->
-                    <li><a href="" class="dropdown-item">Promesas</a></li>
-                  </ul>
-                </li>
-              {% else %}
-                {% for x in permisos_usuario  %}
-                  {% if x.pantalla_id == 25 and x.ver == 1 %}
-                  <!--<div class="dropdown-divider"></div>-->
+                  {% if permisos.usuario_administrador == True or context.permisos.usuario_administrador == True %}
+                  <li class="dropdown-divider"></li>
                     <li class="dropdown-submenu dropdown-hover ">
                       <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
                       <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
-                        {% for xx in permisos_usuario %}
-                          {% if xx.pantalla_id == 26 and xx.ver == 1 and xx.estado == '1' %}
-                          <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
-                          <!--<div class="dropdown-divider"></div>-->
-                          {% endif %}
-                          {% if xx.pantalla_id == 10 and xx.ver == 1 and xx.estado == '1' %}
-                          <li><a href="" class="dropdown-item">Pagos</a></li>
-                          <!--<div class="dropdown-divider"></div>-->
-                          {% endif %}
-                          {% if xx.pantalla_id == 11 and xx.ver == 1 and xx.estado == '1' %}
-                          <li><a href="" class="dropdown-item">Promesas</a></li>
-                          {% endif %}
-                        {% endfor %}
+                        <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li><a href="" class="dropdown-item">Pagos</a></li>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <li><a href="" class="dropdown-item">Promesas</a></li>
                       </ul>
                     </li>
+                  {% else %}
+                    {% for x in permisos.permisos_usuario  %}
+                      {% if x.pantalla_id == 25 and x.ver == 1 %}
+                      <!--<div class="dropdown-divider"></div>-->
+                        <li class="dropdown-submenu dropdown-hover ">
+                          <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Módulo de Monitoreo</a>
+                          <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow" style="font-size: 12px;">
+                            {% for xx in permisos.permisos_usuario %}
+                              {% if xx.pantalla_id == 26 and xx.ver == 1 and xx.estado == '1' %}
+                              <li><a tabindex="-1" href="" class="dropdown-item">Empleados</a></li>
+                              <!--<div class="dropdown-divider"></div>-->
+                              {% endif %}
+                              {% if xx.pantalla_id == 10 and xx.ver == 1 and xx.estado == '1' %}
+                              <li><a href="" class="dropdown-item">Pagos</a></li>
+                              <!--<div class="dropdown-divider"></div>-->
+                              {% endif %}
+                              {% if xx.pantalla_id == 11 and xx.ver == 1 and xx.estado == '1' %}
+                              <li><a href="" class="dropdown-item">Promesas</a></li>
+                              {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
                   {% endif %}
-                {% endfor %}
-              {% endif %}
-                
+                    
               <!-- FIN MÓDULO DE MONITOREO -->
             </ul>
           </li>

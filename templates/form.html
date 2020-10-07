@@ -94,25 +94,32 @@
 
             <!-- Botón para guardar nuevo -->
             <div class = "card-footer" >
-                {% if usuario_administrador == True %}
+                {% if permisos.usuario_administrador == True %}
                     <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
                             <i class="fas fa-save"></i> Guardar
                         </button>
                 {% else %}
-                        {% for x in permisos_usuario %}
-                    {% if x.pantalla_id == numero_pantalla and x.crear == 1 %}
-                        <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
-                            <i class="fas fa-save"></i> Guardar
-                        </button>
-                    {% else %}
-                        {% if  x.pantalla_id == numero_pantalla %}
-                            <button  disabled="true" style= "background: #6D6D6D; color: white;" class = "btn btn-xs btn-primary float-right " >
-                            <i class="fas fa-ban"></i> Sin permiso
-                        </button>
-                        {% endif %}
-                        
-                    {% endif %}
-                {% endfor %}
+                            {% if permisos.crear_pantalla == 1  and permisos.actualizar_pantalla == 1 %}
+                                            <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                            </button>
+                            {% else %}
+                                {% if permisos.crear_pantalla == 1 and permisos.actualizar_pantalla == 0 and permisos.pantalla_template == 'crear' %}
+                                    <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                    </button>
+                                {% else %}
+                                    {% if permisos.actualizar_pantalla == 1 and permisos.crear_pantalla == 0 and permisos.pantalla_template == 'actualizar' %}
+                                        <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                        </button>
+                                    {% else %}
+                                        <button  disabled="true" style= "background: #6D6D6D; color: white;" class = "btn btn-xs btn-primary float-right " >
+                                                        <i class="fas fa-ban"></i> Sin permiso
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
                 {% endif %}
 
                 <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger" style="position: absolute; right: 125px;">

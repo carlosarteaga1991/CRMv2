@@ -72,6 +72,7 @@ class Usuario(AbstractBaseUser):
     bloqueado = models.CharField(max_length=1, default='0',choices=[('1','Bloqueado'),('0','Desbloqueado')])
     usuario_administrador = models.BooleanField(default = False)
     id_rol = models.ForeignKey(Roles,on_delete=models.PROTECT,verbose_name="Perfil de Usuario",null=True)
+    is_active = models.BooleanField(default=True)
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'username'

@@ -63,12 +63,21 @@
     </div>
     
         {% if form.errors %}
-            {% for error in form.non_field_errors %}
-                <!--<div class="alert alert-danger alert-dismissible fade show">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <strong>¡</strong> {{ error_messages }} <strong>!</strong>
-                          </div>-->
-            {% endfor %}
+
+           <!-- {% if forms.ValidationError %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  forms.ValidationError }}<strong>!</strong>
+                </div>
+                {% for error in forms.ValidationError.error_messages %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  error }}<strong>!</strong>
+                </div>                
+                {% endfor %}
+            {% endif %}-->
+                                
+                        
 
             <div class="alert alert-danger alert-dismissible fade show">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

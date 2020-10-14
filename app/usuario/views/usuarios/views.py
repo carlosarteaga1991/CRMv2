@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, F
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
-from app.usuario.forms import form_usuarios
+from app.usuario.forms import form_usuarios,form_perfil_usuarios
 from django.urls import reverse_lazy
 
 from datetime import datetime
@@ -247,3 +247,74 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
 
         return context
 
+class editar_perfil_usuario(LoginRequiredMixin,UpdateView):
+    model = Usuario
+    form_class = form_perfil_usuarios
+    template_name = 'usuario/perfil.html'
+    success_url = reverse_lazy('crm:dashboard')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+
+    def get_object(self, get_queryset=None):
+        return self.request.user
+    
+    def post(self, request,*args,**kwargs):
+        data = {}
+        try:
+            registro = self.get_object()
+            registro.email = request.POST['email']
+            registro.nombres = request.POST['nombres']
+            registro.apellidos = request.POST['apellidos']
+            registro.usuario_modificacion = int(request.user.id)
+            registro.fch_modificacion = datetime.now()
+            registro.save()
+            return redirect('crm:dashboard')
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Editar'
+        context['quitar_footer'] = 'si'
+        context['btn_cancelar'] = reverse_lazy('crm:dashboard')
+        context['titulo_lista'] = 'Editar Perfil de Usuario'
+        departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        puesto = Puestos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+        context['puesto'] = puesto
+        
+        user = Usuario.objects.filter(borrado=0, id = self.request.user.id)
+        z = 0
+        zz = 0
+        zzz = 0
+        for c in user:
+            z = c.id_departamento
+            zz = c.id_puesto
+            zzz = c.id_rol_id
+        context['seleccionar_dep'] = z
+        context['seleccionar_puesto'] = zz
+        context['seleccionar_rol'] = zzz
+        rol = Roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+        context['rol'] = rol
+        
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+        
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
+        return context

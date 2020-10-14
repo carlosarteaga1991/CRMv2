@@ -64,7 +64,7 @@ class Usuario(AbstractBaseUser):
     ip_ultimo_acceso = models.CharField(max_length=50, blank=True)
     usuario_creacion = models.IntegerField(blank=True, null=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    fch_modificacion = models.CharField(max_length=35, blank=True)
+    fch_modificacion = models.DateTimeField(null=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField('Estado',max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
     borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])

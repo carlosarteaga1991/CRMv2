@@ -25,7 +25,7 @@ class form_usuarios(ModelForm):
         
         fields = '__all__'
         # si deseo excluir ciertos campos coloco
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+        exclude = ['fch_modificacion','usuario_modificacion','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
 
         widgets = {
             'nombres': TextInput(
@@ -102,6 +102,46 @@ class form_permisos(ModelForm):
                 attrs={
                     'placeholder': 'Ingrese el nombre del perfil',
                     'onkeypress': 'return nombre(event)',
+                }
+            )
+    
+        }
+
+class form_perfil_usuarios(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['nombres'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = Usuario
+        fields = '__all__'
+        exclude = ['fch_modificacion','usuario_modificacion','cambiar_contrasenia','estado','bloqueado','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+
+        widgets = {
+            'nombres': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los primeros nombres',
+                    'onkeypress': 'return nombre(event)',
+                }
+            ),
+            'apellidos': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los apellidos',
+                    'onkeypress': 'return nombre(event)',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'placeholder': 'Formado por primero nombre y apellido, ejemplo: "nombre.apellido"',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'disabled': 'True',
                 }
             )
     

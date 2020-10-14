@@ -1,4 +1,7 @@
 {% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark navbar-primary"  style="position:fixed; width:100%; background: #6CA3FC; font-size: 13px; height: 32px; display: flex; justify-content: center;" >
@@ -301,12 +304,12 @@
                 </a><!-- {{ request.user.id }} -->
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="font-size: 12px;">
                         <span class="dropdown-header" style="font-size: 12px;">
-                            Último Acceso: 12 de Abril de 2020
+                            Último Acceso: {{ request.user.last_login }}
                         </span>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a href="{% url 'editar_perfil_usuario' %}" class="dropdown-item">
                         <i class="fas fa-edit mr-2"></i> Editar perfil
-                        <span class="float-right text-muted text-sm">13 mins</span>
+                        <span  class="float-right text-muted text-sm" style="font-size: 8px;">Última: {{ request.user.fch_modificacion | naturalday }}</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">

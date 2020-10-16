@@ -52,5 +52,8 @@ urlpatterns = [
 
     # URL para PERFIL DE USUARIOS
     path('perfil_usuario/',editar_perfil_usuario.as_view(), name='editar_perfil_usuario'),
+
+    # URL para CAMBIAR PASSWORD USUARIO
+    path('cambiar_password/',cambiar_password_usuario.as_view(), name='cambiar_password'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

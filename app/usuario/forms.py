@@ -119,7 +119,7 @@ class form_perfil_usuarios(ModelForm):
     class Meta():
         model = Usuario
         fields = '__all__'
-        exclude = ['fch_modificacion','usuario_modificacion','cambiar_contrasenia','estado','bloqueado','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+        exclude = ['fch_modificacion','primer_ingreso','fch_cambio_password','usuario_modificacion','cambiar_contrasenia','estado','bloqueado','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
 
         widgets = {
             'nombres': TextInput(

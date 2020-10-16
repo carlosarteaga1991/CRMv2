@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
+{% load widget_tweaks %}
 
 
 {% block contenido %}
-    <form method="POST" action="." style="padding-top: 7%"> <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
+    <form method="POST" action="." enctype="multipart/form-data" style="padding-top: 7%"> <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
         <div class="card card-primary" >
             <div class="" style=" color: blue; font-size: 11px; height: 22px; ">
                 <h3 class="card-title" >
@@ -12,25 +13,22 @@
             </div>
             <div class="card-body">
                 {% csrf_token %}
+                <input type="hidden" name="action" value='{{ action }}'>
 
                 <!-- verificaciones de errores antes de guardar -->
-                    {% if form.errors %}
-                        <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
-                            
-                            <ul>
-                                {% for field in form %}
-                                    {% for error in field.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-ban"></i> Ha ocurrido un error al querer guardar el registro</h5>
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
                                 {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-
-                   
-                    
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
                 <!-- /. verificaciones de errores antes de guardar -->
 
                 {% if select_puesto == 'mostrar' %}
@@ -83,18 +81,19 @@
                 {% endif %}
                 
 
-                {% for campo in form.visible_fields %}
+                {% for field in form.visible_fields %}
                     <div class="form-group" style="font-size: 12px;">
-                        <label for="email">{{ campo.label }}</label>
-                        {{ campo }}
+                        <label for="email">{{ field.label }}</label>
+                        {{ field|add_class:'form-control'|attr:'autocomplete:off'  }}
                     </div>
+
                 {% endfor %}
                 
             </div>
 
             <!-- Botón para guardar nuevo -->
             <div class = "card-footer" >
-                {% if permisos.usuario_administrador == True %}
+                {% if permisos.usuario_administrador == True or plantilla == 'Editar Contraseña'%}
                     <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
                             <i class="fas fa-save"></i> Guardar
                         </button>

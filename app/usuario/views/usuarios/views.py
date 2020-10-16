@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from app.cobros.models import Departamentos,Puestos,Recordatorios,Promesas
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
+from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -308,6 +309,84 @@ class editar_perfil_usuario(LoginRequiredMixin,UpdateView):
         # FIN VERIFICACIÓN DE PERMISOS
         
 
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
+        return context
+
+class cambiar_password_usuario(LoginRequiredMixin,FormView):
+    model = Usuario
+    form_class = PasswordChangeForm
+    template_name = 'usuario/cambiar_password.html'
+    success_url = reverse_lazy('inicio_sesion')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+    
+    def get_object(self, get_queryset=None):
+        return self.request.user
+
+    def get_form(self, form_class=None):
+        form = PasswordChangeForm(user=self.request.user)
+        form.fields['old_password'].widget.attrs['class'] = 'form-control'
+        form.fields['new_password1'].widget.attrs['class'] = 'form-control'
+        form.fields['new_password2'].widget.attrs['class'] = 'form-control'
+        
+        form.fields['old_password'].widget.attrs['autocomplete'] = 'off'
+        form.fields['new_password1'].widget.attrs['autocomplete'] = 'off'
+        form.fields['new_password2'].widget.attrs['autocomplete'] = 'off'
+
+        form.fields['old_password'].widget.attrs['placeholder'] = 'Ingrese su contraseña actual'
+        form.fields['new_password1'].widget.attrs['placeholder'] = 'Ingrese su nueva contraseña'
+        form.fields['new_password2'].widget.attrs['placeholder'] = 'Repita su contraseña'
+        return form
+    
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'cambiar_contrasenia':
+                form = PasswordChangeForm(user=request.user, data=request.POST)
+                form.fields['old_password'].widget.attrs['value'] = request.POST['old_password']
+                form.fields['new_password1'].widget.attrs['value'] = request.POST['new_password1']
+                form.fields['new_password2'].widget.attrs['value'] = request.POST['new_password2']
+                if form.is_valid():
+                    form.save()
+                    registro = self.get_object()
+                    registro.fch_cambio_password = datetime.now()
+                    registro.save()
+                    #update_session_auth_hash(request, form.user)
+                    return redirect('/login/')
+                else:
+                    data['error'] = form.errors
+                    return render(request, self.template_name, {'action': 'cambiar_contrasenia','form':form, 'quitar_footer': 'si', 'titulo_lista': 'Editar Contraseña de Usuario','plantilla': 'Editar Contraseña','permisos':asignar_permiso().metodo_permiso(3,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador),'cont_alerta':alertas().recordatorios(self.request.user),'cont_promesa':alertas().promesas(self.request.user),'cont_total': alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)})
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Editar Contraseña'
+        context['quitar_footer'] = 'si'
+        context['btn_cancelar'] = reverse_lazy('crm:dashboard')
+        context['titulo_lista'] = 'Editar Contraseña de Usuario'
+        context['action'] = 'cambiar_contrasenia'
+      
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+        
         # INICIO PARA RECORDATORIOS HEADER
         context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER

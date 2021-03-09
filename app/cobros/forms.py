@@ -1,12 +1,13 @@
 from django.forms import *
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
-from app.cobros.models import Departamentos,Clientes,Puestos,Empresas,Contactos,Productos,Codigos,Motivos,Gestiones
+from app.cobros.models import Departamentos,Clientes,Puestos,Empresas,Contactos,Productos,Codigos,Motivos,Gestiones,Recordatorios, Promesas, Visitas
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.urls import reverse_lazy
+from django.contrib.admin import widgets
 
 
 
@@ -70,7 +71,7 @@ class formulario_puestos(ModelForm):
     class Meta():
         model = Puestos
         fields = '__all__'
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado']
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado', 'id_departamento']
 
         widgets = {
             'nombre': TextInput(
@@ -169,7 +170,7 @@ class formulario_cliente(ModelForm):
     class Meta():
         model = Clientes
         fields = '__all__'
-        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado']
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado', 'id_empresa','id_usuario']
 
         widgets = {
             'nombre': TextInput(
@@ -346,8 +347,9 @@ class formualario_guardar_gestion(ModelForm):
             'descripcion': Textarea(
                 attrs={
                     'placeholder': 'Ingrese la nueva gestión',
-                    'rows': '5',
-                    'cols': '10',
+                    'rows': '2',
+                    #'font-size': '8px',
+                    #'cols': '5',
                     #'style': 'width: 150%;',
         
 
@@ -355,3 +357,84 @@ class formualario_guardar_gestion(ModelForm):
                 }
             ),
         }
+
+class formulario_alertas(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['descripcion_alerta'].widget.attrs['autofocus'] = True
+        #self.fields['fch_recordatorio'].widget = widgets.AdminSplitDateTime()
+        
+        #self.fields['usuario_creacion'].widget.attrs['value'] = ''
+
+    class Meta():
+        model = Recordatorios
+        fields = '__all__'
+        exclude = ['id_cliente','fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado']
+
+        widgets = {
+            'descripcion_alerta': TextInput(attrs={'placeholder': 'Ingrese una breve descripción', }),
+     
+        }
+
+class formulario_seg_promesas(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['valor'].widget.attrs['autofocus'] = True
+        
+        #self.fields['usuario_creacion'].widget.attrs['value'] = ''
+
+    class Meta():
+        model = Promesas
+        fields = '__all__'
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado','id_usuario','fecha','hora','descripcion', 'id_cliente','motivo_descrip']
+
+class formulario_seg_visitas(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['respuesta_visita'].widget.attrs['autofocus'] = True
+        
+        #self.fields['usuario_creacion'].widget.attrs['value'] = ''
+
+    class Meta():
+        model = Visitas
+        fields = '__all__'
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado','id_usuario','fch_creacion','lugar','fch_visita_realizada', 'id_cliente','motivo_descrip']
+
+
+        widgets = {
+            'respuesta_visita': Textarea(
+                attrs={
+                    'placeholder': 'Ingrese la respuesta de la visita realizada',
+                    'rows': '4',
+                }
+            ),
+        }
+
+class formulario_seg_alertas(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        #self.fields['descri'].widget.attrs['autofocus'] = True
+        
+        #self.fields['usuario_creacion'].widget.attrs['value'] = ''
+
+    class Meta():
+        model = Recordatorios
+        fields = '__all__'
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','estado','id_usuario','fch_creacion', 'id_cliente','fch_recordatorio','hora_recordatorio']
+

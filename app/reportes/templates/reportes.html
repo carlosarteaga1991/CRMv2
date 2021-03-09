@@ -1,0 +1,233 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block contenido %}
+
+<section class="content-header"  style="padding-top: 4%;" >
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tipos de Reportes</h1>
+          </div>
+          <div class="col-sm-6">
+            <!--<ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Widgets</li>
+            </ol>-->
+          </div>
+        </div>
+      </div>
+</section>
+
+
+<div class="row" >
+
+        <!-- Reporte GESTIONES -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+                <p>GESTIONES</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte GESTIONES -->
+
+        <!-- Reporte PERMISOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>53<sup style="font-size: 20px"></sup></h3>
+                <p>PERMISOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-lock"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte PERMISOS -->
+
+        <!-- Reporte USUARIOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ total |intcomma }}</h3>
+                <p>USUARIOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte USUARIOS -->
+
+        <!-- Reporte PERFIL DE USUARIOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>65</h3>
+                <p>PERFIL DE USUARIOS</p>
+              </div>
+              <div class="icon">
+                <i class="far fa-id-card"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte PERFIL DE USUARIOS -->
+
+        <!-- Reporte BITÁCORAS/AUDITORÍA -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>250</h3>
+                <p>BITÁCORAS/AUDITORÍA</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte BITÁCORAS/AUDITORÍA -->
+
+        <!-- Reporte DEPARTAMENTOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>13</h3>
+                <p>DEPARTAMENTOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte DEPARTAMENTOS -->
+
+        <!-- Reporte PUESTOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>8</h3>
+                <p>PUESTOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte PUESTOS -->
+
+        <!-- Reporte EMPRESAS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>4</h3>
+                <p>EMPRESAS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte EMPRESAS -->
+
+        <!-- Reporte CLIENTES -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>1354</h3>
+                <p>CLIENTES</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte CLIENTES -->
+
+        <!-- Reporte CÓDIGOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>14</h3>
+                <p>CÓDIGOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte CÓDIGOS -->
+
+        <!-- Reporte MOTIVOS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>23</h3>
+                <p>MOTIVOS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte MOTIVOS -->
+
+        <!-- Reporte ALERTAS -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>6532</h3>
+                <p>ALERTAS</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                Generar <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        <!-- ./Reporte ALERTAS -->
+          
+</div>
+
+{% endblock  %}

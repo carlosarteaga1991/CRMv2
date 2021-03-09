@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Contactos,Clientes,Productos
+from app.cobros.models import Contactos,Clientes,Productos,Promesas,Recordatorios
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -9,8 +9,12 @@ from app.cobros.forms import formulario_cliente_productos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class listar_cliente_productos(ListView):
+from app.usuario.permisos import asignar_permiso
+from app.usuario.alertas import alertas
+
+class listar_cliente_productos(LoginRequiredMixin,ListView):
     model = Productos
     template_name = 'clientes/productos/listar.html'
 
@@ -18,7 +22,7 @@ class listar_cliente_productos(ListView):
         return self.model.objects.filter(borrado=0,id_cliente_id=self.kwargs['pk'])
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required) 
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -34,11 +38,25 @@ class listar_cliente_productos(ListView):
         context['boton_volver'] = 'si'
         context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class crear_cliente_productos(CreateView):
+class crear_cliente_productos(LoginRequiredMixin,CreateView):
     model = Productos
     template_name = 'clientes/productos/crear.html'
     form_class = formulario_cliente_productos 
@@ -78,17 +96,31 @@ class crear_cliente_productos(CreateView):
         context['boton_volver'] = 'si'
         context['quitar_footer'] = 'si'
         context['url_boton_volver'] = reverse_lazy('crm:listar_cliente')
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class borrar_cliente_productos(DeleteView):
+class borrar_cliente_productos(LoginRequiredMixin,DeleteView):
     model = Productos
     template_name = 'clientes/productos/borrar.html'
     #success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -117,17 +149,31 @@ class borrar_cliente_productos(DeleteView):
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Eliminar producto'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class actualizar_cliente_productos(UpdateView):
+class actualizar_cliente_productos(LoginRequiredMixin,UpdateView):
     model = Productos
     form_class = formulario_cliente_productos
     template_name = 'clientes/productos/crear.html'
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -161,5 +207,19 @@ class actualizar_cliente_productos(UpdateView):
         context['titulo_lista'] = 'Editar contacto de cliente'
         context['quitar_footer'] = 'si'
         context['success_url'] = '/cobros/cliente/productos/' + str(self.kwargs['ant']) +'/' + str(self.kwargs['name']) + '/'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(15,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 

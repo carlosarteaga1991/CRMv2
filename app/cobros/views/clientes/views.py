@@ -1,5 +1,6 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Clientes
+from app.cobros.models import Clientes,Empresas,Promesas,Recordatorios
+from app.usuario.models import Usuario
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -9,8 +10,13 @@ from app.cobros.forms import formulario_cliente
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
+from app.usuario.models import *
 
-class listar_cliente(ListView):
+from app.usuario.permisos import asignar_permiso
+from app.usuario.alertas import alertas
+
+class listar_cliente(LoginRequiredMixin,ListView):
     model = Clientes
     template_name = 'clientes/listar.html'
 
@@ -18,7 +24,7 @@ class listar_cliente(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -32,11 +38,25 @@ class listar_cliente(ListView):
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['quitar_footer'] = 'si'
         context['tipo'] = ''
+
+        # INICIO VERIFICACIÓN DE PERMISOS 
+        context['permisos'] = asignar_permiso().metodo_permiso(9,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class crear_cliente(CreateView):
+class crear_cliente(LoginRequiredMixin,CreateView):
     model = Clientes
     template_name = 'clientes/crear.html'
     form_class = formulario_cliente 
@@ -71,17 +91,36 @@ class crear_cliente(CreateView):
         context['titulo_lista'] = 'Ingrese datos del nuevo cliente'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'nuevo'
+        context['select_cliente'] = 'mostrar'
+        empresa = Empresas.objects.filter(borrado=0,estado=1)
+        context['empresa'] = empresa
+        usuario = Usuario.objects.filter(borrado=0,estado=1)
+        context['usuario'] = usuario
+
+        # INICIO VERIFICACIÓN DE PERMISOS 
+        context['permisos'] = asignar_permiso().metodo_permiso(9,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class borrar_cliente(DeleteView):
+class borrar_cliente(LoginRequiredMixin,DeleteView):
     model = Clientes
     template_name = 'clientes/borrar.html'
     success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -107,18 +146,32 @@ class borrar_cliente(DeleteView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar cliente'
+
+        # INICIO VERIFICACIÓN DE PERMISOS 
+        context['permisos'] = asignar_permiso().metodo_permiso(9,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
 
 
-class actualizar_cliente(UpdateView):
+class actualizar_cliente(LoginRequiredMixin,UpdateView):
     model = Clientes
     form_class = formulario_cliente
     template_name = 'clientes/crear.html'
     success_url = reverse_lazy('crm:listar_cliente')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -133,6 +186,7 @@ class actualizar_cliente(UpdateView):
             registro.tipo_id = request.POST['tipo_id']
             registro.identidad = request.POST['identidad']
             registro.fch_nacimiento = request.POST['fch_nacimiento']
+            registro.estado_civil = request.POST['estado_civil']
             registro.estado = request.POST['estado'] 
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
@@ -150,5 +204,34 @@ class actualizar_cliente(UpdateView):
         context['titulo_lista'] = 'Editar cliente'
         context['quitar_footer'] = 'si'
         context['tipo'] = 'editar'
+        context['select_cliente'] = 'mostrar'
+        cliente = Clientes.objects.filter(borrado=0, id_cliente = self.kwargs['pk'])
+        z = 0
+        x = 0
+        for c in cliente:
+            z = c.id_empresa_id
+            x = c.id_usuario_id
+        
+        usuario = Usuario.objects.filter(borrado=0,estado=1)
+
+        context['seleccionar'] = z
+        context['seleccionaruser'] = x
+        empresa = Empresas.objects.filter(borrado=0,estado=1)
+        context['empresa'] = empresa
+        context['usuario'] = usuario
+
+        # INICIO VERIFICACIÓN DE PERMISOS 
+        context['permisos'] = asignar_permiso().metodo_permiso(9,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 

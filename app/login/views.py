@@ -10,7 +10,7 @@ class login(LoginView):
     template_name = 'login.html'
 
     # importante se sobre escribe este método para verificar si está loggeado y si es así redireccionarlo
-    # importante recordar q esa URL se configura en setting.py usando LOGIN_REDIRECT_URL = '/cobros/departamento/' si desea volver a loggerse
+    # importante recordar q esa URL se configura en setting .py usando LOGIN_REDIRECT_URL = '/cobros/departamento/' si desea volver a loggerse
     def dispatch(self, request,*args,**kwargs):
         if request.user.is_authenticated:
             return redirect('crm:listar_departamento')

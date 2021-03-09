@@ -39,7 +39,7 @@
                     {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                            <span class="fas fa-user"></span>
                         </div>
                     </div>
                 </div>
@@ -63,21 +63,22 @@
     </div>
     
         {% if form.errors %}
-            <!--var errors = '';-->
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <!--errors += '{{ error }}\n';-->
+
+           <!-- {% if forms.ValidationError %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  forms.ValidationError }}<strong>!</strong>
+                </div>
+                {% for error in forms.ValidationError.error_messages %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  error }}<strong>!</strong>
+                </div>                
                 {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <!--errors += '{{ error }}\n';-->
-            {% endfor %}
-            <!--<div class="alert alert-danger alert-dismissible">
-                            
-                            <h5><i class="icon fas fa-ban"></i> ¡Acceso Denegado!</h5>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usuario y/o contraseña inválidos</p>
-                            
-            </div>-->
+            {% endif %}-->
+                                
+                        
+
             <div class="alert alert-danger alert-dismissible fade show">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <strong>¡</strong> Usuario y/o contraseña inválidos. <strong>!</strong>

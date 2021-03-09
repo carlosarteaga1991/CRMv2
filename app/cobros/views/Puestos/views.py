@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView,DeleteView,UpdateView
-from app.cobros.models import Puestos
+from app.cobros.models import Puestos,Departamentos,Recordatorios,Promesas
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -9,8 +9,13 @@ from app.cobros.forms import formulario_puestos
 from django.shortcuts import render,redirect
 
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
+from app.usuario.models import *
 
-class listar_puestos(ListView):
+from app.usuario.permisos import asignar_permiso
+from app.usuario.alertas import alertas
+
+class listar_puestos(LoginRequiredMixin,ListView):
     model = Puestos
     template_name = 'Puestos/listar.html'
 
@@ -18,7 +23,7 @@ class listar_puestos(ListView):
         return self.model.objects.filter(borrado=0)
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request,*args,**kwargs)
 
@@ -32,9 +37,23 @@ class listar_puestos(ListView):
         context['create_url'] = reverse_lazy('crm:crear_puesto')
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['tipo'] = ''
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
-class crear_puesto(CreateView):
+class crear_puesto(LoginRequiredMixin,CreateView):
     model = Puestos
     template_name = 'Puestos/crear.html'
     form_class = formulario_puestos 
@@ -47,7 +66,7 @@ class crear_puesto(CreateView):
             if form.is_valid():
                 nuevo = Puestos(
                     nombre = form.cleaned_data.get('nombre'),
-                    id_departamento = form.cleaned_data.get('id_departamento'),
+                    id_departamento_id = int(request.POST['id_departamento']),
                     usuario_creacion = request.user.id,
                     estado = form.cleaned_data.get('estado')
                 )
@@ -65,15 +84,32 @@ class crear_puesto(CreateView):
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Ingrese datos del nuevo puesto'
         context['tipo'] = 'nuevo'
+        context['select_puesto'] = 'mostrar'
+        departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+
+       # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
-class borrar_puesto(DeleteView):
+class borrar_puesto(LoginRequiredMixin,DeleteView):
     model = Puestos
     template_name = 'Puestos/borrar.html'
     success_url = reverse_lazy('crm:listar_puestos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -99,16 +135,30 @@ class borrar_puesto(DeleteView):
         context['quitar_footer'] = 'si'
         context['url_salir'] = reverse_lazy('login:iniciar')
         context['titulo_lista'] = 'Eliminar puesto'
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context
 
-class actualizar_puesto(UpdateView):
+class actualizar_puesto(LoginRequiredMixin,UpdateView):
     model = Puestos
     form_class = formulario_puestos
     template_name = 'Puestos/crear.html'
     success_url = reverse_lazy('crm:listar_puestos')
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         self.object = self.get_object()
         return super().dispatch(request,*args,**kwargs)
@@ -126,7 +176,7 @@ class actualizar_puesto(UpdateView):
             registro.usuario_modificacion = request.user.id
             registro.fch_modificacion = datetime.now()
             registro.save()
-            return redirect('crm:listar_puestos')
+            return redirect('crm:listar_puestos') 
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -137,6 +187,28 @@ class actualizar_puesto(UpdateView):
         context['plantilla'] = 'Editar'
         context['btn_cancelar'] = reverse_lazy('crm:listar_puestos')
         context['titulo_lista'] = 'Editar puestos'
-        context['quitar_footer'] = 'si'
+        context['quitar_footer'] = 'si' 
         context['tipo'] = 'editar'
+        context['select_puesto'] = 'mostrar'
+        puesto = Puestos.objects.filter(borrado=0, id_puesto = self.kwargs['pk'])
+        z = 0
+        for c in puesto:
+            z = c.id_departamento_id
+        context['seleccionar'] = z
+        departamento = Departamentos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(6,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+
         return context

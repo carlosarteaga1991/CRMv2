@@ -19,30 +19,81 @@
 </div>-->
 
 {% block contenido %}
-    <div class=" card-primary" style="padding-top: 2%">
-                <!-- Botón para crear nuevo -->
-                <div class = "card-footer" >
-                    <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
-                        <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
-                    </a>
 
-                  {% if boton_volver == 'si' %}
-                      <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
-                        <i class="fas fa-backspace"></i> <strong>Volver</strong>
-                    </a>
-                  {% endif %}
-                    
-                </div>
-              <div class="card" style="background: #6CA3FC; color: white; font-size: 11px; height: 22px">
+    <div class=" card-primary" style="padding-top: 5%; ">
+         
 
+              {% if permisos.usuario_administrador == True %}
+                <!-- INICIO PARTE DEL ADMINISTRADOR -->
+                      <div class="" style=" color: black; font-size: 11px; height: 22px">
+
+                        <h3 class="card-title">
+                          &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
+                          <strong>{{ titulo_lista }}</strong> <strong>{{ nombre_cliente }}</strong>
+                        </h3>
+                      </div>
+                  <!-- Botón para crear nuevo -->
+                  
+                    <div class="card-footer" style="background: #FFFFFF;">
+                          {% if quitar_btn_nuevo == 'si' %}
+                        
+                          {% else %}
+                            <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
+                            </a>
+                            <!--<a href="" style= "background: #6D6D6D; color: white;"  id="sin_permiso" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                <i class="fas fa-ban"></i> <strong>Nuevo Resgistro</strong>
+                            </a>-->
+                          {% endif %}
                             
 
-                <h3 class="card-title">
-                  &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
-                  {{ titulo_lista }} <strong>{{ nombre_cliente }}</strong>
-                </h3>
-              </div>
+                          {% if boton_volver == 'si' %}
+                              <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
+                                <i class="fas fa-backspace"></i> <strong>Volver</strong>
+                            </a>
+                          {% endif %}
+                        
+                    </div>
+                <!-- FIN PARTE DEL ADMINISTRADOR -->
+              {% else %}
+                      {% if permisos.pantalla_template == 'ver' and permisos.ver_pantalla == 1 %}
+                        <!-- FIN PARTE DEL USUARIO ACEPTADO -->
+                                      <div class="" style=" color: black; font-size: 11px; height: 22px">
 
+                                    <h3 class="card-title">
+                                      &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
+                                      <strong>{{ titulo_lista }}</strong> <strong>{{ nombre_cliente }}</strong>
+                                    </h3>
+                                  </div>
+                                   <!-- Botón para crear nuevo -->
+                              
+                                <div class="card-footer" style="background: #FFFFFF;">
+                                      {% if quitar_btn_nuevo == 'si' %}
+                                    
+                                      {% else %}
+                                        <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                            <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
+                                        </a>
+                                        <!--<a href="" style= "background: #6D6D6D; color: white;"  id="sin_permiso" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                            <i class="fas fa-ban"></i> <strong>Nuevo Resgistro</strong>
+                                        </a>-->
+                                      {% endif %}
+                                        
+
+                                      {% if boton_volver == 'si' %}
+                                          <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
+                                            <i class="fas fa-backspace"></i> <strong>Volver</strong>
+                                        </a>
+                                      {% endif %}
+                                    
+                                </div>
+                        <!-- FIN PARTE DEL USUARIO ACEPTADO -->
+                      {% else %}
+
+                      {% endif %}
+              {% endif %}  
+              
+               
               <!-- alerta exitosa -->
               {% if  tipo  == 'nuevo' %}
                 <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
@@ -66,9 +117,9 @@
 
               <!-- /.tipos de alertas-->
               <div class="card-body" style="font-size: 12px;">
-
-                <table class="table table-hover table-striped"  id="data" >
-                    <thead style="background: #6CA3FC; color: white;">
+                
+                  <table class="table table-hover table-bordered table-striped"  id="data" >
+                    <thead style="background: #A4C6FF; color: white;">
                    
                         {% block columnas %}
                         
@@ -82,10 +133,15 @@
                     </tbody>
                 </table>
 
+
+                
+                
+
                 
               </div>
               <!-- /.tipo de alertas -->
     </div>
+
 {% endblock  %}
 
 

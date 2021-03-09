@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'app.homepage',
     'app.login',
     'app.usuario',
-    
+    'app.reportes',
 
 ]
 

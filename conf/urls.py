@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 from app.usuario.views.usuarios.views import *
 from app.usuario.views.roles.views import *
 from app.usuario.views.permisos.views import *
+from app.reportes.views.usuarios.views import *
 
 
 urlpatterns = [
@@ -55,5 +56,8 @@ urlpatterns = [
 
     # URL para CAMBIAR PASSWORD USUARIO
     path('cambiar_password/',cambiar_password_usuario.as_view(), name='cambiar_password'),
+
+    # URL para REPORTES
+    path('reportes/',mostra_tipos_de_reportes.as_view(), name='tipos_reportes'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
